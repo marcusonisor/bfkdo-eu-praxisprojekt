@@ -21,7 +21,7 @@ name: Build and deploy ASP.Net Core app to an Azure Web App
 
 
 on:
-  push:
+  pull_request:
     branches: [ "production" ]
   workflow_dispatch:
 
