@@ -80,5 +80,5 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'bfkdo-benutzerapp'
-          publish-profile: ${{ secrets.AZURE_WEBAPP_ADMINAPP_PUBLISH_PROFILE }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_BENUTZERAPP_PUBLISH_PROFILE }}
           package: '.'
