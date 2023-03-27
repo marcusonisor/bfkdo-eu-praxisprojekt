@@ -2,51 +2,42 @@ name: Adminapp Deployment Pipeline
 
 on:
   pull_request:
-    branches: [ "production" ]
+    branches: 
+    - production
 
-permissions:
-  contents: read
-
+env:
+  AZURE_WEBAPP_NAME: bfkdo-adminapp
+  AZURE_WEBAPP_PACKAGE_PATH: AdminApp\publish
+  CONFIGURATION: Release
+  DOTNET_CORE_VERSION: 7.0.x
+  WORKING_DIRECTORY: BFKDO-Wissenstest/AdminApp
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v3
-      
-      - name: Change Directory
-      - run: |
-          cd BFKDO-Wissenstest
-      
-      - name: Set up .NET
-        uses: actions/setup-dotnet@v2
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 7.x
+          dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
           
-      - name: Set up dependency caching for faster builds
-        uses: actions/cache@v3
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
-
-      - name: Build with dotnet
-        run: dotnet build --configuration Release
-
-      - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/AdminApp
-
-      - name: Upload artifact for deployment job
+      - name: Restore
+        run: dotnet restore "${{ env.WORKING_DIRECTORY }}"
+      - name: Build
+        run: dotnet build "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-restore
+      - name: Test
+        run: dotnet test "${{ env.WORKING_DIRECTORY }}" --no-build
+      - name: Publish
+        run: dotnet publish "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-build --output "${{ env.AZURE_WEBAPP_PACKAGE_PATH }}"
+      - name: Publish Artifacts
         uses: actions/upload-artifact@v3
         with:
           name: adminapp
-          path: ${{env.DOTNET_ROOT}}/AdminApp
+          path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
   deploy:
-    permissions:
-      contents: none
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: build
     environment:
       name: 'Development'
@@ -57,11 +48,12 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: adminapp
-
+          path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+          
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'bfkdo-adminapp'
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_ADMINAPP_PUBLISH_PROFILE }}
-          package: '.'
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
