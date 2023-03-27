@@ -1,0 +1,53 @@
+name: BenutzerApp Deployment Pipeline
+
+
+on:
+  pull_request:
+    branches:
+      - production
+env:
+  AZURE_WEBAPP_NAME: bfkdo-benutzerapp
+  AZURE_WEBAPP_PACKAGE_PATH: BenutzerApp\publish
+  CONFIGURATION: Release
+  DOTNET_CORE_VERSION: 7.0.x
+  WORKING_DIRECTORY: BFKDO-Wissenstest/BenutzerApp
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
+    - name: Restore
+      run: dotnet restore "${{ env.WORKING_DIRECTORY }}"
+    - name: Build
+      run: dotnet build "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-restore
+    - name: Test
+      run: dotnet test "${{ env.WORKING_DIRECTORY }}" --no-build
+    - name: Publish
+      run: dotnet publish "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-build --output "${{ env.AZURE_WEBAPP_PACKAGE_PATH }}"
+    - name: Publish Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: benutzerapp
+        path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+
+  deploy:
+    runs-on: windows-latest
+    needs: build
+    steps:
+    - name: Download artifact from build job
+      uses: actions/download-artifact@v3
+      with:
+        name: benutzerapp
+        path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+    - name: Deploy to Azure WebApp
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        publish-profile: ${{ secrets.AZURE_WEBAPP_BENUTZERAPP_PUBLISH_PROFILE }}
+        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+
