@@ -35,6 +35,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Change Directory
+        run: |
+          cd BFKDO-Wissenstest
+      
       - name: Set up .NET
         uses: actions/setup-dotnet@v2
         with:
@@ -52,13 +56,13 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/BFKDO-Wissenstest/BenutzerApp
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/BenutzerApp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
           name: benutzerapp
-          path: ${{env.DOTNET_ROOT}}/BFKDO-Wissenstest/BenutzerApp
+          path: ${{env.DOTNET_ROOT}}/BenutzerApp
 
   deploy:
     permissions:
