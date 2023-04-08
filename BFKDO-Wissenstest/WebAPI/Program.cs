@@ -1,8 +1,15 @@
 
 namespace WebAPI
 {
+    /// <summary>
+    ///     Programm Class of Web API.
+    /// </summary>
     public class Program
     {
+        /// <summary>
+        ///     Startpoint of Program.
+        /// </summary>
+        /// <param name="args"></param>
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
