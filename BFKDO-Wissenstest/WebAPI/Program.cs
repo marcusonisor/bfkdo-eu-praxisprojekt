@@ -1,4 +1,8 @@
 
+using Database;
+using Microsoft.EntityFrameworkCore;
+using System.Configuration;
+
 namespace WebAPI
 {
     /// <summary>
@@ -13,8 +17,13 @@ namespace WebAPI
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
             // Add services to the container.
+
+            // Add Database to Container.
+            builder.Services.AddDbContext<BfkdoDbContext>(config =>
+            {
+                config.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -33,7 +42,6 @@ namespace WebAPI
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
