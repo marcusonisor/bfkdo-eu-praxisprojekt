@@ -18,4 +18,9 @@
     <PackageReference Include="coverlet.collector" Version="3.1.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AdminApp\AdminApp.csproj" />
+    <ProjectReference Include="..\BenutzerApp\BenutzerApp.csproj" />
+  </ItemGroup>
+
 </Project>
