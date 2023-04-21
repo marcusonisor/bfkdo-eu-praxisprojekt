@@ -24,6 +24,6 @@ namespace Common.Enums
         /// <summary>
         ///     Bestanden.
         /// </summary>
-        Passes
+        Passed
     }
 }

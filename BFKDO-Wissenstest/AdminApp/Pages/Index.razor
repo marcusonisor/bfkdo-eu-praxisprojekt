@@ -1,45 +1,62 @@
 ﻿@page "/"
 
-<MudStack Row AlignItems="AlignItems.Center" Class="my-4" Spacing="15">
-    <h1 class="m-0" aria-label="Testjahr">Testjahr 2022</h1>
-    <MudButton aria-label="Wissenstest bearbeiten" Color="Color.Primary" Variant="Variant.Filled">Wissenstest bearbeiten</MudButton>
-    <MudButton aria-label="Pdf exportieren" Color="Color.Error" StartIcon="@Icons.Material.Filled.PictureAsPdf" Variant="Variant.Filled">PDF exportieren</MudButton>
+<MudStack Spacing="4">
+    <MudStack Row Justify="Justify.Center" AlignItems="AlignItems.Center" Class="my-4" Spacing="4">
+        <h1 class="m-0" aria-label="Testjahr">Testjahr 2022</h1>
+        <MudButton StartIcon="@Icons.Material.Filled.Edit" aria-label="Wissenstest bearbeiten" Color="Color.Primary" Variant="Variant.Filled">Wissenstest bearbeiten</MudButton>
+        <MudButton aria-label="Pdf exportieren" Color="Color.Error" StartIcon="@Icons.Material.Filled.PictureAsPdf" Variant="Variant.Filled">PDF exportieren</MudButton>
+    </MudStack>
+
+
+    <MudStack Row Justify="Justify.Center">
+        <MudDataGrid Striped=true Items="Elements" T="ModelKnowledgeTestDetails" ColumnResizeMode="ResizeMode.Container" RowsPerPage="5">
+            <ToolBarContent>
+                <MudText Typo="Typo.h6">Anmeldungen</MudText>
+            </ToolBarContent>
+            <Columns>
+                <TemplateColumn CellStyle="width:20px" HeaderStyle="width:20px">
+                    <CellTemplate>
+                        <MudStack>
+                            <MudIcon Style="border:3px solid black; border-radius:50%" Icon="@Icons.Material.Filled.Person" />
+                        </MudStack>
+                    </CellTemplate>
+                </TemplateColumn>
+                <PropertyColumn CellClass="mx-3" HeaderClass="mx-3" Property="x => x!.Name" />
+                <PropertyColumn CellClass="mx-3" HeaderClass="mx-3" Property="x => x!.Station" />
+                <TemplateColumn CellClass="d-flex justify-end" CellStyle="width:280px" HeaderStyle="width:280px">
+                    <CellTemplate>
+                        <MudStack Row AlignItems="AlignItems.Center">
+                            @{
+                                var item = context.Item;
+                            }
+                            @if (item != null!)
+                            {
+                                <MudStack>
+                                    @foreach (var result in item.Results)
+                                    {
+                                        <label aria-label="@($"Absolvierte Stufe von {item.Name}")">@result.LevelName</label>
+                                    }
+                                </MudStack>
+                                <MudStack>
+                                    @foreach (var result in item.Results)
+                                    {
+                                        <div aria-label="@($"Ergebnis der absolvierten Stufe von {item.Name}")">
+                                            <EvaluationDetails State="EnumEvaluation.Ungraded" Result="@result.LevelResult"></EvaluationDetails>
+                                        </div>
+                                    }
+                                </MudStack>
+                                <MudButton StartIcon="@Icons.Material.Filled.Edit" aria-label="@($"Bearbeite {item.Name}")" Size="Size.Medium" Variant="Variant.Filled" Color="Color.Primary">Bearbeiten</MudButton>
+                            }
+                        </MudStack>
+                    </CellTemplate>
+                </TemplateColumn>
+            </Columns>
+            <PagerContent>
+                <MudDataGridPager T="ModelKnowledgeTestDetails" />
+            </PagerContent>
+        </MudDataGrid>
+    </MudStack>
 </MudStack>
-
-
-<MudDataGrid Items="Elements" ColumnResizeMode="ResizeMode.Column">
-    <Columns>
-        <TemplateColumn>
-            <CellTemplate>
-                <MudIcon Style="border:3px solid black; border-radius:50%" Icon="@Icons.Material.Filled.Person" />
-            </CellTemplate>
-        </TemplateColumn>
-        <PropertyColumn Property="x => x.Name" />
-        <PropertyColumn Property="x => x.Station" />
-        <TemplateColumn CellClass="d-flex justify-end">
-            <CellTemplate>
-                <MudStack Row AlignItems="AlignItems.Center">
-                    @{
-                        var item = context.Item;
-                    }
-                    <MudStack>
-                        @foreach (var result in item.Results)
-                        {
-                            <label>@result.LevelName</label>
-                        }
-                    </MudStack>
-                    <MudStack>
-                        @foreach (var result in item.Results)
-                        {
-                            <label>@result.LevelResult</label>
-                        }
-                    </MudStack>
-                    <MudButton Size="Size.Medium" Variant="Variant.Filled" Color="Color.Primary">Bearbeiten</MudButton>
-                </MudStack>
-            </CellTemplate>
-        </TemplateColumn>
-    </Columns>
-</MudDataGrid>
 
 
 

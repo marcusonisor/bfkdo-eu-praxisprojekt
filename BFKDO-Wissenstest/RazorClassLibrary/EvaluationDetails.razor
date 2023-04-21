@@ -1,0 +1,28 @@
+﻿@using Common.Enums
+
+@if (!string.IsNullOrEmpty(Result))
+{
+    <label style="color:@(GetColor())">@Result</label>
+}
+
+
+@code {
+    [Parameter]
+    public EnumEvaluation State { get; set; }
+
+    [Parameter]
+    public string Result { get; set; } = string.Empty;
+
+    private string GetColor()
+    {
+        switch (State)
+        {
+            case EnumEvaluation.Failed:
+                return "red";
+            case EnumEvaluation.Passed:
+                return "green";
+            default:
+                return "gray";
+        }
+    }
+}
