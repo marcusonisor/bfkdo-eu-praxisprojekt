@@ -28,9 +28,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectUnitTests", "Project
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EndToEndTests", "EndToEndTests\EndToEndTests.csproj", "{3F2F8C4C-8900-4BD3-89C4-087C5C7C2F32}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorComponentTests", "RazorComponentTests\RazorComponentTests.csproj", "{8DA06537-1DE2-488B-A66E-F46BE10B7E5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RazorComponentTests", "RazorComponentTests\RazorComponentTests.csproj", "{8DA06537-1DE2-488B-A66E-F46BE10B7E5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorClassLibrary", "RazorClassLibrary\RazorClassLibrary.csproj", "{42476E9E-D75D-42F6-BFCE-209E8DAC453D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RazorClassLibrary", "RazorClassLibrary\RazorClassLibrary.csproj", "{42476E9E-D75D-42F6-BFCE-209E8DAC453D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
