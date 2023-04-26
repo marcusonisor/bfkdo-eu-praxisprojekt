@@ -34,7 +34,7 @@ namespace Common.Services
         /// <typeparam name="T">Typparameter.</typeparam>
         /// <param name="url">Url für Abruf.</param>
         /// <returns>Request Result.</returns>
-        public async Task<HttpRequestResult<T>> GetFromApi<T>(string url)
+        protected async Task<HttpRequestResult<T>> GetFromApi<T>(string url)
         {
             AddAuthentication();
 
@@ -53,7 +53,7 @@ namespace Common.Services
         /// <param name="url">Url für Aufruf.</param>
         /// <param name="content">Übergabeparemeter.</param>
         /// <returns>Request Result.</returns>
-        public async Task<HttpRequestResult<U>> PostToApi<T,U>(string url, T content)
+        protected async Task<HttpRequestResult<U>> PostToApi<T,U>(string url, T content)
         {
             AddAuthentication();
 
@@ -72,7 +72,7 @@ namespace Common.Services
         /// <param name="url">Url für Aufruf.</param>
         /// <param name="content">Übergabeparemeter.</param>
         /// <returns>Request Result.</returns>
-        public async Task<HttpRequestResult<U>> PutToApi<T, U>(string url, T content)
+        protected async Task<HttpRequestResult<U>> PutToApi<T, U>(string url, T content)
         {
             AddAuthentication();
 
@@ -89,7 +89,7 @@ namespace Common.Services
         /// <typeparam name="T">Typparameter.</typeparam>
         /// <param name="url">Url für Abruf.</param>
         /// <returns>Request Result.</returns>
-        public async Task<HttpRequestResult<T>> DeleteFromApi<T>(string url)
+        protected async Task<HttpRequestResult<T>> DeleteFromApi<T>(string url)
         {
             AddAuthentication();
 

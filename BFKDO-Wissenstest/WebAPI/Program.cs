@@ -2,6 +2,7 @@
 using Database;
 using Microsoft.EntityFrameworkCore;
 using System.Configuration;
+using System.Reflection;
 
 namespace WebAPI
 {
@@ -17,7 +18,8 @@ namespace WebAPI
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            // Add services to the container.
+            builder.Logging.ClearProviders();
+            builder.Logging.AddConsole();
 
             // Add Database to Container.
             builder.Services.AddDbContext<BfkdoDbContext>(config =>
@@ -28,7 +30,11 @@ namespace WebAPI
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(options =>
+            {
+                var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+            });
 
             builder.Services.AddCors(options =>
             {

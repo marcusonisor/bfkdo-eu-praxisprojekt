@@ -28,7 +28,7 @@ namespace AdminApp.Pages
         {
             if (Nav != null)
             {
-                Nav.NavigateTo("/knowledgetestdetails");
+                Nav.NavigateTo("/knowledgetestdetails/4");
             }
         }
 

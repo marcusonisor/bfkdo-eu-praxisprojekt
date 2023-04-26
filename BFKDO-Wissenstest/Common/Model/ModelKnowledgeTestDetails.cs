@@ -1,39 +1,23 @@
 ﻿namespace Common.Model
 {
     /// <summary>
-    ///     Ergebnis eines Wissenstest einer Testperson.
+    ///     Details einer Wissenstestung.
     /// </summary>
     public class ModelKnowledgeTestDetails
     {
         /// <summary>
-        ///     Name der Testperson
+        ///     Id des Wissenstest.
         /// </summary>
-        public string Name { get; set; } = string.Empty;
+        public int KnowledgeTestId { get; set; } 
 
         /// <summary>
-        ///     Feuerwehrstation der Testperson.
+        ///     Jahr eines Wissenstest.
         /// </summary>
-        public string Station { get; set; } = string.Empty;
+        public string KnowledgeTestYear { get; set; } = string.Empty;
 
         /// <summary>
-        ///     Teilgenommene Stufen der Testperson.
+        ///     Ergebnisse der Testpersonen eines Wissenstest.
         /// </summary>
-        public List<ModelKnowledgeLevelResult> Results { get; set; } = new(); 
-    }
-
-    /// <summary>
-    ///     Testergebnis einer Wissenstestung.
-    /// </summary>
-    public class ModelKnowledgeLevelResult
-    {
-        /// <summary>
-        ///     Name der Stufe.
-        /// </summary>
-        public string LevelName { get; set; } = string.Empty;
-
-        /// <summary>
-        ///     Ergebnis der Testung.
-        /// </summary>
-        public string LevelResult { get; set; } = string.Empty;
+        public List<ModelTestPersonResult> TestPersonResults { get; set; } = new List<ModelTestPersonResult>();
     }
 }
