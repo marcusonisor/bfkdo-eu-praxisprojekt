@@ -23,7 +23,7 @@ namespace AdminApp.Services
         /// <returns></returns>
         public async Task<HttpRequestResult<bool>> PostRegistrationsFromFile(byte[] data)
         {
-            var result = await PostToApi<byte[], bool>("/api/registration/readfromcsv", data);
+            var result = await PostToApi<byte[], bool>("/api/Registration/ReadRegistrationsFromCsv", data);
             return result;
         }
     }

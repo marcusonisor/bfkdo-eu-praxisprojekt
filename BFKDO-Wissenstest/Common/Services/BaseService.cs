@@ -24,7 +24,8 @@ namespace Common.Services
         /// <returns></returns>
         private void AddAuthentication()
         {
-
+            //localstorage.getItem(jwt)
+            //http.addrequestheader("authentication",jwt);
         }
 
         /// <summary>

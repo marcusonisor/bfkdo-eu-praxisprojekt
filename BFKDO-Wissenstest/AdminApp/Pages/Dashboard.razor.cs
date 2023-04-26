@@ -1,6 +1,7 @@
 using AdminApp.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using System.Text;
 
 namespace AdminApp.Pages
 {
@@ -13,6 +14,10 @@ namespace AdminApp.Pages
         /// </summary>
         [Inject]
         public NavigationManager Nav { get; set; } = null!;
+
+
+        [Inject]
+        public CommunicationService Service { get; set; } = null!;
 
         /// <summary>
         ///     Test-String fürs Bytes auslesen.
@@ -34,8 +39,8 @@ namespace AdminApp.Pages
             {
                 var buffer = new byte[file.Size];
                 var length = await file.OpenReadStream(maxFileSize).ReadAsync(buffer);
-
-                Message = $"{buffer.Length} Bytes aus dem File gelesen!";
+                var result = await Service.PostRegistrationsFromFile(buffer);
+                Message = $"{result.WasSuccess} Bytes aus dem File gelesen!";
             }
         }
     }
