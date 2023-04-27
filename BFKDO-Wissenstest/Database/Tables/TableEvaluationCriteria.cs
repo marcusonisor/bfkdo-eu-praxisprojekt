@@ -36,5 +36,10 @@ namespace Database.Tables
         /// </summary>
         [ForeignKey(nameof(KnowledgeSectionId))]
         public virtual TableKnowledgeSection KnowledgeSection { get; set; } = null!;
+
+        /// <summary>
+        ///     Name des Kriteriums.
+        /// </summary>
+        public string CriteriaName { get; set; } = string.Empty;
     }
 }
