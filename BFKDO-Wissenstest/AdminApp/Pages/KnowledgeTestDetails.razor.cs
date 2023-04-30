@@ -1,8 +1,6 @@
 using AdminApp.Services;
 using Common.Model;
 using Microsoft.AspNetCore.Components;
-using System.Collections.ObjectModel;
-using static MudBlazor.CategoryTypes;
 
 namespace AdminApp.Pages
 {
