@@ -1,49 +1,36 @@
+using BenutzerApp.Services;
 using Common.Model;
+using Microsoft.AspNetCore.Components;
 
 namespace BenutzerApp.Pages
 {
     public partial class StationChange
     {
-        /// <summary>
-        /// Die Station zur Auswahl
-        /// </summary>
-        public List<TestStations> TestStations { get; set; } = new List<TestStations>()
-        {
-            new TestStations()
-            {
-                 CriteriaId = 1,
-                 StationName = "adjalkdfjalkdf"
-            },
-            new TestStations()
-            {
-                 CriteriaId = 2,
-                 StationName = "!)§($!)§P$()§P"
-            },
-            new TestStations()
-            {
-                 CriteriaId = 3,
-                 StationName = "-.-.,-.,-p"
-            },
-            new TestStations()
-            {
-                 CriteriaId = 4,
-                 StationName = "45878988"
-            },
-        };
 
-        /// <summary>
-        /// Die aktuell zugewiesene Station
-        /// </summary>
-        public TestStations CurrentStation { get; set; } = new TestStations();
+        [Inject]
+        public StationService StationService { get; set; } = null!;
+
+        private List<TestStationModel> _stations = new();
+
+        private TestStationModel _currentStation = null!;
+
+
+        protected override async Task OnInitializedAsync()
+        {
+            var response = await StationService.GetAllTestStations();
+            _stations = response.Result;
+
+            if (_currentStation == null)
+                _currentStation = _stations.FirstOrDefault();
+        }
 
         /// <summary>
         /// Methode zum Ändern der Station
         /// </summary>
-        public void SelectStation(TestStations station)
+        public void SelectStation(TestStationModel selectedStation)
         {
-
-            CurrentStation = station;
-            StateHasChanged();
+            _currentStation = selectedStation;
+            //StateHasChanged();
         }
     }
 

@@ -1,20 +1,18 @@
 ﻿@page "/stationchange"
 
-<h3>Aktuelle Station: @CurrentStation.StationName</h3> 
+<h3>Aktuelle Station: @_currentStation.Description</h3>
 <hr />
-<h4>Neue Station:</h4>
-<MudDataGrid Items="@TestStations">
-    <Columns>
-        <PropertyColumn Property="x => x.StationName"></PropertyColumn>
-        <TemplateColumn>
-            <CellTemplate>
-                @{
-                    bool disabled = CurrentStation.CriteriaId == context.Item.CriteriaId;
-                    String icon = disabled ? Icons.Material.Filled.Circle : Icons.Material.Outlined.Circle;
-                }
-                <MudButton Variant="Variant.Outlined" StartIcon="@icon" Disabled="@disabled" OnClick="()=>SelectStation(context.Item)">Wählen</MudButton>
-            </CellTemplate>
-            </TemplateColumn>
-    </Columns>
 
-</MudDataGrid>
+@if (_stations.Count > 0) {
+    <MudDataGrid Items="@_stations">
+        <Columns>
+            <PropertyColumn Property="x => x.Description"></PropertyColumn>
+            <TemplateColumn>
+                <CellTemplate>
+                    <MudButton Variant="Variant.Outlined" OnClick="()=>SelectStation(context.Item)">Wählen</MudButton>
+                </CellTemplate>
+            </TemplateColumn>
+        </Columns>
+
+    </MudDataGrid>
+}

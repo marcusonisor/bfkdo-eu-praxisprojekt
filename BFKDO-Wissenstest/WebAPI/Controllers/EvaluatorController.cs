@@ -1,6 +1,8 @@
 ﻿namespace WebAPI.Controllers
 {
     using Common.Model;
+    using Database;
+    using Database.Tables;
     using Microsoft.AspNetCore.Mvc;
 
     /// <summary>
@@ -8,6 +10,13 @@
     /// </summary>
     public class EvaluatorController : ControllerBase
     {
+        private readonly BfkdoDbContext _databaseContext;
+
+        public EvaluatorController(BfkdoDbContext databaseContext)
+        {
+            _databaseContext = databaseContext;
+        }
+
         /// <summary>
         /// Abruf aller Stationen.
         /// </summary>
@@ -20,7 +29,9 @@
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public ActionResult GetStations()
         {
-            throw new NotImplementedException();
+            var stations = _databaseContext.TableKnowledgeSections.ToList();
+
+            return Ok(stations);
         }
 
         /// <summary>
