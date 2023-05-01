@@ -6,14 +6,9 @@ namespace BenutzerApp.Pages
 {
     public partial class StationChange
     {
-
-        [Inject]
-        public StationService StationService { get; set; } = null!;
-
         private List<TestStationModel> _stations = new();
 
-        private TestStationModel _currentStation = null!;
-
+        private TestStationModel _currentStation = new();
 
         protected override async Task OnInitializedAsync()
         {
@@ -24,13 +19,16 @@ namespace BenutzerApp.Pages
                 _currentStation = _stations.FirstOrDefault();
         }
 
+        [Inject]
+        public StationService StationService { get; set; } = null!;
+
         /// <summary>
         /// Methode zum Ändern der Station
         /// </summary>
         public void SelectStation(TestStationModel selectedStation)
         {
             _currentStation = selectedStation;
-            //StateHasChanged();
+            // StateHasChanged();
         }
     }
 
