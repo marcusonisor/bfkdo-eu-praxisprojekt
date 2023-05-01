@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Common.Model.CSVModels;
-using Common.Helper;
-
-namespace WebAPI.Controllers
+﻿namespace WebAPI.Controllers
 {
-    /// <summary>
-    ///     Controller für Registrierungs-Methoden.
-    /// </summary>
+    using Microsoft.AspNetCore.Mvc;
+    using Common.Model.CSVModels;
+    using Common.Helper;
+
     public class RegistrationController : ControllerBase
     {
         /// <summary>
