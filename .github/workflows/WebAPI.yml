@@ -1,5 +1,7 @@
 name: WebAPI Deployment Pipeline
 on:
+  workflow_dispatch:
+  
   pull_request:
     branches:
     - production
