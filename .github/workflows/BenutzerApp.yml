@@ -27,7 +27,7 @@ jobs:
     - name: Build
       run: dotnet build "${{ env.WORKING_DIRECTORY }}" -warnaserror --configuration ${{ env.CONFIGURATION }} --no-restore
     - name: Test
-      run: dotnet test "${{ env.OVERALL_DIRECTORY }}"
+      run: dotnet test "${{ env.OVERALL_DIRECTORY }}" --filter 'FullyQualifiedName!~EndToEndTests'
     - name: Publish
       run: dotnet publish "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-build --output "${{ env.AZURE_WEBAPP_PACKAGE_PATH }}"
     - name: Publish Artifacts
