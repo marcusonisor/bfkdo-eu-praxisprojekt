@@ -1,7 +1,7 @@
 ﻿namespace Common.Model
 {
     /// <summary>
-    ///     Details einer Wissenstestung.
+    ///     DTO einer Wissenstestung.
     /// </summary>
     public class ModelKnowledgeTestDetails
     {

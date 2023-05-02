@@ -22,9 +22,9 @@ namespace Common.Model.CSVModels
         /// <summary>
         ///     Geburtsdatum.
         /// </summary>
-        //[Name("Geburtsdatum")]
-        //[Format("dd.MM.yyyy")]
-        //public DateTime Birthday { get; set; }
+        ///[Name("Geburtsdatum")]
+        ///[Format("dd.MM.yyyy")]
+        ///public DateTime Birthday { get; set; }
 
         /// <summary>
         ///     Wertungsklasse.

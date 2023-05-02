@@ -1,10 +1,17 @@
 ﻿namespace Common.Model
 {
     /// <summary>
-    /// Enität eines Testteilnehmers.
+    /// DTO eines Testteilnehmers.
     /// </summary>
     public class ModelParticipant
     {
+        /// <summary>
+        /// Konstruktor des DTOs.
+        /// </summary>
+        /// <param name="password"></param>
+        /// <param name="firstName"></param>
+        /// <param name="lastName"></param>
+        /// <param name="fireDepartmentBranch"></param>
         public ModelParticipant(string password, string firstName, string lastName, string fireDepartmentBranch)
         {
             Password = password;

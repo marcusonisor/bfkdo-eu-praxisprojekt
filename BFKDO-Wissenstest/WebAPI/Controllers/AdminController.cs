@@ -1,10 +1,11 @@
-﻿namespace WebAPI.Controllers
-{
-    using Common.Model;
-    using Microsoft.AspNetCore.Mvc;
+﻿using Common.Model;
+using Microsoft.AspNetCore.Mvc;
 
+namespace WebAPI.Controllers
+{
     /// <summary>
     /// Controller zuständig für alle Aktionen eines authentifizierten Admins
+    /// </summary>
     public class AdminController : ControllerBase
     {
         /// <summary>

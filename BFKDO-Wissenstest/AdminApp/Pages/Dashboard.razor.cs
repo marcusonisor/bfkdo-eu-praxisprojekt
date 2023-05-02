@@ -5,22 +5,27 @@ using System.Text;
 
 namespace AdminApp.Pages
 {
+    /// <summary>
+    /// Dashboard
+    /// </summary>
     public partial class Dashboard
     {
         private long maxFileSize = 1024 * 1024 * 15;
 
         /// <summary>
-        ///     Navigation Manager.
+        /// Navigation Manager.
         /// </summary>
         [Inject]
         public NavigationManager Nav { get; set; } = null!;
 
-
+        /// <summary>
+        /// Der Service.
+        /// </summary>
         [Inject]
         public CommunicationService Service { get; set; } = null!;
 
         /// <summary>
-        ///     Test-String fürs Bytes auslesen.
+        /// Test-String fürs Bytes auslesen.
         /// </summary>
         public string Message { get; set; } = string.Empty;
 
@@ -32,6 +37,11 @@ namespace AdminApp.Pages
             }
         }
 
+        /// <summary>
+        /// Methode für den Upload von Files.
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
         private async Task UploadFile(IBrowserFile file)
         {
             var bytestream = file.OpenReadStream();

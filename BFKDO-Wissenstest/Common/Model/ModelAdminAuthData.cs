@@ -1,28 +1,28 @@
 ﻿namespace Common.Model
 {
     /// <summary>
-    /// DTO der Authentifizierungsdaten eines Testteilnehmers.
+    /// DTO der Authentifizierungsdaten eines Admins.
     /// </summary>
-    public class ModelParticipantAuthData
+    public class ModelAdminAuthData
     {
         /// <summary>
         /// Konstruktor des DTOs.
         /// </summary>
-        /// <param name="sybosId"></param>
+        /// <param name="email"></param>
         /// <param name="password"></param>
-        public ModelParticipantAuthData(string sybosId, string password)
+        public ModelAdminAuthData(string email, string password)
         {
-            SybosId = sybosId;
+            Email = email;
             Password = password;
         }
 
         /// <summary>
-        /// Die Sybos ID.
+        /// Die E-Mail.
         /// </summary>
-        public string SybosId { get; }
+        public string Email { get; }
 
         /// <summary>
-        /// Das Passwort.
+        /// Das Password.
         /// </summary>
         public string Password { get; }
     }
