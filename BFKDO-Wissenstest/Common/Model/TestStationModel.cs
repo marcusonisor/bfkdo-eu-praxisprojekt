@@ -14,6 +14,6 @@
         /// <summary>
         ///     Name der Stufen der Stationen.
         /// </summary>
-        public string Description { get; set; } = string.Empty;
+        public string CriteriaName { get; set; } = string.Empty;
     }
 }

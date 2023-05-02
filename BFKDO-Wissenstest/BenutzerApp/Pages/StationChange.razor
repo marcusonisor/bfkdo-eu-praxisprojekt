@@ -1,11 +1,11 @@
 ﻿@page "/stationchange"
 
-<h3>Aktuelle Station: @_currentStation.Description</h3>
+<h3>Aktuelle Station: @_currentStation.CriteriaName</h3>
 <hr />
 <h4>Neue Station:</h4>
 <MudDataGrid Items="@_stations">
     <Columns>
-        <PropertyColumn Property="x => x.Description"></PropertyColumn>
+        <PropertyColumn Property="x => x.CriteriaName" Title="Stationsname"></PropertyColumn>
         <TemplateColumn>
             <CellTemplate>
                 @{

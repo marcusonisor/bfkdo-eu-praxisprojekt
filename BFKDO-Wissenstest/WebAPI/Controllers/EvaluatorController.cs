@@ -12,6 +12,10 @@
     {
         private readonly BfkdoDbContext _databaseContext;
 
+        /// <summary>
+        ///     Konstruktor des Evaluierungs Controllers.
+        /// </summary>
+        /// <param name="databaseContext"></param>
         public EvaluatorController(BfkdoDbContext databaseContext)
         {
             _databaseContext = databaseContext;
@@ -29,9 +33,13 @@
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public ActionResult GetStations()
         {
-            var stations = _databaseContext.TableKnowledgeSections.ToList();
+            var stations = _databaseContext.TableEvaluationCriterias.ToList();
 
-            return Ok(stations);
+            return Ok(stations.Select(t => new TestStationModel()
+            {
+                CriteriaName = t.CriteriaName,
+                Id = t.Key
+            }));
         }
 
         /// <summary>
