@@ -1,17 +1,23 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+<MudThemeProvider @bind-IsDarkMode="_isDarkMode" />
+<MudDialogProvider />
+<MudSnackbarProvider />
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
+<MudLayout>
+    <MudAppBar Color="Color.Dark">
+        <MudText Typo="Typo.h4" aria-label="Seitentitel" class="m-0">BFKDO Wissenstest - Admin App</MudText>
+        <MudSpacer />
+        <MudIconButton Icon="@Icon" Color="Color.Inherit" OnClick="() => _isDarkMode = !_isDarkMode" />
+    </MudAppBar>
+    <MudMainContent>
+        <div class="px-4 py-2">
             @Body
-        </article>
-    </main>
-</div>
+        </div>
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    private bool _isDarkMode;
+    private string Icon => _isDarkMode ? Icons.Material.Filled.WbSunny : Icons.Material.Filled.ModeNight;
+}

@@ -1,0 +1,65 @@
+﻿@page "/knowledgetestdetails/{KnowledgeTestId:int}"
+
+<MudStack Spacing="4">
+    <MudStack Row Justify="Justify.Center" AlignItems="AlignItems.Center" Class="my-4" Spacing="4">
+        <h1 class="m-0" aria-label="Testjahr">Testjahr @Model.KnowledgeTestYear</h1>
+        <MudButton StartIcon="@Icons.Material.Filled.Edit" aria-label="Wissenstest bearbeiten" Color="Color.Primary" Variant="Variant.Filled">Wissenstest bearbeiten</MudButton>
+        <MudButton aria-label="Pdf exportieren" Color="Color.Error" StartIcon="@Icons.Material.Filled.PictureAsPdf" Variant="Variant.Filled">PDF exportieren</MudButton>
+    </MudStack>
+
+
+    <MudStack Row Justify="Justify.Center">
+        <MudDataGrid Striped=true Items="@Model.TestPersonResults" Filterable="true" QuickFilter="@_quickSearch" T="ModelTestPersonResult" ColumnResizeMode="ResizeMode.Container" RowsPerPage="5">
+            <ToolBarContent>
+                <MudText Typo="Typo.h6">Anmeldungen</MudText>
+                <MudSpacer />
+                <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+                              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+            </ToolBarContent>
+            <Columns>
+                <TemplateColumn Filterable="false" CellStyle="width:20px" HeaderStyle="width:20px">
+                    <CellTemplate>
+                        <MudStack>
+                            <MudIcon Style="border:3px solid black; border-radius:50%" Icon="@Icons.Material.Filled.Person" />
+                        </MudStack>
+                    </CellTemplate>
+                </TemplateColumn>
+                <PropertyColumn Filterable="false" CellClass="mx-3" HeaderClass="mx-3" Property="x => x!.Name" />
+                <PropertyColumn Filterable="false" CellClass="mx-3" HeaderClass="mx-3" Property="x => x!.Station" />
+                <TemplateColumn Filterable="false" CellClass="d-flex justify-end" CellStyle="width:280px" HeaderStyle="width:280px">
+                    <CellTemplate>
+                        <MudStack Row AlignItems="AlignItems.Center">
+                            @{
+                                var item = context.Item;
+                            }
+                            @if (item != null!)
+                            {
+                                <MudStack>
+                                    @foreach (var result in item.Results)
+                                    {
+                                        <label aria-label="@($"Absolvierte Stufe von {item.Name}")">@result.LevelName</label>
+                                    }
+                                </MudStack>
+                                <MudStack>
+                                    @foreach (var result in item.Results)
+                                    {
+                                        <div aria-label="@($"Ergebnis der absolvierten Stufe von {item.Name}")">
+                                            <EvaluationDetails State="EnumEvaluation.Ungraded" Result="@result.LevelResult"></EvaluationDetails>
+                                        </div>
+                                    }
+                                </MudStack>
+                                <MudButton StartIcon="@Icons.Material.Filled.Edit" aria-label="@($"Bearbeite {item.Name}")" Size="Size.Medium" Variant="Variant.Filled" Color="Color.Primary">Bearbeiten</MudButton>
+                            }
+                        </MudStack>
+                    </CellTemplate>
+                </TemplateColumn>
+            </Columns>
+            <PagerContent>
+                <MudDataGridPager T="ModelTestPersonResult" />
+            </PagerContent>
+        </MudDataGrid>
+    </MudStack>
+</MudStack>
+
+
+
