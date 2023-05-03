@@ -1,10 +1,8 @@
 name: Adminapp Deployment Pipeline
 
 on:
-  workflow_dispatch:
-  
-  pull_request:
-    branches: 
+  push:
+    branches:
     - production
 
 env:
