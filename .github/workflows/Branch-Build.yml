@@ -1,4 +1,4 @@
-name: Branch Build Pipleine
+name: Branch Build Pipeline
 on:
   pull_request:
     branches:
