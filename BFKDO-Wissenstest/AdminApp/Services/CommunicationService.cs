@@ -1,4 +1,5 @@
 ﻿using AdminApp.Pages;
+using Blazored.LocalStorage;
 using Common.Model;
 using Common.Model.CSVModels;
 using Common.Services;
@@ -13,8 +14,9 @@ namespace AdminApp.Services
         /// <summary>
         ///     Konstruktor des Kommunikationservices.
         /// </summary>
-        /// <param name="client"></param>
-        public CommunicationService(HttpClient client) : base(client)
+        /// <param name="client">HTTP Client.</param>
+        /// <param name="storageService">Speicher Service.</param>
+        public CommunicationService(HttpClient client, ISyncLocalStorageService storageService) : base(client, storageService)
         {
         }
 

@@ -1,4 +1,5 @@
-﻿using Common.Model;
+﻿using Blazored.LocalStorage;
+using Common.Model;
 using Common.Services;
 
 namespace BenutzerApp.Services
@@ -11,8 +12,9 @@ namespace BenutzerApp.Services
         /// <summary>
         /// Konstruktor des StationsService.
         /// </summary>
-        /// <param name="client"></param>
-        public StationService(HttpClient client) : base(client)
+        /// <param name="client">HTTP Client.</param>
+        /// <param name="storageService">SpeicherService.</param>
+        public StationService(HttpClient client, ISyncLocalStorageService storageService) : base(client,storageService)
         {
         }
 

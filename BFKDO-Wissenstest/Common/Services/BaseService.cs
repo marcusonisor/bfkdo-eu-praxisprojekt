@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Json;
+﻿using Blazored.LocalStorage;
+using System.Net.Http.Json;
 
 namespace Common.Services
 {
@@ -9,13 +10,17 @@ namespace Common.Services
     {
         private readonly HttpClient _httpClient;
 
+        private readonly ISyncLocalStorageService _localStorage;
+
         /// <summary>
         ///     Konstruktor des Base Services.
         /// </summary>
         /// <param name="client">HTTP Client.</param>
-        public BaseService(HttpClient client)
+        /// <param name="localStorage">Local Storage.</param>
+        public BaseService(HttpClient client, ISyncLocalStorageService localStorage)
         {
             _httpClient = client;
+            _localStorage = localStorage;
         }
 
         /// <summary>
@@ -24,8 +29,17 @@ namespace Common.Services
         /// <returns></returns>
         private void AddAuthentication()
         {
-            //localstorage.getItem(jwt)
+            var jwttoken = _localStorage.GetItem<string>("jwt");
             //http.addrequestheader("authentication",jwt);
+        }
+
+        /// <summary>
+        ///     Hinzufügen des JWT Tokens in den Storage.
+        /// </summary>
+        /// <param name="token"></param>
+        public void AddJwtToken(string token)
+        {
+            _localStorage.SetItem("jwt", token);
         }
 
         /// <summary>
