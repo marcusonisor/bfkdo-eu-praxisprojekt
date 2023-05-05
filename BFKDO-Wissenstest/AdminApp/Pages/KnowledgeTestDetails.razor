@@ -9,7 +9,7 @@
 
 
     <MudStack Row Justify="Justify.Center">
-        <MudDataGrid Striped=true Items="@Model.TestPersonResults" Filterable="true" QuickFilter="@_quickSearch" T="ModelTestPersonResult" ColumnResizeMode="ResizeMode.Container" RowsPerPage="5">
+        <MudDataGrid Striped=true Items="@Model.TestPersonResults" Filterable="true" QuickFilter="@QuickSearch" T="ModelTestPersonResult" ColumnResizeMode="ResizeMode.Container" RowsPerPage="5">
             <ToolBarContent>
                 <MudText Typo="Typo.h6">Anmeldungen</MudText>
                 <MudSpacer />

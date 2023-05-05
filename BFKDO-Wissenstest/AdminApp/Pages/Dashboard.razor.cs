@@ -10,7 +10,7 @@ namespace AdminApp.Pages
     /// </summary>
     public partial class Dashboard
     {
-        private long maxFileSize = 1024 * 1024 * 15;
+        private readonly long maxFileSize = 1024 * 1024 * 15;
 
         /// <summary>
         /// Navigation Manager.
@@ -31,10 +31,7 @@ namespace AdminApp.Pages
 
         private void NavigateToDetails()
         {
-            if (Nav != null)
-            {
-                Nav.NavigateTo("/knowledgetestdetails/4");
-            }
+            Nav?.NavigateTo("/knowledgetestdetails/4");
         }
 
         /// <summary>
@@ -44,13 +41,12 @@ namespace AdminApp.Pages
         /// <returns></returns>
         private async Task UploadFile(IBrowserFile file)
         {
-            var bytestream = file.OpenReadStream();
             if (file != null)
             {
                 var buffer = new byte[file.Size];
-                var length = await file.OpenReadStream(maxFileSize).ReadAsync(buffer);
+                _ = await file.OpenReadStream(maxFileSize).ReadAsync(buffer);
                 var result = await Service.PostRegistrationsFromFile(buffer);
-                Message = $"{result.WasSuccess} Bytes aus dem File gelesen!";
+                Message = $"{result.RequestEnum} Bytes aus dem File gelesen!";
             }
         }
     }

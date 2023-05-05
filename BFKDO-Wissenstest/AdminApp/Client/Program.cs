@@ -1,6 +1,7 @@
 using AdminApp;
 using AdminApp.Services;
 using Blazored.LocalStorage;
+using Common.Helper;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
@@ -24,7 +25,11 @@ namespace AdminApp
             builder.RootComponents.Add<HeadOutlet>("head::after");
 
             builder.Services.AddMudServices();
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7250") });
+#if DEBUG
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(WebConstants.LocalApiAddress) });
+#else
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(WebConstants.AzureApiAddress) });
+#endif
             builder.Services.AddScoped<CommunicationService>();
             builder.Services.AddBlazoredLocalStorage();
             await builder.Build().RunAsync();

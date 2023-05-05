@@ -14,12 +14,22 @@ namespace WebAPI.Controllers
         /// <summary>
         ///     Rufe das Testergebnis einer Testperson für Wissensteststufen ab.
         /// </summary>
-        /// <param name="context">Datenbankkontext.</param>
         /// <param name="test">Angemeldeter Test.</param>
         /// <param name="person">Testperson.</param>
         /// <returns>Ergebnisse der Testung.</returns>
-        protected List<ModelKnowledgeLevelResult> GetResultsForTestPerson(BfkdoDbContext context, TableKnowledgeTest test, TableTestperson person)
+        [NonAction]
+        public List<ModelKnowledgeLevelResult> GetResultsForTestPerson(TableKnowledgeTest test, TableTestperson person)
         {
+            if (test is null)
+            {
+                return new();
+            }
+
+            if (person is null)
+            {
+                return new();
+            }
+
             var list = new List<ModelKnowledgeLevelResult>();
             var registrations = test.Registrations.Where(t => t.TestpersonId == person.Id);
             foreach(var registration in registrations)
