@@ -1,4 +1,7 @@
 ﻿@page "/"
+@using BenutzerApp.Services;
+@using Common.Model;
+@inject AuthService AuthService
 
 <PageTitle>Index</PageTitle>
 
@@ -7,3 +10,11 @@
 Welcome to your new app.
 
 <MudButton Variant="Variant.Filled" Href="/stationchange">Station auswählen</MudButton>
+
+@code{
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await AuthService.Auth(new ModelEvaluatorAuthData("abc"));
+    }
+}

@@ -30,7 +30,7 @@ namespace Common.Services
         private void AddAuthentication()
         {
             var jwttoken = _localStorage.GetItem<string>("jwt");
-            //http.addrequestheader("authentication",jwt);
+            _httpClient.DefaultRequestHeaders.Authorization = new(jwttoken);
         }
 
         /// <summary>
@@ -69,8 +69,6 @@ namespace Common.Services
         /// <returns>Request Result.</returns>
         protected async Task<HttpRequestResult<U>> PostToApi<T,U>(string url, T content)
         {
-            AddAuthentication();
-
             var response = await _httpClient.PostAsJsonAsync(url,content);
 
             var result = await HandleHttpResponse<U>(response);

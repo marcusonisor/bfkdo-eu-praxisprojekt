@@ -1,8 +1,12 @@
 
 using Database;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Configuration;
 using System.Reflection;
+using System.Text;
+using WebAPI.Identity;
 
 namespace WebAPI
 {
@@ -20,6 +24,33 @@ namespace WebAPI
             var builder = WebApplication.CreateBuilder(args);
             builder.Logging.ClearProviders();
             builder.Logging.AddConsole();
+
+            builder.Services.AddAuthentication(authentication =>
+            {
+                authentication.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                authentication.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                authentication.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(bearer =>
+            {
+                bearer.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidIssuer = builder.Configuration["JWTSettings:Audience"],
+                    ValidAudience = builder.Configuration["JWTSettings:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWTSettings:Key"])),
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true
+                };
+            });
+
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy(Identities.AdminPolicyName, p => p.RequireClaim(Identities.AdminClaimName, "true"));
+                options.AddPolicy(Identities.EvaluatorPolicyName, p => p.RequireClaim(Identities.EvaluatorClaimName, "true"));
+                options.AddPolicy(Identities.ParticipantPolicyName, p => p.RequireClaim(Identities.ParticipantClaimName, "true"));
+            });
 
             // Add Database to Container.
             builder.Services.AddDbContext<BfkdoDbContext>(config =>
@@ -55,8 +86,8 @@ namespace WebAPI
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
-
             app.UseCors();
 
             app.MapControllers();

@@ -25,6 +25,8 @@ namespace BenutzerApp
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7250") });
             builder.Services.AddScoped<StationService>();
+            builder.Services.AddScoped<AuthService>();
+
 
             await builder.Build().RunAsync();
         }

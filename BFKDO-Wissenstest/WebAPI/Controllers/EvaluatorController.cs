@@ -1,13 +1,15 @@
-﻿namespace WebAPI.Controllers
-{
-    using Common.Model;
-    using Database;
-    using Database.Tables;
-    using Microsoft.AspNetCore.Mvc;
+﻿using Common.Model;
+using Database;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using WebAPI.Identity;
 
+namespace WebAPI.Controllers
+{
     /// <summary>
     /// Controller zuständig für alle Aktionen eines authentifizierten Testbewerters.
     /// </summary>
+    [Authorize(Policy = Identities.EvaluatorPolicyName)]
     public class EvaluatorController : ControllerBase
     {
         private readonly BfkdoDbContext _databaseContext;
