@@ -47,55 +47,78 @@ namespace WebAPI.Controllers
                 return BadRequest();
             }
 
-            //var knowledgetest = _dbContext.TableKnowledgeTests
-            //    .Include(t => t.Registrations).ThenInclude(t => t.KnowledgeLevel)
-            //    .Include(t => t.Registrations).ThenInclude(t => t.Evaluations)
-            //    .FirstOrDefault(t => t.Id == id);
-            //if(knowledgetest == null)
-            //{
-            //    _logger.LogError($"Requested Knowledgetest with Id {id} was not found in the Database!", DateTime.Now.ToLongTimeString());
-            //    return BadRequest();
-            //}
-
-            //var model = new ModelKnowledgeTestDetails()
-            //{
-            //    KnowledgeTestId = knowledgetest.Id,
-            //    KnowledgeTestYear = knowledgetest.Designation
-            //};
-            //var testpersonsIds = knowledgetest.Registrations.GroupBy(t => t.TestpersonId);
-            //foreach(var testpersonId in testpersonsIds)
-            //{
-            //    var testperson = _dbContext.TableTestpersons.FirstOrDefault(t => t.Id == testpersonId.Key);
-            //    if(testperson != null!)
-            //    {
-            //        var results = GetResultsForTestPerson(_dbContext, knowledgetest, testperson);
-            //        model.TestPersonResults.Add(new()
-            //        {
-            //            Name = testperson.FirstName + " " + testperson.LastName,
-            //            Station = testperson.FireDepartmentBranch,
-            //            Results = results
-            //        });
-            //    }
-            //    else
-            //    {
-            //          _logger.LogError($"Requested Testperson with Id {id} was not found in the Database!", DateTime.Now.ToLongTimeString());
-            //    }
-            //}
+            var knowledgetest = _dbContext.TableKnowledgeTests
+                .Include(t => t.Registrations).ThenInclude(t => t.KnowledgeLevel)
+                .Include(t => t.Registrations).ThenInclude(t => t.Evaluations)
+                .FirstOrDefault(t => t.Id == id);
+            if (knowledgetest == null)
+            {
+                _logger.LogError($"Requested Knowledgetest with Id {id} was not found in the Database!", DateTime.Now.ToLongTimeString());
+                return BadRequest();
+            }
 
             var model = new ModelKnowledgeTestDetails()
             {
-                KnowledgeTestYear = "2022",
-                KnowledgeTestId = id,
+                KnowledgeTestId = knowledgetest.Id,
+                KnowledgeTestYear = knowledgetest.Designation
             };
-            var elements = new List<ModelTestPersonResult>();
-            for (int i = 0; i < 10; i++)
+            var testpersonsIds = knowledgetest.Registrations.GroupBy(t => t.TestpersonId);
+            foreach (var testpersonId in testpersonsIds)
             {
-                elements.Add(new() { Name = $"Max Super-Duper-Mustermann {i}", Station = $"FF Oberst-Donnerskirchen-Dorf {i}", Results = new() { new() { LevelName = "Stufe 1", LevelResult = "3 / 5" }, new() { LevelName = "Stufe 2", LevelResult = "5 / 5" } } });
+                var testperson = _dbContext.TableTestpersons.FirstOrDefault(t => t.Id == testpersonId.Key);
+                if (testperson != null!)
+                {
+                    var results = GetResultsForTestPerson(knowledgetest, testperson);
+                    model.TestPersonResults.Add(new()
+                    {
+                        Name = testperson.FirstName + " " + testperson.LastName,
+                        Station = testperson.FireDepartmentBranch,
+                        Results = results
+                    });
+                }
+                else
+                {
+                    _logger.LogError($"Requested Testperson with Id {id} was not found in the Database!", DateTime.Now.ToLongTimeString());
+                }
             }
 
-            model.TestPersonResults = elements;
-
             return Ok(model);
+
+            //var model = new ModelKnowledgeTestDetails()
+            //{
+            //    KnowledgeTestYear = "2022",
+            //    KnowledgeTestId = id,
+            //};
+            //var elements = new List<ModelTestPersonResult>();
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    elements.Add(new() { Name = $"Max Super-Duper-Mustermann {i}", Station = $"FF Oberst-Donnerskirchen-Dorf {i}", Results = new() { new() { LevelName = "Stufe 1", LevelResult = "3 / 5" }, new() { LevelName = "Stufe 2", LevelResult = "5 / 5" } } });
+            //}
+
+            //model.TestPersonResults = elements;
+
+            //return Ok(model);
+        }
+
+        /// <summary>
+        ///     Abfrage der Liste der Wissenstests.
+        /// </summary>
+        /// <returns>Liste der Wissenstestung.</returns>
+        /// <response code="200">Returniert die Liste der Wissenstests.</response>
+        /// <response code="401">Wenn der Benutzer nicht die richtigen Rechte für den Call hat.</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+
+        [HttpGet]
+        [Route("api/knowledgetest/GetKnowledgeTests")]
+        public ActionResult GetKnowledgeTests()
+        {
+            var knowledgetests = _dbContext.TableKnowledgeTests.ToList();
+            return Ok(knowledgetests.Select(t => new ModelKnowledgeTest()
+            {
+                Designation = t.Designation,
+                Id = t.Id
+            }).ToList());
         }
     }
 }

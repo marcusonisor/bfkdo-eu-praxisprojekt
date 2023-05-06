@@ -1,4 +1,5 @@
 using AdminApp.Services;
+using Common.Enums;
 using Common.Model;
 using Microsoft.AspNetCore.Components;
 
@@ -40,7 +41,7 @@ namespace AdminApp.Pages
             if (firstRender)
             {
                 var result = await Service.GetKnowledgeTestDetails(KnowledgeTestId);
-                if (result.WasSuccess)
+                if (result.RequestEnum == EnumHttpRequest.Success)
                 {
                     Model = result.Result;
                     StateHasChanged();
@@ -50,7 +51,7 @@ namespace AdminApp.Pages
             base.OnAfterRender(firstRender);
         }
 
-        private Func<ModelTestPersonResult, bool> _quickSearch => x =>
+        private Func<ModelTestPersonResult, bool> QuickSearch => x =>
         {
             if (string.IsNullOrWhiteSpace(_searchString))
                 return true;

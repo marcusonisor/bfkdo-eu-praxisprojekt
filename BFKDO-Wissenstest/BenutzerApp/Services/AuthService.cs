@@ -1,4 +1,5 @@
 ﻿using Blazored.LocalStorage;
+using Common.Enums;
 using Common.Model;
 using Common.Services;
 
@@ -26,7 +27,7 @@ namespace BenutzerApp.Services
         {
             var result = await PostToApi<ModelEvaluatorAuthData, TokenModel>("/api/auth/evaluator", authData);
 
-            if (result.WasSuccess)
+            if (result.RequestEnum == EnumHttpRequest.Success)
             {
                 AddJwtToken(result.Result.Token);
             }

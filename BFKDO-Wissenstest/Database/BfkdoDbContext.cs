@@ -14,6 +14,14 @@ namespace Database
     public partial class BfkdoDbContext : DbContext
     {
         /// <summary>
+        ///     Parameterloser Konstruktor.
+        /// </summary>
+        public BfkdoDbContext()
+        {
+
+        }
+
+        /// <summary>
         ///     Konstruktor der Datenbankanbindung.
         /// </summary>
         /// <param name="options"></param>
