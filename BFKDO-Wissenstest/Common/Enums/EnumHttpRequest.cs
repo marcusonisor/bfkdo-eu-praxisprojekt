@@ -14,6 +14,10 @@
         /// </summary>
         Unauthorized,
         /// <summary>
+        ///     Authentifiziert aber nicht richtige Rolle.
+        /// </summary>
+        Forbidden,
+        /// <summary>
         ///     Unbekannter Error.
         /// </summary>
         UnknownError

@@ -163,6 +163,24 @@ namespace Common.Services
 
             if (!response.IsSuccessStatusCode)
             {
+                if(response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    return new HttpRequestResult<T>
+                    {
+                        RequestEnum = EnumHttpRequest.Unauthorized,
+                        ErrorMessage = "Nicht authoriziert für diesen Call!"
+                    };
+                }
+
+                if(response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+                {
+                    return new HttpRequestResult<T>
+                    {
+                        RequestEnum = EnumHttpRequest.Forbidden,
+                        ErrorMessage = "Authentifiziert, aber mit falscher Rolle"!
+                    };
+                }
+
                 return new HttpRequestResult<T>
                 {
                     RequestEnum = EnumHttpRequest.UnknownError,
