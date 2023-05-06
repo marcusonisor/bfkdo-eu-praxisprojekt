@@ -1,11 +1,14 @@
 ﻿using Common.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebAPI.Identity;
 
 namespace WebAPI.Controllers
 {
     /// <summary>
     /// Controller zuständig für alle Aktionen eines authentifizierten Admins
     /// </summary>
+    [Authorize(Policy = Identities.AdminPolicyName)]
     public class AdminController : ControllerBase
     {
         /// <summary>

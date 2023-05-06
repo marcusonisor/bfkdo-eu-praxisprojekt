@@ -21,7 +21,18 @@ namespace WebAPI
         /// <param name="args"></param>
         public static void Main(string[] args)
         {
+            var CORS = "corspolicy";
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    policy =>
+                    {
+                        policy.WithOrigins("https://localhost:7022", "https://localhost:7227").AllowAnyHeader().AllowAnyMethod();
+                    });
+            });
+
             builder.Logging.ClearProviders();
             builder.Logging.AddConsole();
 
@@ -35,7 +46,7 @@ namespace WebAPI
             {
                 bearer.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidIssuer = builder.Configuration["JWTSettings:Audience"],
+                    ValidIssuer = builder.Configuration["JWTSettings:Issuer"],
                     ValidAudience = builder.Configuration["JWTSettings:Audience"],
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWTSettings:Key"])),
                     ValidateIssuer = true,
@@ -67,14 +78,6 @@ namespace WebAPI
                 options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
             });
 
-            builder.Services.AddCors(options =>
-            {
-                options.AddDefaultPolicy(policy =>
-                {
-                    policy.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod();
-                });
-            });
-
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -83,12 +86,14 @@ namespace WebAPI
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            
+            app.UseCors();
 
             app.UseHttpsRedirection();
 
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseCors();
+
 
             app.MapControllers();
 

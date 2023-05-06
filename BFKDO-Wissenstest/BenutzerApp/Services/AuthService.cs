@@ -22,13 +22,29 @@ namespace BenutzerApp.Services
         /// Retourniert eine Liste mit allen Stationen.
         /// </summary>
         /// <returns>Liste mit allen Stationen.</returns>
-        public async Task<HttpRequestResult<string>> Auth(ModelEvaluatorAuthData authData)
+        public async Task<HttpRequestResult<TokenModel>> AuthEvaluator(ModelEvaluatorAuthData authData)
         {
-            var result = await PostToApi<ModelEvaluatorAuthData, string>("/api/auth/evaluator", authData);
+            var result = await PostToApi<ModelEvaluatorAuthData, TokenModel>("/api/auth/evaluator", authData);
 
             if (result.WasSuccess)
             {
-                Console.WriteLine(result.Result);
+                AddJwtToken(result.Result.Token);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Retourniert eine Liste mit allen Stationen.
+        /// </summary>
+        /// <returns>Liste mit allen Stationen.</returns>
+        public async Task<HttpRequestResult<TokenModel>> AuthParticipant(ModelParticipantAuthData authData)
+        {
+            var result = await PostToApi<ModelParticipantAuthData, TokenModel>("/api/auth/participant", authData);
+
+            if (result.WasSuccess)
+            {
+                AddJwtToken(result.Result.Token);
             }
 
             return result;

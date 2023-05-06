@@ -1,4 +1,6 @@
 ﻿@page "/"
+@using AdminApp.Services;
+@inject AuthService AuthService
 
 <MudStack>
     <MudButton Variant="Variant.Filled"
@@ -17,3 +19,9 @@
     <MudText Typo="Typo.h4">@Message</MudText>
 </MudStack>
 
+@code{
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await AuthService.Auth(new ModelAdminAuthData("admin@bfkdo.at", "default"));
+    }
+}

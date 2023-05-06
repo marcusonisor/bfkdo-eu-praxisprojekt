@@ -11,10 +11,19 @@ Welcome to your new app.
 
 <MudButton Variant="Variant.Filled" Href="/stationchange">Station auswählen</MudButton>
 
+@if(toktok != string.Empty)
+{
+    <h1>@toktok</h1>
+}
+
 @code{
+    public string toktok = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
-        var response = await AuthService.Auth(new ModelEvaluatorAuthData("abc"));
+        var response = await AuthService.AuthEvaluator(new ModelEvaluatorAuthData("default"));
+        toktok = response.Result.Token;
+
+        var response2 = await AuthService.AuthParticipant(new ModelParticipantAuthData(1, "default"));
     }
 }

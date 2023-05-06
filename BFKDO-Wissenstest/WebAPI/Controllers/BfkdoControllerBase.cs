@@ -3,12 +3,14 @@ using Database;
 using Database.Tables;
 using Microsoft.AspNetCore.Mvc;
 using Common.Enums;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebAPI.Controllers
 {
     /// <summary>
     ///     Controller-Base für die BFKDO Basis.
     /// </summary>
+    [Authorize]
     public class BfkdoControllerBase : ControllerBase
     {
         /// <summary>

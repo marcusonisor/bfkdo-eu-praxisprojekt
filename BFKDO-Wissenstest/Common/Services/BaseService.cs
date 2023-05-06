@@ -1,4 +1,5 @@
 ﻿using Blazored.LocalStorage;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
 namespace Common.Services
@@ -29,8 +30,8 @@ namespace Common.Services
         /// <returns></returns>
         private void AddAuthentication()
         {
-            var jwttoken = _localStorage.GetItem<string>("jwt");
-            _httpClient.DefaultRequestHeaders.Authorization = new(jwttoken);
+            var token = _localStorage.GetItem<string>("jwt");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
 
         /// <summary>
@@ -53,7 +54,6 @@ namespace Common.Services
             AddAuthentication();
 
             var response = await _httpClient.GetAsync(url);
-
             var result = await HandleHttpResponse<T>(response);
 
             return result;

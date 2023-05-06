@@ -10,6 +10,9 @@
     using System.Security.Claims;
     using System.Text;
     using WebAPI.Identity;
+    using Database.Tables;
+    using System.Xml;
+    using System.Security.Cryptography;
 
     /// <summary>
     /// Controller zuständig für die Authentifizierung aller Benuter.
@@ -36,9 +39,35 @@
         [Route("api/auth/admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult AuthAdmin(ModelAdminAuthData dto)
+        public async Task<ActionResult> AuthAdmin([FromBody] ModelAdminAuthData dto)
         {
-            throw new NotImplementedException();
+            string specifiedPassword = string.Empty;
+
+            try
+            {
+                TableAdministrator admin = await _databaseContext.TableAdministrators.Where(entity => entity.Email == dto.Email).SingleAsync();
+
+                using (SHA256 sha256 = SHA256.Create())
+                {
+                    var hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(dto.Password));
+
+                    foreach (byte b in hash)
+                        specifiedPassword += b.ToString("x2");
+                }
+
+                if (specifiedPassword != admin.Password)
+                {
+                    return BadRequest("The specified credentials are invalid!");
+                }
+                else
+                {
+                    return Ok(new { Token = GenerateToken(Identities.AdminClaimName) });
+                }
+            }
+            catch
+            {
+                return BadRequest("The specified admin does not exist!");
+            }
         }
 
         /// <summary>
@@ -52,10 +81,20 @@
         [Route("api/auth/evaluator")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult AuthEvaluator([FromBody] ModelEvaluatorAuthData authData)
+        public async Task<ActionResult> AuthEvaluator([FromBody] ModelEvaluatorAuthData authData)
         {
-            string token = GenerateEvaluatorToken();
-            return Ok(new { token = token });
+            try
+            {
+                TableKnowledgeTest test = await _databaseContext.TableKnowledgeTests
+                    .Where(entity => entity.EvaluatorPassword == authData.Password)
+                    .SingleAsync();
+            }
+            catch
+            {
+                return BadRequest("The specified password is invalid!");
+            }
+
+            return Ok(new { Token = GenerateToken(Identities.EvaluatorClaimName) });
         }
 
         /// <summary>
@@ -69,38 +108,47 @@
         [Route("api/auth/participant")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult AuthParticipant(ModelParticipantAuthData dto)
+        public async Task<ActionResult> AuthParticipant([FromBody] ModelParticipantAuthData dto)
         {
-            throw new NotImplementedException();
+            try
+            {
+                TableTestperson participant = await _databaseContext.TableTestpersons.Where(entity => entity.Id == dto.SybosId).SingleAsync();
+
+                if (dto.Password != participant.Password)
+                {
+                    return BadRequest("The specified credentials are invalid!");
+                }
+                else
+                {
+                    return Ok(new { Token = GenerateToken(Identities.AdminClaimName) });
+                }
+            }
+            catch
+            {
+                return BadRequest("The specified SybosID does not exist!");
+            }
         }
 
-        private string GenerateEvaluatorToken()
+        private string GenerateToken(string claimNaime)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
             var claims = new[] {
-                         new Claim(Identities.EvaluatorClaimName, "true"),
+                         new Claim(claimNaime, "true"),
                          new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                         new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.Ticks.ToString()),
+                         new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.Ticks.ToString())
                          };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWTSettings:Key"]));
 
             var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            //var token = new JwtSecurityToken(
-            //    _configuration["Jwt:Issuer"],
-            //    _configuration["Jwt:Audience"],
-            //    claims,
-            //    expires: DateTime.UtcNow.AddHours(1),
-            //    signingCredentials: signIn);
-
             var tokenDescriptor = new SecurityTokenDescriptor 
             {
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.AddHours(4),
-                Issuer = _configuration["Jwt:Issuer"],
-                Audience = _configuration["Jwt:Audience"],
+                Issuer = _configuration["JWTSettings:Issuer"],
+                Audience = _configuration["JWTSettings:Audience"],
                 SigningCredentials = signIn
             };
 
