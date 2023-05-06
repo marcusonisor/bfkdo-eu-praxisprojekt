@@ -1,9 +1,12 @@
 ﻿using Blazored.LocalStorage;
 using Common.Model;
 using Common.Services;
-
+using Common.Enums;
 namespace AdminApp.Services
 {
+    /// <summary>
+    ///     Authentication Service.
+    /// </summary>
     public class AuthService : BaseService
     {
         /// <summary>
@@ -23,7 +26,7 @@ namespace AdminApp.Services
         {
             var result = await PostToApi<ModelAdminAuthData, TokenModel>("/api/auth/admin", authData);
 
-            if (result.WasSuccess)
+            if (result.RequestEnum == EnumHttpRequest.Success)
             {
                 AddJwtToken(result.Result.Token);
             }

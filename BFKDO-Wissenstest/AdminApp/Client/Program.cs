@@ -2,8 +2,10 @@ using AdminApp;
 using AdminApp.Services;
 using Blazored.LocalStorage;
 using Common.Helper;
+using Common.Services;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using MudBlazor;
 using MudBlazor.Services;
 
 namespace AdminApp
@@ -24,12 +26,17 @@ namespace AdminApp
             builder.RootComponents.Add<App>("#app");
             builder.RootComponents.Add<HeadOutlet>("head::after");
 
-            builder.Services.AddMudServices();
+            builder.Services.AddMudServices(config =>
+            {
+                config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.TopRight;
+            });
 #if DEBUG
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(WebConstants.LocalApiAddress) });
 #else
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(WebConstants.AzureApiAddress) });
 #endif
+
+            builder.Services.AddScoped<AuthenticationStateService>();
             builder.Services.AddScoped<CommunicationService>();
             builder.Services.AddScoped<AuthService>();
             builder.Services.AddBlazoredLocalStorage();

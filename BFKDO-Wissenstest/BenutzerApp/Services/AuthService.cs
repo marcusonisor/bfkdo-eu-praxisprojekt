@@ -43,7 +43,7 @@ namespace BenutzerApp.Services
         {
             var result = await PostToApi<ModelParticipantAuthData, TokenModel>("/api/auth/participant", authData);
 
-            if (result.WasSuccess)
+            if (result.RequestEnum == EnumHttpRequest.Success)
             {
                 AddJwtToken(result.Result.Token);
             }

@@ -1,11 +1,10 @@
-﻿@page "/"
+﻿@page "/dashboard"
 @using AdminApp.Services;
-@inject AuthService AuthService
 
 <MudStack>
     <MudButton Variant="Variant.Filled"
                Color="Color.Primary" OnClick="NavigateToDetails">Details des Wissenstest</MudButton>
-    <MudFileUpload T="IBrowserFile" Accept=".csv" FilesChanged="UploadFile" MaximumFileCount="1">
+    @*<MudFileUpload T="IBrowserFile" Accept=".csv" FilesChanged="UploadFile" MaximumFileCount="1">
         <ButtonTemplate>
             <MudButton HtmlTag="label"
                        Variant="Variant.Filled"
@@ -15,13 +14,6 @@
                 Teilnehmer importieren
             </MudButton>
         </ButtonTemplate>
-    </MudFileUpload>
-    <MudText Typo="Typo.h4">@Message</MudText>
+    </MudFileUpload>*@
+    @*<MudText Typo="Typo.h4">@Message</MudText>*@
 </MudStack>
-
-@code{
-    protected override async Task OnInitializedAsync()
-    {
-        var response = await AuthService.Auth(new ModelAdminAuthData("admin@bfkdo.at", "default"));
-    }
-}
