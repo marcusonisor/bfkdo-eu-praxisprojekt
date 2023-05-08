@@ -32,6 +32,16 @@ namespace AdminApp.Services
         }
 
         /// <summary>
+        ///     Holt die Liste an Wissenstests.
+        /// </summary>
+        /// <returns>Liste an Wissenstests.</returns>
+        public async Task<HttpRequestResult<List<ModelKnowledgeTest>>> GetKnowledgeTests()
+        {
+            var result = await GetFromApi<List<ModelKnowledgeTest>>("api/knowledgetest/GetKnowledgeTests");
+            return result;
+        }
+
+        /// <summary>
         ///     Details einer Wissenstestung abrufen.
         /// </summary>
         /// <param name="id"></param>
@@ -41,5 +51,27 @@ namespace AdminApp.Services
             var result = await GetFromApi<ModelKnowledgeTestDetails>($"/api/knowledgetest/getknowledgetestdetails/{id}");
             return result;
         }
+
+        /// <summary>
+        ///     Erstellen eines Wissenstest.
+        /// </summary>
+        /// <param name="designation">Beschreibung des Wissenstest.</param>
+        /// <returns>Id des angelegten Wissenstest.</returns>
+        public async Task<HttpRequestResult<int>> CreateKnowledgeTest(string designation)
+        {
+            var result = await PostToApi<string, int>("api/knowledgetest/CreateKnowledgeTest", designation);
+            return result;
+        }
+
+        /// <summary>
+        ///     Importieren der Testpersonen über die CSV.
+        /// </summary>
+        /// <param name="data">Daten.</param>
+        /// <returns>Ob Testpersonen importiert wurden.</returns>
+        public async Task<HttpRequestResult<bool>> ImportRegistrations(ModelImportData data)
+        {
+            var result = await PostToApi<ModelImportData, bool>("api/knowledgetest/ImportRegistrations", data);
+            return result;
+        } 
     }
 }

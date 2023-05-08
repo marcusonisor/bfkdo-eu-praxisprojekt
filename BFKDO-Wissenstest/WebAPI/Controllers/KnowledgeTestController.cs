@@ -1,5 +1,9 @@
-﻿using Common.Model;
+﻿using Common.Helper;
+using Common.Model;
+using Common.Model.CSVModels;
 using Database;
+using Database.Tables;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -83,21 +87,6 @@ namespace WebAPI.Controllers
             }
 
             return Ok(model);
-
-            //var model = new ModelKnowledgeTestDetails()
-            //{
-            //    KnowledgeTestYear = "2022",
-            //    KnowledgeTestId = id,
-            //};
-            //var elements = new List<ModelTestPersonResult>();
-            //for (int i = 0; i < 10; i++)
-            //{
-            //    elements.Add(new() { Name = $"Max Super-Duper-Mustermann {i}", Station = $"FF Oberst-Donnerskirchen-Dorf {i}", Results = new() { new() { LevelName = "Stufe 1", LevelResult = "3 / 5" }, new() { LevelName = "Stufe 2", LevelResult = "5 / 5" } } });
-            //}
-
-            //model.TestPersonResults = elements;
-
-            //return Ok(model);
         }
 
         /// <summary>
@@ -119,6 +108,129 @@ namespace WebAPI.Controllers
                 Designation = t.Designation,
                 Id = t.Id
             }).ToList());
+        }
+
+        /// <summary>
+        ///     Lesen der Teilnehmer aus der CSV.
+        /// </summary>
+        /// <param name="data">Daten aus CSV Bytes und Wissenstest Id.</param>
+        /// <returns>Ob Teilnehmer ausgelesen werden konnten.</returns>
+        /// <response code="200">Returniert, dass Einträge aus der CSV ausgelesen werden konnten.</response>
+        /// <response code="400">Wenn aus dem gebotetenen CSV Byte Array keine Einträge erstellt werden konnten.</response>
+        /// <response code="401">Wenn der Benutzer nicht die richtigen Rechte für den Call hat.</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+
+        [Route("api/knowledgetest/ImportRegistrations")]
+        [HttpPost]
+        public ActionResult ImportRegistrations(ModelImportData data)
+        {
+            var registrations = CsvHandlingHelper.GetDataFromCsvByteArray<CsvRegistrationModel>(data.CsvData);
+            var levels = _dbContext.TableKnowledgeLevels.ToList();
+            foreach (var registration in registrations)
+            {
+                var personId = CreateOrGetTestPerson(registration);
+
+                var levelId = ParseKnowledgeLevel(levels, registration.RegistratedLevel);
+                if (levelId == -1)
+                {
+                    continue;
+                }
+                var tableregistration = new TableRegistration()
+                {
+                    TestpersonId = personId,
+                    KnowledgeTestId = data.KnowledgeTestId,
+                    KnowledgeLevelId = levelId
+                };
+                _dbContext.TableRegistrations.Add(tableregistration);
+                _dbContext.SaveChanges();
+
+                var criterias = _dbContext.TableEvaluationCriterias.Where(t => t.KnowledgeLevelId == levelId).ToList();
+                foreach (var criteria in criterias)
+                {
+                    var evaluation = new TableEvaluation()
+                    {
+                        Evaluation = Common.Enums.EnumEvaluation.Ungraded,
+                        EvaluationCriteriaId = criteria.Key,
+                        EvaluationState = Common.Enums.EnumEvaluationState.Open,
+                        RegistrationId = tableregistration.Id,
+                    };
+                    _dbContext.TableEvaluations.Add(evaluation);
+                }
+                _dbContext.SaveChanges();
+
+            }
+
+            return Ok();
+        }
+
+        /// <summary>
+        ///     Gibt die Id des Wissenstest aus.
+        /// </summary>
+        /// <param name="levels">Wissentest-Stufen.</param>
+        /// <param name="registratedLevel">Gewollte Stufe.</param>
+        /// <returns>Id der Stufe</returns>
+        private int ParseKnowledgeLevel(List<TableKnowledgeLevel> levels, string registratedLevel)
+        {
+            return levels.FirstOrDefault(t => t.Description == registratedLevel)?.Id ?? -1;
+        }
+
+        /// <summary>
+        ///     Erstellt oder liest die Testperson.
+        /// </summary>
+        /// <param name="registration">Ausgelesene CSV Daten.</param>
+        /// <returns>Id der Testperson.</returns>
+        private int CreateOrGetTestPerson(CsvRegistrationModel registration)
+        {
+            var testperson = _dbContext.TableTestpersons.FirstOrDefault(t => t.Id == registration.SybosId);
+            if (testperson == null)
+            {
+                testperson = new TableTestperson()
+                {
+                    FireDepartmentBranch = registration.Station,
+                    FirstName = registration.FirstName,
+                    LastName = registration.LastName,
+                    Id = registration.SybosId
+                };
+                _dbContext.TableTestpersons.Add(testperson);
+                _dbContext.SaveChanges();
+
+            }
+
+            return testperson.Id;
+        }
+
+
+        /// <summary>
+        ///     Legt einen neuen Wissenstest an.
+        /// </summary>
+        /// <returns>Id des angelegten Test..</returns>
+        /// <response code="200">Returniert die Id des angelegten Test..</response>
+        /// <response code="401">Wenn der Benutzer nicht die richtigen Rechte für den Call hat.</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+
+        [HttpPost]
+        [Route("api/knowledgetest/CreateKnowledgeTest")]
+        public ActionResult CreateKnowledgeTest([FromBody] string designation)
+        {
+            var knowledgetest = new TableKnowledgeTest()
+            {
+                Designation = designation,
+            };
+
+            try
+            {
+                _dbContext.TableKnowledgeTests.Add(knowledgetest);
+                _dbContext.SaveChanges();
+
+                return Ok(knowledgetest.Id);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
     }
 }
