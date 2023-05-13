@@ -3,6 +3,7 @@ using Blazored.LocalStorage;
 using Common.Model;
 using Common.Model.CSVModels;
 using Common.Services;
+using Microsoft.AspNetCore.Components;
 
 namespace AdminApp.Services
 {
@@ -16,7 +17,8 @@ namespace AdminApp.Services
         /// </summary>
         /// <param name="client">HTTP Client.</param>
         /// <param name="storageService">Speicher Service.</param>
-        public CommunicationService(HttpClient client, ISyncLocalStorageService storageService) : base(client, storageService)
+        /// <param name="navigationManager">Navigation.</param>
+        public CommunicationService(HttpClient client, ISyncLocalStorageService storageService, NavigationManager navigationManager) : base(client, storageService, navigationManager)
         {
         }
 

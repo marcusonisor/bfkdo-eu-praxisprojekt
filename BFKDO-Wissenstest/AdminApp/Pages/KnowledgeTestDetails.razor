@@ -1,5 +1,7 @@
 ﻿@page "/knowledgetestdetails/{KnowledgeTestId:int}"
 
+@inherits AuthenticationRazorPage
+
 <MudStack Spacing="4">
     <MudStack Row Justify="Justify.Center" AlignItems="AlignItems.Center" Class="my-4" Spacing="4">
         <h1 class="m-0" aria-label="Testjahr">Testjahr @Model.KnowledgeTestYear</h1>

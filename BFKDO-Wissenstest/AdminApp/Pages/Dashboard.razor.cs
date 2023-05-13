@@ -1,9 +1,5 @@
 using AdminApp.Services;
-using Common.Model;
-using Common.Services;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Forms;
-using MudBlazor;
 
 namespace AdminApp.Pages
 {
@@ -19,22 +15,10 @@ namespace AdminApp.Pages
         public NavigationManager Nav { get; set; } = null!;
 
         /// <summary>
-        ///     Authentifizierungs Service.
-        /// </summary>
-        [Inject]
-        public AuthenticationStateService AuthenticationStateService { get; set; } = null!;
-
-        /// <summary>
         /// Kommunikations Service.
         /// </summary>
         [Inject]
         public CommunicationService Service { get; set; } = null!;
-
-        /// <summary>
-        ///     Snackbar Service.
-        /// </summary>
-        [Inject]
-        public ISnackbar SnackbarService { get; set; } = null!;
 
         /// <summary>
         ///     Initialisierungsmethode.
@@ -42,17 +26,13 @@ namespace AdminApp.Pages
         /// <returns></returns>
         protected override void OnInitialized()
         {
-            if (!AuthenticationStateService.HasJwtAuthentication())
-            {
-                Nav.NavigateTo("/");
-                SnackbarService.Add("Bitte loggen Sie sich zuerst ein!", Severity.Error);
-            }
-
             base.OnInitialized();
+            // TODO Abfrage der Wissenstests.
         }
 
         private void NavigateToDetails()
         {
+            //  TODO ausgewählte ID statt 4.
             Nav?.NavigateTo("/knowledgetestdetails/4");
         }
     }

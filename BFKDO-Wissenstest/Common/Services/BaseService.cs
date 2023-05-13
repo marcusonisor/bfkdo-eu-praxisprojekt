@@ -1,6 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using Common.Enums;
 using Common.Model;
+using Microsoft.AspNetCore.Components;
 using System.Net.Http.Json;
 
 namespace Common.Services
@@ -14,15 +15,19 @@ namespace Common.Services
 
         private readonly ISyncLocalStorageService _localStorage;
 
+        private readonly NavigationManager _navigationManager;
+
         /// <summary>
         ///     Konstruktor des Base Services.
         /// </summary>
         /// <param name="client">HTTP Client.</param>
         /// <param name="localStorage">Local Storage.</param>
-        public BaseService(HttpClient client, ISyncLocalStorageService localStorage)
+        /// <param name="navigationManager">Navigation.</param>
+        public BaseService(HttpClient client, ISyncLocalStorageService localStorage,NavigationManager navigationManager)
         {
             _httpClient = client;
             _localStorage = localStorage;
+            _navigationManager = navigationManager;
         }
 
         /// <summary>
@@ -60,6 +65,8 @@ namespace Common.Services
 
                 var result = await HandleHttpResponse<T>(response);
 
+                CheckAuthenticationError(result);
+
                 return result;
             }
             catch (Exception)
@@ -85,6 +92,8 @@ namespace Common.Services
                 var response = await _httpClient.PostAsJsonAsync(url, content);
 
                 var result = await HandleHttpResponse<U>(response);
+                
+                CheckAuthenticationError(result);
 
                 return result;
             }
@@ -113,6 +122,8 @@ namespace Common.Services
 
                 var result = await HandleHttpResponse<U>(response);
 
+                CheckAuthenticationError(result);
+
                 return result;
             }
             catch (Exception)
@@ -137,11 +148,28 @@ namespace Common.Services
 
                 var result = await HandleHttpResponse<T>(response);
 
+                CheckAuthenticationError(result);
+
                 return result;
             }
             catch (Exception)
             {
                 return GetFailedAPICallResult<T>();
+            }
+        }
+
+        /// <summary>
+        ///     Überprüfen eines Authentication Errors.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="result"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        private void CheckAuthenticationError<T>(HttpRequestResult<T> result)
+        {
+            if (result.RequestEnum is EnumHttpRequest.Forbidden or EnumHttpRequest.Unauthorized)
+            {
+                _localStorage.RemoveItem("jwt");
+                _navigationManager.NavigateTo("/");
             }
         }
 
@@ -163,7 +191,7 @@ namespace Common.Services
 
             if (!response.IsSuccessStatusCode)
             {
-                if(response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
                     return new HttpRequestResult<T>
                     {
@@ -172,7 +200,7 @@ namespace Common.Services
                     };
                 }
 
-                if(response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+                if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
                 {
                     return new HttpRequestResult<T>
                     {

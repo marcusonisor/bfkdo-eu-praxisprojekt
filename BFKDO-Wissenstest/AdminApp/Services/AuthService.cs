@@ -2,6 +2,8 @@
 using Common.Model;
 using Common.Services;
 using Common.Enums;
+using Microsoft.AspNetCore.Components;
+
 namespace AdminApp.Services
 {
     /// <summary>
@@ -14,7 +16,8 @@ namespace AdminApp.Services
         /// </summary>
         /// <param name="client">HTTP Client.</param>
         /// <param name="storageService">SpeicherService.</param>
-        public AuthService(HttpClient client, ISyncLocalStorageService storageService) : base(client,storageService)
+        /// <param name="navigationManager">Navigation.</param>
+        public AuthService(HttpClient client, ISyncLocalStorageService storageService, NavigationManager navigationManager) : base(client,storageService,navigationManager)
         {
         }
 

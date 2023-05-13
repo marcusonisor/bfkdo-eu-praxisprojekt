@@ -1,5 +1,7 @@
 ﻿@page "/importtestpersons/{KnowledgeTestId:int}"
 
+@inherits AuthenticationRazorPage
+
 <MudFileUpload T="IBrowserFile" Accept=".csv" FilesChanged="UploadFile" MaximumFileCount="1">
         <ButtonTemplate>
             <MudButton HtmlTag="label"

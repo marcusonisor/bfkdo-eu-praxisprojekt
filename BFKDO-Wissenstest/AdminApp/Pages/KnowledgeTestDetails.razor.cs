@@ -33,22 +33,19 @@ namespace AdminApp.Pages
         public int KnowledgeTestId { get; set; }
 
         /// <summary>
-        ///     On After Render Callback.
+        ///     Initialisierungsmethode.
         /// </summary>
-        /// <param name = "firstRender"></param>
-        protected override async void OnAfterRender(bool firstRender)
+        /// <returns></returns>
+        protected override async Task OnInitializedAsync()
         {
-            if (firstRender)
+            await base.OnInitializedAsync();
+            var result = await Service.GetKnowledgeTestDetails(KnowledgeTestId);
+            if (result.RequestEnum == EnumHttpRequest.Success)
             {
-                var result = await Service.GetKnowledgeTestDetails(KnowledgeTestId);
-                if (result.RequestEnum == EnumHttpRequest.Success)
-                {
-                    Model = result.Result;
-                    StateHasChanged();
-                }
+                Model = result.Result;
+                StateHasChanged();
             }
 
-            base.OnAfterRender(firstRender);
         }
 
         private Func<ModelTestPersonResult, bool> QuickSearch => x =>

@@ -1,4 +1,5 @@
 ﻿using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,22 +15,29 @@ namespace Common.Services
     {
         private readonly ISyncLocalStorageService _syncLocalStorageService;
 
+        private readonly NavigationManager _navigationManager;
+
         /// <summary>
         ///     Konstruktor des Authentication State Services.
         /// </summary>
         /// <param name="storageService">Local Storage Service.</param>
-        public AuthenticationStateService(ISyncLocalStorageService storageService)
+        /// <param name="navigationManager">Zur Navigation</param>
+        public AuthenticationStateService(ISyncLocalStorageService storageService, NavigationManager navigationManager)
         {
             _syncLocalStorageService = storageService;
+            _navigationManager = navigationManager;
         }
 
         /// <summary>
         ///     Checkt, ob eine Authentifizierung vorhanden ist.
         /// </summary>
         /// <returns>Ob Authentifizierungs Token vorhanden ist.</returns>
-        public bool HasJwtAuthentication()
+        public void CheckJwtAuthentication()
         {
-            return !string.IsNullOrWhiteSpace(_syncLocalStorageService.GetItem<string>("jwt"));
+            if (string.IsNullOrWhiteSpace(_syncLocalStorageService.GetItem<string>("jwt")))
+            {
+                _navigationManager.NavigateTo("/");
+            }
         }
     }
 }
