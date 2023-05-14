@@ -5,22 +5,25 @@ using Microsoft.AspNetCore.Components;
 namespace AdminApp.Pages
 {
     /// <summary>
-    /// Dashboard
+    ///     Dashboard
     /// </summary>
     public partial class Dashboard
     {
         /// <summary>
-        /// Navigation Manager.
+        ///     Navigation Manager.
         /// </summary>
         [Inject]
         public NavigationManager Nav { get; set; } = null!;
 
         /// <summary>
-        /// Kommunikations Service.
+        ///     Kommunikationsservice.
         /// </summary>
         [Inject]
         public CommunicationService Service { get; set; } = null!;
 
+        /// <summary>
+        ///     Liste der Wissenstest.
+        /// </summary>
         private List<ModelKnowledgeTest> _knowledgetests = new();
 
         /// <summary>
@@ -34,9 +37,12 @@ namespace AdminApp.Pages
             _knowledgetests = response.Result;
         }
 
+        /// <summary>
+        ///     Methode zur Weiterleitung auf die Detailsseite des Wissenstest.
+        /// </summary>
+        /// <param name="id"></param>
         private void NavigateToDetails(int id)
         {
-            //  TODO ausgewählte ID statt 4.
             Nav?.NavigateTo($"/knowledgetestdetails/{id}");
         }
 

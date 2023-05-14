@@ -17,11 +17,14 @@ namespace AdminApp.Pages
         [Inject]
         public AuthService AuthService { get; set; } = null!;
 
+        /// <summary>
+        ///     Für den Login benötigte Properties: Email und Passwort.
+        /// </summary>
         public string Email { get; set; }
         public string Password { get; set; }
 
         /// <summary>
-        ///     Login des Users.
+        ///     Loginfunktion.
         /// </summary>
         ///
         public async void LoginUser()
@@ -32,36 +35,40 @@ namespace AdminApp.Pages
 
                 if (response.RequestEnum is EnumHttpRequest.Success)
                 {
-                    // Redirect to the main application or perform other actions
                     NavigationManager.NavigateTo("/dashboard");
                 }
 
                 else
                 {
-                    // Show error message
                     MudSnackbar.Add("Invalid email or password. Please try again.", Severity.Error);
                 }
             }
         }
 
-            bool isShow;
-            InputType PasswordInput = InputType.Password;
-            string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+        /// <summary>
+        ///     Properties für die Passwortanzeige-Funktion.
+        /// </summary>
+        bool isShow;
+        InputType PasswordInput = InputType.Password;
+        string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
 
-            void ButtonTestclick()
+        /// <summary>
+        ///     Methode zum Anzeigen oder Verbergen des Passworts.
+        /// </summary>
+        void ButtonTestclick()
+        {
+            if (isShow)
             {
-                if(isShow)
-                {
-                    isShow = false;
-                    PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
-                    PasswordInput = InputType.Password;
-                }
-                else
-                {
-                    isShow = true;
-                    PasswordInputIcon = Icons.Material.Filled.Visibility;
-                    PasswordInput = InputType.Text;
-                }
+                isShow = false;
+                PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+                PasswordInput = InputType.Password;
+            }
+            else
+            {
+                isShow = true;
+                PasswordInputIcon = Icons.Material.Filled.Visibility;
+                PasswordInput = InputType.Text;
             }
         }
-    } 
+    }
+}

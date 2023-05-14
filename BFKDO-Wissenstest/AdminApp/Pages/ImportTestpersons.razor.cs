@@ -23,6 +23,9 @@ namespace AdminApp.Pages
         [Inject]
         public CommunicationService Service { get; set; } = null!;
 
+        /// <summary>
+        ///     Navigationsmanager für Weiterleitungen.
+        /// </summary>
         [Inject]
         public NavigationManager NavigationManager { get; set; } = null!;
 
