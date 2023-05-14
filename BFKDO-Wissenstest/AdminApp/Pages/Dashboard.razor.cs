@@ -1,4 +1,5 @@
 using AdminApp.Services;
+using Common.Model;
 using Microsoft.AspNetCore.Components;
 
 namespace AdminApp.Pages
@@ -20,20 +21,24 @@ namespace AdminApp.Pages
         [Inject]
         public CommunicationService Service { get; set; } = null!;
 
+        private List<ModelKnowledgeTest> _knowledgetests = new();
+
         /// <summary>
         ///     Initialisierungsmethode.
         /// </summary>
         /// <returns></returns>
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
             base.OnInitialized();
-            // TODO Abfrage der Wissenstests.
+            var response = await Service.GetKnowledgeTests();
+            _knowledgetests = response.Result;
         }
 
-        private void NavigateToDetails()
+        private void NavigateToDetails(int id)
         {
             //  TODO ausgewählte ID statt 4.
-            Nav?.NavigateTo("/knowledgetestdetails/4");
+            Nav?.NavigateTo($"/knowledgetestdetails/{id}");
         }
+
     }
 }

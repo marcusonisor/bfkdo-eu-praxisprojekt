@@ -1,7 +1,12 @@
 ﻿@page "/createknowledgetest"
-
+@inject NavigationManager NavigationManager
+@inject ISnackbar MudSnackbar
 @inherits AuthenticationRazorPage
 
-<h3>CreateKnowledgeTest</h3>
+<h3>Wissenstest anlegen</h3>
+<br><br>
 
+<MudTextField @bind-Value="@Year" Style="width: 400px;" Label="Testjahr" Required="true" Variant="Variant.Filled" />
+<br />
+<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SaveYear">Speichern</MudButton><MudButton Variant="Variant.Filled" Color="Color.Secondary" Href="/dashboard">Abbrechen</MudButton>
 

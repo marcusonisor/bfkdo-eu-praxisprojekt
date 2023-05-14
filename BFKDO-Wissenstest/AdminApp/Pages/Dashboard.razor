@@ -2,8 +2,21 @@
 
 @inherits AuthenticationRazorPage
 
-
+<h2>Willkommen, Admin.</h2>
+<br />
 <MudStack>
-    <MudButton Variant="Variant.Filled"
-               Color="Color.Primary" OnClick="NavigateToDetails">Details des Wissenstest</MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" Style="width:400px" Href="/createknowledgetest">Test anlegen</MudButton>
+    <MudDataGrid Items="@_knowledgetests">
+        <Columns>
+            <PropertyColumn Property="x => x.Designation"></PropertyColumn>
+            <TemplateColumn CellClass="d-flex justify-end">
+                <CellTemplate>
+                    <MudStack Row>
+                        <MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Primary" OnClick="()=>NavigateToDetails(context.Item.Id)">Details</MudButton>
+                        <MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Primary">Exportieren</MudButton>
+                    </MudStack>
+                </CellTemplate>
+            </TemplateColumn>
+        </Columns>
+    </MudDataGrid>
 </MudStack>

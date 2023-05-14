@@ -1,4 +1,12 @@
 ﻿@page "/"
-<h3>Login</h3>
+@inject NavigationManager NavigationManager
+@inject ISnackbar MudSnackbar
 
+<h3>Willkommen beim Wissenstest!</h3>
+<br />
+<h3><i>Zugang für Administratoren</i></h3>
 
+<MudTextField @bind-Value="@Email" Style="width: 400px;" Label="Benutzer" Required="true" Variant="Variant.Filled" />
+<MudTextField @bind-Value="@Password" Style="width: 400px;" Label="Passwort" Required="true" Variant="Variant.Filled" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ButtonTestclick" AdornmentAriaLabel="Show Password" />
+<br />
+<MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="LoginUser">Login</MudButton>
