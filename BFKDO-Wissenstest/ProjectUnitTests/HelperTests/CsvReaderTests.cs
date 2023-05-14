@@ -54,6 +54,18 @@ namespace ProjectUnitTests.HelperTests
             var result = CsvHandlingHelper.GetDataFromCsvByteArray<DemoData>(bytes);
             Assert.That(result.Any());
         }
+
+        [Test]
+        public void Test_ReadDataWithSpecialCharacters()
+        {
+            var csvstring = "Id;Name\r\n1;öns\r\n2;zwoä";
+            var bytes = Encoding.Latin1.GetBytes(csvstring);
+            var result = CsvHandlingHelper.GetDataFromCsvByteArray<DemoData>(bytes).ToList();
+            Assert.That(result.Any());
+            Assert.That(result.Count() == 2);
+            Assert.That(result[0].Name == "öns");
+            Assert.That(result[1].Name == "zwoä");
+        }
     }
 
     /// <summary>

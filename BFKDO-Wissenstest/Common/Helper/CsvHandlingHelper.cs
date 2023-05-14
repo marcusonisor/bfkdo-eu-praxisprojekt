@@ -58,7 +58,7 @@ namespace Common.Helper
         {
             var list = Enumerable.Empty<T>();
             var stream = new MemoryStream(data);
-            using (var streamreader = new StreamReader(stream))
+            using (var streamreader = new StreamReader(stream,Encoding.Latin1))
             using (var csv = new CsvReader(streamreader, config))
             {
                 try
