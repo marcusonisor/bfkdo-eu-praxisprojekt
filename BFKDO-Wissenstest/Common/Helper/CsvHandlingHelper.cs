@@ -10,14 +10,14 @@ namespace Common.Helper
     /// </summary>
     public class CsvHandlingHelper
     {
-        private static readonly CsvConfiguration _configComma = new CsvConfiguration(CultureInfo.InvariantCulture)
+        private static readonly CsvConfiguration _configComma = new CsvConfiguration(CultureInfo.CurrentCulture)
         {
             NewLine = Environment.NewLine,
             Delimiter = ",",
             HeaderValidated = null
         };
 
-        private static readonly CsvConfiguration _configSemiColon = new CsvConfiguration(CultureInfo.InvariantCulture)
+        private static readonly CsvConfiguration _configSemiColon = new CsvConfiguration(CultureInfo.CurrentCulture)
         {
             NewLine = Environment.NewLine,
             Delimiter= ";",

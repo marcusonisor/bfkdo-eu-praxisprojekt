@@ -15,10 +15,15 @@ namespace Database.Tables
     public class TableTestperson
     {
         /// <summary>
-        ///     Id der Testperson (Sybos Id)
+        ///     Id der Testperson
         /// </summary>
         [Key]
         public int Id { get; set; }
+
+        /// <summary>
+        ///     Sybos Id.
+        /// </summary>
+        public int SybosId { get; set; }
 
         /// <summary>
         ///     Passwort.
