@@ -4,7 +4,10 @@ using Common.Enums;
 using MudBlazor;
 
 namespace AdminApp.Pages
-{
+{   
+    /// <summary>
+    ///     Erstellen des Wissenstest.
+    /// </summary>
     public partial class CreateKnowledgeTest
     {
         /// <summary>
@@ -23,16 +26,19 @@ namespace AdminApp.Pages
         /// </summary>
         async void CreateTest()
         {
-            var response = await Service.CreateKnowledgeTest(Year);
-
-            if (response.RequestEnum is EnumHttpRequest.Success)
-            {            
-                NavigationManager.NavigateTo($"/importtestpersons/{response.Result}");
-            }
-
-            else
+            if (!string.IsNullOrEmpty(Year))
             {
-                MudSnackbar.Add("Ungültiger Benutzername oder Passwort. Bitte versuchen Sie es erneut.", Severity.Error);
+                var response = await Service.CreateKnowledgeTest(Year);
+
+                if (response.RequestEnum is EnumHttpRequest.Success)
+                {
+                    NavigationManager.NavigateTo($"/importtestpersons/{response.Result}");
+                }
+
+                else
+                {
+                    MudSnackbar.Add("Ungültiger Benutzername oder Passwort. Bitte versuchen Sie es erneut.", Severity.Error);
+                }
             }
         }
     }

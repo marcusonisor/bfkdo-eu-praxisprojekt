@@ -7,6 +7,9 @@ using MudBlazor;
 
 namespace AdminApp.Pages
 {
+    /// <summary>
+    ///     Importieren der Testpersonen.
+    /// </summary>
     public partial class ImportTestpersons
     {
         private readonly long maxFileSize = 1024 * 1024 * 15;
