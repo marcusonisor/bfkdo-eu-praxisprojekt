@@ -21,6 +21,10 @@ namespace AdminApp.Pages
         [Inject]
         public CommunicationService Service { get; set; } = null!;
 
+        [Inject]
+        public ExportService ExportService { get; set; } = null!;   
+
+
         private List<ModelKnowledgeTest> _knowledgetests = new();
 
         /// <summary>
@@ -38,6 +42,11 @@ namespace AdminApp.Pages
         {
             //  TODO ausgewählte ID statt 4.
             Nav?.NavigateTo($"/knowledgetestdetails/{id}");
+        }
+
+        private async Task ExportEvaluatorCredentials(int knowledgetestId)
+        {
+            await ExportService.ExportEvaluatorCredentials(knowledgetestId);
         }
 
     }

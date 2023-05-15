@@ -36,10 +36,11 @@ namespace Common.Services
         /// <returns></returns>
         private void AddAuthentication()
         {
-            var jwttoken = _localStorage.GetItem<string>("jwt");
-            if (!string.IsNullOrEmpty(jwttoken))
+            var token = _localStorage.GetItem<string>("jwt");
+
+            if (!string.IsNullOrEmpty(token))
             {
-                _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer",jwttoken);
+                _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
             }
         }
 

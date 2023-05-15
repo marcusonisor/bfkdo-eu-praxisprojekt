@@ -39,7 +39,9 @@ namespace AdminApp
             builder.Services.AddScoped<AuthenticationStateService>();
             builder.Services.AddScoped<CommunicationService>();
             builder.Services.AddScoped<AuthService>();
+            builder.Services.AddScoped<ExportService>();
             builder.Services.AddBlazoredLocalStorage();
+
             await builder.Build().RunAsync();
         }
     }

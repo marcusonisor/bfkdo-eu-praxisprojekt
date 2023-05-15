@@ -13,7 +13,8 @@
                 <CellTemplate>
                     <MudStack Row>
                         <MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Primary" OnClick="()=>NavigateToDetails(context.Item.Id)">Details</MudButton>
-                        <MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Primary">Exportieren</MudButton>
+                        <MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Primary" OnClick="() => ExportEvaluatorCredentials(context.Item.Id)">Exportieren </MudButton>
+
                     </MudStack>
                 </CellTemplate>
             </TemplateColumn>
