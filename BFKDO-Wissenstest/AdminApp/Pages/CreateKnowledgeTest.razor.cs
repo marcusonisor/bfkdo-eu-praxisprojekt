@@ -35,7 +35,5 @@ namespace AdminApp.Pages
                 MudSnackbar.Add("Ungültiger Benutzername oder Passwort. Bitte versuchen Sie es erneut.", Severity.Error);
             }
         }
-
-
     }
 }

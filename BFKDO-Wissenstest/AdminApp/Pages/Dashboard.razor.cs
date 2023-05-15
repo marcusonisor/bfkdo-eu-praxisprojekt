@@ -19,6 +19,12 @@ namespace AdminApp.Pages
         ///     Kommunikationsservice.
         /// </summary>
         [Inject]
+        public ExportService ExportService { get; set; } = null!;
+
+        /// <summary>
+        ///     Kommunikationsservice.
+        /// </summary>
+        [Inject]
         public CommunicationService Service { get; set; } = null!;
 
         /// <summary>
@@ -44,6 +50,16 @@ namespace AdminApp.Pages
         private void NavigateToDetails(int id)
         {
             Nav?.NavigateTo($"/knowledgetestdetails/{id}");
+        }
+
+        private async Task ExportEvaluatorCredentials(int knowledgetestId)
+        {
+            await ExportService.DownloadEvaluatorCredentials(knowledgetestId);
+        }
+
+        private async Task ExportParticipantsCredentials(int knowledgetestId)
+        {
+            await ExportService.DownloadParticipantsCredentials(knowledgetestId);
         }
 
     }

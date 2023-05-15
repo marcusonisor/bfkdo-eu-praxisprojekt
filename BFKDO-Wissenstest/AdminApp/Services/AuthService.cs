@@ -12,7 +12,7 @@ namespace AdminApp.Services
     public class AuthService : BaseService
     {
         /// <summary>
-        /// Konstruktor des StationsService.
+        /// Konstruktor des Services.
         /// </summary>
         /// <param name="client">HTTP Client.</param>
         /// <param name="storageService">SpeicherService.</param>

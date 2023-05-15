@@ -22,6 +22,11 @@
         private readonly IConfiguration _configuration;
         private readonly BfkdoDbContext _databaseContext;
 
+        /// <summary>
+        /// Konstruktor des Controllers.
+        /// </summary>
+        /// <param name="config"></param>
+        /// <param name="databaseContext"></param>
         public AuthController(IConfiguration config, BfkdoDbContext databaseContext)
         {
             _configuration = config;
@@ -73,7 +78,7 @@
         /// <summary>
         /// Login der Testbewerter.
         /// </summary>
-        /// <param name="dto">Das Zugangspasswort des Testbewerters.</param>
+        /// <param name="authData">Das Zugangspasswort des Testbewerters.</param>
         /// <returns>Ob der Login eines Testbewerters erfolgreich war oder nicht.</returns>
         /// <response code="200">Login erfolgreich.</response>
         /// <response code="400">Zugangspasswort ist falsch.</response>
