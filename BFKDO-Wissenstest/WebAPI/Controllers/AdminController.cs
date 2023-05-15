@@ -1,9 +1,11 @@
-﻿using Common.Model;
+using Common.Model;
 using Microsoft.AspNetCore.Mvc;
 using Database.Tables;
 using Database;
 using Microsoft.EntityFrameworkCore;
 using QRCoder;
+using WebAPI.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebAPI.Controllers
 {
