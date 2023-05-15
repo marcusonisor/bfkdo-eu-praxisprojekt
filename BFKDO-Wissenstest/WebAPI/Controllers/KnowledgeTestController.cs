@@ -6,6 +6,7 @@ using Database.Tables;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebAPI.Helper;
 
 namespace WebAPI.Controllers
 {
@@ -184,6 +185,7 @@ namespace WebAPI.Controllers
         private int CreateOrGetTestPerson(CsvRegistrationModel registration)
         {
             var testperson = _dbContext.TableTestpersons.FirstOrDefault(t => t.SybosId == registration.SybosId);
+
             if (testperson == null)
             {
                 testperson = new TableTestperson()
@@ -191,7 +193,8 @@ namespace WebAPI.Controllers
                     FireDepartmentBranch = registration.Station,
                     FirstName = registration.FirstName,
                     LastName = registration.LastName,
-                    SybosId = registration.SybosId
+                    SybosId = registration.SybosId,
+                    Password = PasswordGenerator.GeneratePassword()
                 };
                 _dbContext.TableTestpersons.Add(testperson);
                 _dbContext.SaveChanges();
@@ -218,6 +221,7 @@ namespace WebAPI.Controllers
             var knowledgetest = new TableKnowledgeTest()
             {
                 Designation = designation,
+                EvaluatorPassword = PasswordGenerator.GeneratePassword()
             };
 
             try
