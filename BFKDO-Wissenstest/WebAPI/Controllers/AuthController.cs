@@ -44,13 +44,13 @@
         [Route("api/auth/admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> AuthAdmin([FromBody] ModelAdminAuthData dto)
+        public ActionResult AuthAdmin([FromBody] ModelAdminAuthData dto)
         {
             string specifiedPassword = string.Empty;
 
             try
             {
-                TableAdministrator admin = await _databaseContext.TableAdministrators.Where(entity => entity.Email == dto.Email).SingleAsync();
+                TableAdministrator admin = _databaseContext.TableAdministrators.Where(entity => entity.Email == dto.Email).Single();
 
                 using (SHA256 sha256 = SHA256.Create())
                 {
@@ -62,16 +62,16 @@
 
                 if (specifiedPassword != admin.Password)
                 {
-                    return BadRequest("The specified credentials are invalid!");
+                    return BadRequest();
                 }
                 else
                 {
                     return Ok(new { Token = GenerateToken(Identities.AdminClaimName) });
                 }
             }
-            catch
+            catch (Exception e)
             {
-                return BadRequest("The specified admin does not exist!");
+                return BadRequest();
             }
         }
 
@@ -86,17 +86,17 @@
         [Route("api/auth/evaluator")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> AuthEvaluator([FromBody] ModelEvaluatorAuthData authData)
+        public ActionResult AuthEvaluator([FromBody] ModelEvaluatorAuthData authData)
         {
             try
             {
-                TableKnowledgeTest test = await _databaseContext.TableKnowledgeTests
+                TableKnowledgeTest test = _databaseContext.TableKnowledgeTests
                     .Where(entity => entity.EvaluatorPassword == authData.Password)
-                    .SingleAsync();
+                    .Single();
             }
             catch
             {
-                return BadRequest("The specified password is invalid!");
+                return BadRequest();
             }
 
             return Ok(new { Token = GenerateToken(Identities.EvaluatorClaimName) });
@@ -113,15 +113,15 @@
         [Route("api/auth/participant")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> AuthParticipant([FromBody] ModelParticipantAuthData dto)
+        public ActionResult AuthParticipant([FromBody] ModelParticipantAuthData dto)
         {
             try
             {
-                TableTestperson participant = await _databaseContext.TableTestpersons.Where(entity => entity.Id == dto.SybosId).SingleAsync();
+                TableTestperson participant = _databaseContext.TableTestpersons.Where(entity => entity.Id == dto.SybosId).Single();
 
                 if (dto.Password != participant.Password)
                 {
-                    return BadRequest("The specified credentials are invalid!");
+                    return BadRequest();
                 }
                 else
                 {
@@ -130,7 +130,7 @@
             }
             catch
             {
-                return BadRequest("The specified SybosID does not exist!");
+                return BadRequest();
             }
         }
 
