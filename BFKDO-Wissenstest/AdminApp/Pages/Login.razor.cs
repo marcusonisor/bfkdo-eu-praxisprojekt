@@ -44,7 +44,7 @@ namespace AdminApp.Pages
 
                 else
                 {
-                    MudSnackbar.Add("Invalid email or password. Please try again.", Severity.Error);
+                    MudSnackbar.Add("Ungültiger Benutzername oder Passwort. Bitte versuchen Sie es erneut.", Severity.Error);
                 }
             }
         }

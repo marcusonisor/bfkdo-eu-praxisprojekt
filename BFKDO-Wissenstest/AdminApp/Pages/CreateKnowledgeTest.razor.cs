@@ -37,7 +37,7 @@ namespace AdminApp.Pages
 
                 else
                 {
-                    MudSnackbar.Add("Ungültiger Benutzername oder Passwort. Bitte versuchen Sie es erneut.", Severity.Error);
+                    MudSnackbar.Add("Bitte geben Sie ein Testjahr ein!", Severity.Error);
                 }
             }
         }
