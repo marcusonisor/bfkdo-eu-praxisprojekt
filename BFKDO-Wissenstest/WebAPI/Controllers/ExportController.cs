@@ -1,14 +1,8 @@
-﻿using Common.Model;
-using Database;
-using Database.Tables;
+﻿using Database;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SharpDocx;
-using Spire.Barcode;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
 using WebAPI.Identity;
 using WebAPI.Models;
 

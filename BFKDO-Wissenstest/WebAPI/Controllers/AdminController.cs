@@ -1,20 +1,16 @@
 ﻿using Common.Model;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Spire.Barcode;
-using WebAPI.Identity;
-using System.Drawing.Imaging;
-using System.Drawing;
 using Database.Tables;
 using Database;
 using Microsoft.EntityFrameworkCore;
+using QRCoder;
 
 namespace WebAPI.Controllers
 {
     /// <summary>
     /// Controller zuständig für alle Aktionen eines authentifizierten Admins
     /// </summary>
-    [Authorize(Policy = Identities.AdminPolicyName)]
+    ///[Authorize(Policy = Identities.AdminPolicyName)]
     public class AdminController : ControllerBase
     {
         private readonly BfkdoDbContext _databaseContext;
@@ -94,22 +90,25 @@ namespace WebAPI.Controllers
 
             if (testPersonPassword!="")
             {
-                BarcodeSettings settings = new BarcodeSettings();
-                settings.Data2D = sybosId+"\n"+testPersonPassword;
-                settings.Data = settings.Data2D = sybosId+"\n"+testPersonPassword;
-                settings.Type = BarCodeType.QRCode;
-                settings.ShowText=false;
-                settings.QRCodeDataMode = QRCodeDataMode.Auto;
-                settings.X = 1.0f;
-                settings.QRCodeECL = QRCodeECL.H;
+                QRCodeData qrCodeData;
+                using (QRCodeGenerator qrGenerator = new QRCodeGenerator())
+                {
+                    string credentials = sybosId+"\n"+testPersonPassword;
+                    qrCodeData = qrGenerator.CreateQrCode(credentials, QRCodeGenerator.ECCLevel.Q);
+                }
 
-                BarCodeGenerator generator = new BarCodeGenerator(settings);
-                Image image = generator.GenerateImage();
+                // Image Format
+                var imgType = Base64QRCode.ImageType.Png;
+
+                var qrCode = new Base64QRCode(qrCodeData);
+                //Base64 Format
+                string qrCodeImageAsBase64 = qrCode.GetGraphic(20, SixLabors.ImageSharp.Color.Black, SixLabors.ImageSharp.Color.White, true, imgType);
+
 
                 return Task.FromResult<ActionResult>(Ok(new QRCodeModel()
                 {
                     SybosId = sybosId,
-                    QRCodeBytes=ConvertImageToBase64(image)
+                    QRCodeBytes=qrCodeImageAsBase64
 
                 }));
             }
@@ -119,23 +118,6 @@ namespace WebAPI.Controllers
             }
 
         }
-
-        /// <summary>
-        ///     Konvertierung des QR-Code in Base64-String.
-        /// </summary>
-        /// <param name="image">Bild</param>
-        /// <returns>QR-Code als Base64-String</returns>
-        private string ConvertImageToBase64(Image image)
-        {
-            MemoryStream memoryStream = new MemoryStream();
-            image.Save(memoryStream, ImageFormat.Png);
-            byte[] imageBytes = memoryStream.ToArray();
-
-            string base64String = Convert.ToBase64String(imageBytes);
-
-            return base64String;
-        }
-
         /// <summary>
         ///     Passwort zu SybosId aus Datenbank holen.
         /// </summary>
