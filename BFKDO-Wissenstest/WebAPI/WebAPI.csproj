@@ -8,28 +8,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\ExportTemplates\evaluator-export.cs.docx" />
-    <Content Remove="wwwroot\ExportTemplates\participant-export.cs.docx" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="FreeSpire.Barcode" Version="6.6.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="SharpDocx" Version="2.4.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Database\Database.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="wwwroot\ExportTemplates\evaluator-export.cs.docx" />
-    <None Include="wwwroot\ExportTemplates\participant-export.cs.docx" />
   </ItemGroup>
 
 </Project>

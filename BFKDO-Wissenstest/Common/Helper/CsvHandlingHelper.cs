@@ -10,14 +10,14 @@ namespace Common.Helper
     /// </summary>
     public class CsvHandlingHelper
     {
-        private static readonly CsvConfiguration _configComma = new CsvConfiguration(CultureInfo.InvariantCulture)
+        private static readonly CsvConfiguration _configComma = new CsvConfiguration(CultureInfo.CurrentCulture)
         {
             NewLine = Environment.NewLine,
             Delimiter = ",",
             HeaderValidated = null
         };
 
-        private static readonly CsvConfiguration _configSemiColon = new CsvConfiguration(CultureInfo.InvariantCulture)
+        private static readonly CsvConfiguration _configSemiColon = new CsvConfiguration(CultureInfo.CurrentCulture)
         {
             NewLine = Environment.NewLine,
             Delimiter= ";",
@@ -58,7 +58,7 @@ namespace Common.Helper
         {
             var list = Enumerable.Empty<T>();
             var stream = new MemoryStream(data);
-            using (var streamreader = new StreamReader(stream))
+            using (var streamreader = new StreamReader(stream,Encoding.Latin1))
             using (var csv = new CsvReader(streamreader, config))
             {
                 try

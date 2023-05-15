@@ -124,7 +124,7 @@ namespace WebAPI.Controllers
 
         [Route("api/knowledgetest/ImportRegistrations")]
         [HttpPost]
-        public ActionResult ImportRegistrations(ModelImportData data)
+        public ActionResult ImportRegistrations([FromBody] ModelImportData data)
         {
             var registrations = CsvHandlingHelper.GetDataFromCsvByteArray<CsvRegistrationModel>(data.CsvData);
             var levels = _dbContext.TableKnowledgeLevels.ToList();
@@ -162,7 +162,7 @@ namespace WebAPI.Controllers
 
             }
 
-            return Ok();
+            return Ok(true);
         }
 
         /// <summary>
@@ -183,7 +183,7 @@ namespace WebAPI.Controllers
         /// <returns>Id der Testperson.</returns>
         private int CreateOrGetTestPerson(CsvRegistrationModel registration)
         {
-            var testperson = _dbContext.TableTestpersons.FirstOrDefault(t => t.Id == registration.SybosId);
+            var testperson = _dbContext.TableTestpersons.FirstOrDefault(t => t.SybosId == registration.SybosId);
             if (testperson == null)
             {
                 testperson = new TableTestperson()
@@ -191,7 +191,7 @@ namespace WebAPI.Controllers
                     FireDepartmentBranch = registration.Station,
                     FirstName = registration.FirstName,
                     LastName = registration.LastName,
-                    Id = registration.SybosId
+                    SybosId = registration.SybosId
                 };
                 _dbContext.TableTestpersons.Add(testperson);
                 _dbContext.SaveChanges();
