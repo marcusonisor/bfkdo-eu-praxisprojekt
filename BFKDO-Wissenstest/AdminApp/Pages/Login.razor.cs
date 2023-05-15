@@ -18,10 +18,14 @@ namespace AdminApp.Pages
         public AuthService AuthService { get; set; } = null!;
 
         /// <summary>
-        ///     Für den Login benötigte Properties: Email und Passwort.
+        ///     Email Addresse.
         /// </summary>
-        public string Email { get; set; }
-        public string Password { get; set; }
+        public string Email { get; set; } = string.Empty;
+
+        /// <summary>
+        ///     Passwort.
+        /// </summary>
+        public string Password { get; set; } = string.Empty;
 
         /// <summary>
         ///     Loginfunktion.
