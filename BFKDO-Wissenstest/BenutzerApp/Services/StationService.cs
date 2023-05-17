@@ -15,9 +15,9 @@ namespace BenutzerApp.Services
         /// Konstruktor des StationsService.
         /// </summary>
         /// <param name="client">HTTP Client.</param>
-        /// <param name="storageService">SpeicherService.</param>
+        /// <param name="authStateService">Authentication Status Service.</param>
         /// <param name="navigationManager">Navigation Manager.</param>
-        public StationService(HttpClient client, ISyncLocalStorageService storageService,NavigationManager navigationManager) : base(client,storageService, navigationManager)
+        public StationService(HttpClient client, AuthenticationStateService authStateService, NavigationManager navigationManager) : base(client, authStateService, navigationManager)
         {
         }
 

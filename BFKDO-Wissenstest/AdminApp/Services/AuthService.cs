@@ -15,9 +15,9 @@ namespace AdminApp.Services
         /// Konstruktor des Services.
         /// </summary>
         /// <param name="client">HTTP Client.</param>
-        /// <param name="storageService">SpeicherService.</param>
+        /// <param name="authStateService">Authentication Status Service.</param>
         /// <param name="navigationManager">Navigation.</param>
-        public AuthService(HttpClient client, ISyncLocalStorageService storageService, NavigationManager navigationManager) : base(client,storageService,navigationManager)
+        public AuthService(HttpClient client, AuthenticationStateService authStateService, NavigationManager navigationManager) : base(client, authStateService, navigationManager)
         {
         }
 
@@ -31,7 +31,7 @@ namespace AdminApp.Services
 
             if (result.RequestEnum == EnumHttpRequest.Success)
             {
-                AddJwtToken(result.Result.Token);
+                _authStateService.AddJwtToken(result.Result.Token);
             }
 
             return result;

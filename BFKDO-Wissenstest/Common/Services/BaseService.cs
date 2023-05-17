@@ -13,20 +13,23 @@ namespace Common.Services
     {
         private readonly HttpClient _httpClient;
 
-        private readonly ISyncLocalStorageService _localStorage;
-
         private readonly NavigationManager _navigationManager;
+
+        /// <summary>
+        ///     Authentication State Service.
+        /// </summary>
+        protected readonly AuthenticationStateService _authStateService;
 
         /// <summary>
         ///     Konstruktor des Base Services.
         /// </summary>
         /// <param name="client">HTTP Client.</param>
-        /// <param name="localStorage">Local Storage.</param>
+        /// <param name="authStateService">Authentication State Service.</param>
         /// <param name="navigationManager">Navigation.</param>
-        public BaseService(HttpClient client, ISyncLocalStorageService localStorage,NavigationManager navigationManager)
+        public BaseService(HttpClient client, AuthenticationStateService authStateService, NavigationManager navigationManager)
         {
             _httpClient = client;
-            _localStorage = localStorage;
+            _authStateService = authStateService;
             _navigationManager = navigationManager;
         }
 
@@ -36,21 +39,12 @@ namespace Common.Services
         /// <returns></returns>
         private void AddAuthentication()
         {
-            var token = _localStorage.GetItem<string>("jwt");
+            var token = _authStateService.GetJwtToken();
 
             if (!string.IsNullOrEmpty(token))
             {
                 _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
             }
-        }
-
-        /// <summary>
-        ///     Hinzufügen des JWT Tokens in den Storage.
-        /// </summary>
-        /// <param name="token"></param>
-        public void AddJwtToken(string token)
-        {
-            _localStorage.SetItem("jwt", token);
         }
 
         /// <summary>
@@ -172,7 +166,7 @@ namespace Common.Services
         {
             if (result.RequestEnum is EnumHttpRequest.Forbidden or EnumHttpRequest.Unauthorized)
             {
-                _localStorage.RemoveItem("jwt");
+                _authStateService.DeleteJwtToken();
                 _navigationManager.NavigateTo("/");
             }
         }
@@ -226,7 +220,7 @@ namespace Common.Services
                 return new HttpRequestResult<T>
                 {
                     RequestEnum = EnumHttpRequest.UnknownError,
-                    ErrorMessage = ""
+                    ErrorMessage = "Fehler beim Lesen/Parsen des Ergebnisses."
                 };
             }
 

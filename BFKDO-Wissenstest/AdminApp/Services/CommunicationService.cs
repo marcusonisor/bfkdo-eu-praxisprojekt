@@ -16,9 +16,9 @@ namespace AdminApp.Services
         ///     Konstruktor des Kommunikationservices.
         /// </summary>
         /// <param name="client">HTTP Client.</param>
-        /// <param name="storageService">Speicher Service.</param>
+        /// <param name="authStateService">Authentication State Service.</param>
         /// <param name="navigationManager">Navigation.</param>
-        public CommunicationService(HttpClient client, ISyncLocalStorageService storageService, NavigationManager navigationManager) : base(client, storageService, navigationManager)
+        public CommunicationService(HttpClient client, AuthenticationStateService authStateService, NavigationManager navigationManager) : base(client, authStateService, navigationManager)
         {
         }
 

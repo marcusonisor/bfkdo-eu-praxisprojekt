@@ -17,10 +17,10 @@ namespace AdminApp.Services
         /// Konstruktor des Services.
         /// </summary>
         /// <param name="client"></param>
-        /// <param name="storageService"></param>
+        /// <param name="authStateService"></param>
         /// <param name="navigationManager"></param>
         /// <param name="jsRuntime"></param>
-        public ExportService(HttpClient client, ISyncLocalStorageService storageService, NavigationManager navigationManager, IJSRuntime jsRuntime) : base(client, storageService, navigationManager)
+        public ExportService(HttpClient client, AuthenticationStateService authStateService, NavigationManager navigationManager, IJSRuntime jsRuntime) : base(client, authStateService, navigationManager)
         {
             _jsRuntime = jsRuntime;
         }

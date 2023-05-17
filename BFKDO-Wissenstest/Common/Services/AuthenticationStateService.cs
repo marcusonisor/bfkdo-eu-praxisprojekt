@@ -1,10 +1,5 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Common.Services
 {
@@ -29,15 +24,48 @@ namespace Common.Services
         }
 
         /// <summary>
-        ///     Checkt, ob eine Authentifizierung vorhanden ist.
+        ///     Weiterleitung bei fehlender Authentifizierung.
         /// </summary>
-        /// <returns>Ob Authentifizierungs Token vorhanden ist.</returns>
         public void CheckJwtAuthentication()
         {
-            if (string.IsNullOrWhiteSpace(_syncLocalStorageService.GetItem<string>("jwt")))
+            if (!IsLoggedIn())
             {
                 _navigationManager.NavigateTo("/");
             }
+        }
+
+        /// <summary>
+        ///     Hinzufügen des Tokens.
+        /// </summary>
+        /// <param name="token">Jwt Token.</param>
+        public void AddJwtToken(string token)
+        {
+            _syncLocalStorageService.SetItem("jwt", token);
+        }
+
+        /// <summary>
+        ///     Abrufen des Tokens.
+        /// </summary>
+        public string GetJwtToken()
+        {
+            return _syncLocalStorageService.GetItem<string>("jwt");
+        }
+
+        /// <summary>
+        ///     Entfernen des Tokens.
+        /// </summary>
+        public void DeleteJwtToken()
+        {
+            _syncLocalStorageService.RemoveItem("jwt");
+        }
+
+        /// <summary>
+        ///     Checkt, ob der Benutzer eingeloggt ist.
+        /// </summary>
+        /// <returns>Ob ein gültiger JWT Token hinterlegt ist.</returns>
+        public bool IsLoggedIn()
+        {
+            return string.IsNullOrWhiteSpace(_syncLocalStorageService.GetItem<string>("jwt"));
         }
     }
 }
