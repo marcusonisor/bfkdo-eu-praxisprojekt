@@ -76,16 +76,20 @@ namespace Database
         /// <returns></returns>
         public async Task CreateInitialFillUp()
         {
-            if (Database.EnsureDeleted())
+            Database.EnsureDeleted();
+            Database.EnsureCreated();
+
+            TableAdministrators.Add(new()
             {
-                Database.EnsureCreated();
-            }
+                Email = "admin@bfkdo.com",
+                Password = "37a8eec1ce19687d132fe29051dca629d164e2c4958ba141d5f4133a33f0688f"
+            });
 
             for (int i = 1; i < 7; i++)
             {
                 TableKnowledgeLevels.Add(new TableKnowledgeLevel()
                 {
-                    Description = $"Stufe {i}"
+                    Description = $"Wissenstest Stufe {i}"
                 });
             }
 
@@ -101,7 +105,7 @@ namespace Database
 
             foreach (var level in TableKnowledgeLevels.ToList())
             {
-                var neededsections = _testSections.Where(t => t.Item2.Select(t => $"Stufe {t}").Contains(level.Description)).ToList();
+                var neededsections = _testSections.Where(t => t.Item2.Select(t => $"Wissenstest Stufe {t}").Contains(level.Description)).ToList();
                 foreach (var section in neededsections)
                 {
                     var tablesection = TableKnowledgeSections.FirstOrDefault(t => t.Description == section.Item1);
@@ -110,9 +114,21 @@ namespace Database
                         TableEvaluationCriterias.Add(new()
                         {
                             KnowledgeLevel = level,
-                            KnowledgeSection = tablesection
+                            KnowledgeSection = tablesection,
                         });
                     }
+                }
+            }
+
+            await SaveChangesAsync();
+
+            foreach (var section in TableKnowledgeSections.ToList())
+            {
+                var criterias = TableEvaluationCriterias.Include(t => t.KnowledgeSection).Where(t => t.KnowledgeSectionId == section.Id).ToList();
+                for (int i = 0; i < criterias.Count(); i++)
+                {
+                    var criteria = criterias[i];
+                    criteria.CriteriaName = criteria.KnowledgeSection.Description + $" {i + 1}";
                 }
             }
 
