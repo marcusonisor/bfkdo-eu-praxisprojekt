@@ -10,11 +10,11 @@
         /// </summary>
         /// <param name="designation"></param>
         /// <param name="password"></param>
-        public EvaluatorCredentialsExportModel(string designation, string password/*, Stream qr*/)
+        public EvaluatorCredentialsExportModel(string designation, string password, string qr)
         {
             Designation = designation;
             Password = password;
-            //QR = qr;
+            QR = qr;
         }
 
         /// <summary>
@@ -27,6 +27,6 @@
         /// </summary>
         public string Password { get; }
 
-        //public Stream QR { get; }
+        public string QR { get; }
     }
 }

@@ -65,7 +65,7 @@ namespace Common.Services
         /// <returns>Ob ein gültiger JWT Token hinterlegt ist.</returns>
         public bool IsLoggedIn()
         {
-            return string.IsNullOrWhiteSpace(_syncLocalStorageService.GetItem<string>("jwt"));
+            return !string.IsNullOrWhiteSpace(_syncLocalStorageService.GetItem<string>("jwt"));
         }
     }
 }

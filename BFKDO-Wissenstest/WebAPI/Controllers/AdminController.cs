@@ -107,12 +107,7 @@ namespace WebAPI.Controllers
                 string qrCodeImageAsBase64 = qrCode.GetGraphic(20, SixLabors.ImageSharp.Color.Black, SixLabors.ImageSharp.Color.White, true, imgType);
 
 
-                return Task.FromResult<ActionResult>(Ok(new QRCodeModel()
-                {
-                    SybosId = sybosId,
-                    QRCodeBytes=qrCodeImageAsBase64
-
-                }));
+                return Task.FromResult<ActionResult>(Ok(qrCodeImageAsBase64));
             }
             else
             {

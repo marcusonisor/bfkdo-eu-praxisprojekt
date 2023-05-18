@@ -1,7 +1,9 @@
 ﻿using Database;
+using Database.Tables;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using QRCoder;
 using SharpDocx;
 using WebAPI.Identity;
 using WebAPI.Models;
@@ -46,10 +48,9 @@ namespace WebAPI.Controllers
 
             try
             {
-                var entity = _databaseContext.TableKnowledgeTests.SingleAsync(e => e.Id == id);
-                // var qr = GenerateEvaluatorQR(entity.Result.EvaluatorPassword);
+                var entity = _databaseContext.TableKnowledgeTests.Single(e => e.Id == id);
 
-                EvaluatorCredentialsExportModel model = new(entity.Result.Designation, entity.Result.EvaluatorPassword);
+                EvaluatorCredentialsExportModel model = new(entity.Designation, entity.EvaluatorPassword, BuildEvaluatorQR(entity));
 
                 var exportStream = DocumentFactory.Create(templatePath, model).Generate();
 
@@ -86,7 +87,7 @@ namespace WebAPI.Controllers
 
                 foreach (var participant in participants)
                 {
-                    credentials.Add(new ParticipantCredentialsExportModel(participant.SybosId.ToString(), participant.Password));
+                    credentials.Add(new ParticipantCredentialsExportModel(participant.SybosId.ToString(), participant.Password, BuildParticipantQR(participant)));
                 }
 
                 ParticipantsCredentialsExportModel model = new(credentials);
@@ -101,5 +102,38 @@ namespace WebAPI.Controllers
                 return null; // TODO: Return error!
             }
         }
+        
+        private string BuildEvaluatorQR(TableKnowledgeTest knowledgeTest)
+        {
+            QRCodeData qrData;
+
+            using (QRCodeGenerator generator = new())
+            {
+                string credentials = knowledgeTest.EvaluatorPassword;
+                qrData = generator.CreateQrCode(credentials, QRCodeGenerator.ECCLevel.Q);
+            }
+
+            var imgType = Base64QRCode.ImageType.Png;
+            var qrCode = new Base64QRCode(qrData);
+
+            return qrCode.GetGraphic(20, SixLabors.ImageSharp.Color.Black, SixLabors.ImageSharp.Color.White, true, imgType);
+        }
+
+        private string BuildParticipantQR(TableTestperson participant)
+        {
+            QRCodeData qrData;
+
+            using (QRCodeGenerator generator = new())
+            {
+                string credentials = participant.SybosId + "\n" + participant.Password;
+                qrData = generator.CreateQrCode(credentials, QRCodeGenerator.ECCLevel.Q);
+            }
+
+            var imgType = Base64QRCode.ImageType.Png;
+            var qrCode = new Base64QRCode(qrData);
+
+            return qrCode.GetGraphic(20, SixLabors.ImageSharp.Color.Black, SixLabors.ImageSharp.Color.White, true, imgType);
+        }
+
     }
 }

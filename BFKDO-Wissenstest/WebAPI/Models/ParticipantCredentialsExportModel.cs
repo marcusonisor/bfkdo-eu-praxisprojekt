@@ -10,11 +10,11 @@
         /// </summary>
         /// <param name="sybosId"></param>
         /// <param name="password"></param>
-        public ParticipantCredentialsExportModel(string sybosId, string password/*, Stream qr*/)
+        public ParticipantCredentialsExportModel(string sybosId, string password, string qr)
         {
             SybosID = sybosId;
             Password = password;
-            //QR = qr;
+            QR = qr;
         }
 
         /// <summary>
@@ -27,6 +27,6 @@
         /// </summary>
         public string Password { get; }
 
-        //public Stream QR { get; }
+        public string QR { get; }
     }
 }
