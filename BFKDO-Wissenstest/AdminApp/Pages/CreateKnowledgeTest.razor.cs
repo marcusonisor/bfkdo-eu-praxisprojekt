@@ -35,6 +35,11 @@ namespace AdminApp.Pages
                     NavigationManager.NavigateTo($"/importtestpersons/{response.Result}");
                 }
 
+                else if(response.RequestEnum is EnumHttpRequest.BadRequest)
+                {
+                    MudSnackbar.Add(response.ErrorMessage, Severity.Error);
+                }
+
                 else
                 {
                     MudSnackbar.Add("Bitte geben Sie ein Testjahr ein!", Severity.Error);

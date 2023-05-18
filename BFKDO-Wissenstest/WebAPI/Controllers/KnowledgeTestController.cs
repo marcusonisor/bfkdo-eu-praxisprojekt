@@ -49,7 +49,7 @@ namespace WebAPI.Controllers
             if (id < 1)
             {
                 _logger.LogError($"Requested Knowledgetest with Id {id}, which is not an valid Id!");
-                return BadRequest();
+                return BadRequest($"Wissenstest mit der Id {id} ist nicht gültig und konnte nicht gefunden werden!");
             }
 
             var knowledgetest = _dbContext.TableKnowledgeTests
@@ -59,7 +59,7 @@ namespace WebAPI.Controllers
             if (knowledgetest == null)
             {
                 _logger.LogError($"Requested Knowledgetest with Id {id} was not found in the Database!", DateTime.Now.ToLongTimeString());
-                return BadRequest();
+                return BadRequest($"Wissenstest mit der Id {id} konnte nicht gefunden werden!");
             }
 
             var model = new ModelKnowledgeTestDetails()
@@ -231,9 +231,13 @@ namespace WebAPI.Controllers
 
                 return Ok(knowledgetest.Id);
             }
+            catch (DbUpdateException)
+            {
+                return BadRequest($"Wissenstest {designation} konnte nicht angelegt werden, da dieser bereits in der Datenbank gespeichert ist!");
+            }
             catch (Exception)
             {
-                return BadRequest();
+                return BadRequest("{");
             }
         }
     }

@@ -189,6 +189,16 @@ namespace Common.Services
 
             if (!response.IsSuccessStatusCode)
             {
+                if(response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    var badrequestresult = await response.Content.ReadAsStringAsync();
+                    return new HttpRequestResult<T>
+                    {
+                        RequestEnum = EnumHttpRequest.BadRequest,
+                        ErrorMessage = badrequestresult
+                    };
+                }
+
                 if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
                     return new HttpRequestResult<T>

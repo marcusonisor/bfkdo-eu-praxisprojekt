@@ -18,6 +18,10 @@
         /// </summary>
         Forbidden,
         /// <summary>
+        ///     Schlechte Anfrage. Fehlermeldung auslesen.
+        /// </summary>
+        BadRequest,
+        /// <summary>
         ///     Unbekannter Error.
         /// </summary>
         UnknownError
