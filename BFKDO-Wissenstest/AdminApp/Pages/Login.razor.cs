@@ -3,6 +3,7 @@ using Common.Model;
 using AdminApp.Services;
 using MudBlazor;
 using Common.Enums;
+using Common.Services;
 
 namespace AdminApp.Pages
 {
@@ -11,6 +12,24 @@ namespace AdminApp.Pages
     /// </summary>
     public partial class Login
     {
+        /// <summary>
+        ///     Initialisierungmethode.
+        /// </summary>
+        protected override void OnInitialized()
+        {
+            if (AuthenticationStateService.IsLoggedIn())
+            {
+                NavigationManager.NavigateTo("/dashboard");
+            }
+            base.OnInitialized();
+        }
+
+        /// <summary>
+        ///     Authentifizierungstatusservice.
+        /// </summary>
+        [Inject]
+        public AuthenticationStateService AuthenticationStateService { get; set; } = null!;
+
         /// <summary>
         ///     Authentication Service.
         /// </summary>
