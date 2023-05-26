@@ -4,7 +4,7 @@
 @inject AuthenticationStateService AuthenticationStateService;
 @inject NavigationManager Navigation;
 
-<MudThemeProvider @bind-IsDarkMode="_isDarkMode" />
+<MudThemeProvider Theme="_myTheme" @bind-IsDarkMode="_isDarkMode" />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
@@ -30,8 +30,25 @@
 </MudLayout>
 
 @code{
+    private MudTheme _myTheme = new();
     private bool _isDarkMode;
     private string Icon => _isDarkMode ? Icons.Material.Filled.WbSunny : Icons.Material.Filled.ModeNight;
+
+    protected override void OnInitialized()
+    {
+        _myTheme = new MudTheme()
+            {
+                Palette = new PaletteLight()
+                {
+                    Primary = "#75ff9f"
+                },
+                PaletteDark = new PaletteDark()
+                {
+                    Primary = "#004715"
+                }
+            };
+        base.OnInitialized();
+    }
 
     private void Logout()
     {
