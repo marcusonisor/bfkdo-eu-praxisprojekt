@@ -33,14 +33,34 @@ namespace AdminApp.Pages
         private List<ModelKnowledgeTest> _knowledgetests = new();
 
         /// <summary>
+        ///     Boolean für gestreifte Liste
+        /// </summary>
+        public bool Striped { get; set; } = true;
+
+        /// <summary>
+        ///     Property zum Darstellen dass noch etwas geladen wird.
+        /// </summary>
+        public bool DataLoaded { get; set; }
+
+        /// <summary>
+        ///     
+        /// </summary>
+        public bool IsVisible { get; set; }
+
+        /// <summary>
         ///     Initialisierungsmethode.
         /// </summary>
         /// <returns></returns>
         protected override async Task OnInitializedAsync()
         {
+            IsVisible = true;
             base.OnInitialized();
             var response = await Service.GetKnowledgeTests();
             _knowledgetests = response.Result;
+            IsVisible = false;
+            DataLoaded = true;
+
+            StateHasChanged();
         }
 
         /// <summary>

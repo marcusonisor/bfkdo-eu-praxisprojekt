@@ -4,7 +4,7 @@ using Common.Enums;
 using MudBlazor;
 
 namespace AdminApp.Pages
-{   
+{
     /// <summary>
     ///     Erstellen des Wissenstest.
     /// </summary>
@@ -35,15 +35,14 @@ namespace AdminApp.Pages
                     NavigationManager.NavigateTo($"/importtestpersons/{response.Result}");
                 }
 
-                else if(response.RequestEnum is EnumHttpRequest.BadRequest)
+                else if (response.RequestEnum is EnumHttpRequest.BadRequest)
                 {
                     MudSnackbar.Add(response.ErrorMessage, Severity.Error);
                 }
-
-                else
-                {
-                    MudSnackbar.Add("Bitte geben Sie ein Testjahr ein!", Severity.Error);
-                }
+            }
+            else
+            {
+                MudSnackbar.Add("Bitte geben Sie ein Testjahr ein!", Severity.Error);
             }
         }
     }
