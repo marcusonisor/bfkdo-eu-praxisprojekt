@@ -6,14 +6,12 @@
 
 <MudLayout>
     <MudAppBar Color="Color.Dark">
-        <MudText Typo="Typo.h4" aria-label="Seitentitel" class="m-0">BFKDO Wissenstest - Admin App</MudText>
+        <MudText Typo="Typo.h4" aria-label="Seitentitel" class="m-0"></MudText>
         <MudSpacer />
         <MudIconButton Icon="@Icon" Color="Color.Inherit" OnClick="() => _isDarkMode = !_isDarkMode" />
     </MudAppBar>
     <MudMainContent>
-        <div class="px-4 py-2">
-            @Body
-        </div>
+        @Body
     </MudMainContent>
 </MudLayout>
 

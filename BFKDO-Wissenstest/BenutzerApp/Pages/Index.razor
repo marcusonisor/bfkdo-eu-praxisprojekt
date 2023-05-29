@@ -3,34 +3,22 @@
 @using Common.Model;
 @inject AuthService AuthService
 
-<PageTitle>Index</PageTitle>
+@*<PageTitle>Index</PageTitle>*@
 
-<h1>Hello, world!</h1>
+@*<MudButton 
+    Variant="Variant.Filled" 
+    Href="/authparticipant">
+    Testteilnehmer
+</MudButton>*@
 
-Welcome to your new app.
+<MudButton 
+    Variant="Variant.Filled" 
+    Href="/authevaluator">
+    Testbewerter
+</MudButton>
 
-<MudButton Variant="Variant.Filled" Href="/stationchange">Station auswählen</MudButton>
 
-<ScanHelper QRCodeScanned="QrCodeReceived"/>
-@if(toktok != string.Empty)
-{
-    <h1>@toktok</h1>
-}
+@*<ScanHelper QRCodeScanned="QrCodeReceived"/>*@
 
 @code{
-    public string toktok = string.Empty;
-
-    private void QrCodeReceived(string arg)
-    {
-        toktok = arg;
-        StateHasChanged();
-    }
-
-    //protected override async Task OnInitializedAsync()
-    //{
-    //    var response = await AuthService.AuthEvaluator(new ModelEvaluatorAuthData("default"));
-    //    toktok = response.Result.Token;
-
-    //    var response2 = await AuthService.AuthParticipant(new ModelParticipantAuthData(1, "default"));
-    //}
 }

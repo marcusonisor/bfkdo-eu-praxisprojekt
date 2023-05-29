@@ -1,86 +1,96 @@
-using AdminApp.Services;
+using BenutzerApp.Services;
 using Common.Enums;
 using Common.Model;
 using Common.Services;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
-namespace AdminApp.Pages
+namespace BenutzerApp.Pages.Auth
 {
     /// <summary>
     ///     Login Komponente.
     /// </summary>
-    public partial class Login
+    public partial class AuthEvaluator
     {
         /// <summary>
         ///     Initialisierungmethode.
         /// </summary>
         protected override void OnInitialized()
         {
-            if (AuthenticationStateService.IsLoggedIn())
-            {
-                NavigationManager.NavigateTo("/dashboard");
-            }
+            //if (AuthenticationStateService.IsLoggedIn())
+            //{
+            //    NavigationManager.NavigateTo("/dashboard");
+            //}
+
             base.OnInitialized();
         }
 
-        /// <summary>
-        ///     Authentifizierungstatusservice.
-        /// </summary>
+
         [Inject]
         public AuthenticationStateService AuthenticationStateService { get; set; } = null!;
 
-        /// <summary>
-        ///     Authentication Service.
-        /// </summary>
+
         [Inject]
         public AuthService AuthService { get; set; } = null!;
-
-        /// <summary>
-        ///     Email Addresse.
-        /// </summary>
-        public string Email { get; set; } = string.Empty;
 
         /// <summary>
         ///     Passwort.
         /// </summary>
         public string Password { get; set; } = string.Empty;
 
-        /// <summary>
-        /// 
-        /// </summary>
+
         public bool Processing { get; set; } = false;
 
-        /// <summary>
-        ///     Loginfunktion.
-        /// </summary>
-        ///
-        public async void LoginUser()
+
+        public async void Login()
         {
-            if (!string.IsNullOrEmpty(Email) && !string.IsNullOrEmpty(Password))
+            if (!string.IsNullOrEmpty(Password))
             {
                 Processing = true;
-                var response = await AuthService.Auth(new ModelAdminAuthData(Email, Password));
+                var response = await AuthService.AuthEvaluator(new ModelEvaluatorAuthData(Password));
                 Processing = false;
+
                 StateHasChanged();
 
                 if (response.RequestEnum is EnumHttpRequest.Success)
                 {
-                    NavigationManager.NavigateTo("/dashboard");
+                    NavigationManager.NavigateTo("/stationchange");
                 }
-
                 else
                 {
-                    MudSnackbar.Add("Ungültiger Benutzername oder Passwort. Bitte versuchen Sie es erneut.", Severity.Error);
+                    MudSnackbar.Add("Ungültiges Passwort! Bitte versuchen Sie es erneut!", Severity.Error);
                 }
 
             }
             else
             {
-                MudSnackbar.Add("Ungültiger Benutzername oder Passwort. Bitte versuchen Sie es erneut.", Severity.Error);
+                MudSnackbar.Add("Ungültiges Passwort! Bitte versuchen Sie es erneut!", Severity.Error);
             }
         }
 
+        private async void QRScanned(string args)
+        {
+            try
+            {
+                Processing = true;
+                var response = await AuthService.AuthEvaluator(new ModelEvaluatorAuthData(args));
+                Processing = false;
+
+                if (response.RequestEnum is EnumHttpRequest.Success)
+                {
+                    NavigationManager.NavigateTo("/stationchange");
+                }
+                else
+                {
+                    MudSnackbar.Add("Ungültiger QR-Code! Bitte versuchen Sie es erneut!", Severity.Error);
+                }
+            }
+            catch (Exception e)
+            {
+                Processing = false;
+                MudSnackbar.Add("Ungültiger QR-Code! Bitte versuchen Sie es erneut!", Severity.Error);
+            }
+        }
 
         /// <summary>
         ///     Properties für die Passwortanzeige-Funktion.

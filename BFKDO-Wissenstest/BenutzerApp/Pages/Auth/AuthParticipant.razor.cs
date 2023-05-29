@@ -1,83 +1,100 @@
-using AdminApp.Services;
+using BenutzerApp.Services;
 using Common.Enums;
 using Common.Model;
 using Common.Services;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
-namespace AdminApp.Pages
+namespace BenutzerApp.Pages.Auth
 {
     /// <summary>
     ///     Login Komponente.
     /// </summary>
-    public partial class Login
+    public partial class AuthParticipant
     {
         /// <summary>
         ///     Initialisierungmethode.
         /// </summary>
         protected override void OnInitialized()
         {
-            if (AuthenticationStateService.IsLoggedIn())
-            {
-                NavigationManager.NavigateTo("/dashboard");
-            }
+            //if (AuthenticationStateService.IsLoggedIn())
+            //{
+            //    NavigationManager.NavigateTo("/dashboard");
+            //}
+
             base.OnInitialized();
         }
 
-        /// <summary>
-        ///     Authentifizierungstatusservice.
-        /// </summary>
+
         [Inject]
         public AuthenticationStateService AuthenticationStateService { get; set; } = null!;
 
-        /// <summary>
-        ///     Authentication Service.
-        /// </summary>
+
         [Inject]
         public AuthService AuthService { get; set; } = null!;
 
         /// <summary>
-        ///     Email Addresse.
+        /// SybosID
         /// </summary>
-        public string Email { get; set; } = string.Empty;
+        public string SybosID { get; set; } = string.Empty;
 
         /// <summary>
         ///     Passwort.
         /// </summary>
         public string Password { get; set; } = string.Empty;
 
-        /// <summary>
-        /// 
-        /// </summary>
+
         public bool Processing { get; set; } = false;
 
-        /// <summary>
-        ///     Loginfunktion.
-        /// </summary>
-        ///
-        public async void LoginUser()
+
+        public async void Login()
         {
-            if (!string.IsNullOrEmpty(Email) && !string.IsNullOrEmpty(Password))
+            if (!string.IsNullOrEmpty(SybosID) && !string.IsNullOrEmpty(Password))
             {
                 Processing = true;
-                var response = await AuthService.Auth(new ModelAdminAuthData(Email, Password));
+                var response = await AuthService.AuthParticipant(new ModelParticipantAuthData(int.Parse(SybosID), Password));
                 Processing = false;
+
                 StateHasChanged();
 
                 if (response.RequestEnum is EnumHttpRequest.Success)
                 {
-                    NavigationManager.NavigateTo("/dashboard");
+                    MudSnackbar.Add("SUCK", Severity.Success);
+                    //NavigationManager.NavigateTo("/");
                 }
-
                 else
                 {
-                    MudSnackbar.Add("Ungültiger Benutzername oder Passwort. Bitte versuchen Sie es erneut.", Severity.Error);
+                    MudSnackbar.Add("Ungültige SybosID oder Passwort! Bitte versuchen Sie es erneut!", Severity.Error);
                 }
 
             }
             else
             {
-                MudSnackbar.Add("Ungültiger Benutzername oder Passwort. Bitte versuchen Sie es erneut.", Severity.Error);
+                MudSnackbar.Add("Ungültige SybosID oder Passwort! Bitte versuchen Sie es erneut!", Severity.Error);
+            }
+        }
+
+        private async void QRScanned(string args)
+        {
+            var credentials = args.Split();
+            try
+            {
+                Processing = true;
+                var response = await AuthService.AuthParticipant(new ModelParticipantAuthData(int.Parse(credentials[0]), credentials[1]));
+                Processing = false;
+
+                if (response.RequestEnum is EnumHttpRequest.Success)
+                {
+                    MudSnackbar.Add("SUCK", Severity.Success);
+                }
+                else
+                {
+                    MudSnackbar.Add("Ungültiger QR-Code! Bitte versuchen Sie es erneut!", Severity.Error);
+                }
+            }
+            catch (Exception e)
+            {
+                MudSnackbar.Add("Ungültiger QR-Code! Bitte versuchen Sie es erneut!", Severity.Error);
             }
         }
 

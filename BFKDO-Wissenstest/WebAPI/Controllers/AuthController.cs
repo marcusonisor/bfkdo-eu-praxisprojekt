@@ -1,18 +1,16 @@
 ﻿namespace WebAPI.Controllers
 {
-    using Microsoft.AspNetCore.Mvc;
     using Common.Model;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Configuration;
     using Database;
+    using Database.Tables;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.IdentityModel.Tokens;
     using System.IdentityModel.Tokens.Jwt;
     using System.Security.Claims;
+    using System.Security.Cryptography;
     using System.Text;
     using WebAPI.Identity;
-    using Database.Tables;
-    using System.Xml;
-    using System.Security.Cryptography;
 
     /// <summary>
     /// Controller zuständig für die Authentifizierung aller Benuter.
@@ -50,7 +48,9 @@
 
             try
             {
-                TableAdministrator admin = _databaseContext.TableAdministrators.Where(entity => entity.Email == dto.Email).Single();
+                TableAdministrator admin = _databaseContext.TableAdministrators
+                    .Where(entity => entity.Email == dto.Email)
+                    .Single();
 
                 using (SHA256 sha256 = SHA256.Create())
                 {
@@ -117,7 +117,9 @@
         {
             try
             {
-                TableTestperson participant = _databaseContext.TableTestpersons.Where(entity => entity.Id == dto.SybosId).Single();
+                TableTestperson participant = _databaseContext.TableTestpersons
+                    .Where(entity => entity.SybosId == dto.SybosId)
+                    .Single();
 
                 if (dto.Password != participant.Password)
                 {
