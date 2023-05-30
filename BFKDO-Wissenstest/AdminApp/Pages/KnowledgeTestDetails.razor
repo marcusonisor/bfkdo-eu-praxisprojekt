@@ -4,9 +4,9 @@
 
 <MudStack Spacing="4">
     <MudStack Row Justify="Justify.Center" AlignItems="AlignItems.Center" Class="my-4" Spacing="4">
-        <h1 class="m-0" aria-label="Testjahr">Testjahr @Model.KnowledgeTestYear</h1>
-        <MudButton StartIcon="@Icons.Material.Filled.Edit" aria-label="Wissenstest bearbeiten" Color="Color.Primary" Variant="Variant.Filled">Wissenstest bearbeiten</MudButton>
-        <MudButton aria-label="Pdf exportieren" Color="Color.Error" StartIcon="@Icons.Material.Filled.PictureAsPdf" Variant="Variant.Filled">PDF exportieren</MudButton>
+        <h1 class="m-0" aria-label="Testbezeichnung">Testbezeichnung: @Model.KnowledgeTestYear</h1>
+        <MudButton aria-label="Bearbeiten" Color="Color.Primary" Variant="Variant.Filled" Style="border-radius: 20px; padding-left:20px; padding-right:20px;">Bearbeiten</MudButton>
+        <MudButton aria-label="PDF exportieren" Color="Color.Error" StartIcon="@Icons.Material.Filled.PictureAsPdf" Variant="Variant.Filled" Style="border-radius: 20px; padding-left:20px; padding-right:20px;">PDF exportieren</MudButton>
     </MudStack>
 
 
@@ -15,14 +15,14 @@
             <ToolBarContent>
                 <MudText Typo="Typo.h6">Anmeldungen</MudText>
                 <MudSpacer />
-                <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
-                              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                <MudTextField @bind-Value="_searchString" Placeholder="Suche" Adornment="Adornment.Start" Immediate="true"
+                              AdornmentIcon="@Icons.Material.Filled.Search" aria-label="Suche" IconSize="Size.Medium" Class="mt-0"></MudTextField>
             </ToolBarContent>
             <Columns>
                 <TemplateColumn Filterable="false" CellStyle="width:20px" HeaderStyle="width:20px">
                     <CellTemplate>
                         <MudStack>
-                            <MudIcon Style="border:3px solid black; border-radius:50%" Icon="@Icons.Material.Filled.Person" />
+                            <MudIcon Style="border:3px solid black; border-radius:50%" Icon="@Icons.Material.Filled.Person" Title="Personen Icon"/>
                         </MudStack>
                     </CellTemplate>
                 </TemplateColumn>
@@ -50,7 +50,7 @@
                                         </div>
                                     }
                                 </MudStack>
-                                <MudButton StartIcon="@Icons.Material.Filled.Edit" aria-label="@($"Bearbeite {item.Name}")" Size="Size.Medium" Variant="Variant.Filled" Color="Color.Primary">Bearbeiten</MudButton>
+                                <MudButton Style="border-radius: 20px; padding-left:20px; padding-right:20px;" aria-label="@($" Bearbeite {item.Name}")" Size="Size.Medium" Variant="Variant.Filled" Color="Color.Primary">Bearbeiten</MudButton>
                             }
                         </MudStack>
                     </CellTemplate>

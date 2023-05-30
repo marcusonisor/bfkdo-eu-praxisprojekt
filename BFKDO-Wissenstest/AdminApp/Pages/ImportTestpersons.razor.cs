@@ -33,6 +33,16 @@ namespace AdminApp.Pages
         public NavigationManager NavigationManager { get; set; } = null!;
 
         /// <summary>
+        ///     Daten geladen oder nicht.
+        /// </summary>
+        public bool DataLoaded { get; set; }
+
+        /// <summary>
+        ///     Ist Overlay sichtbar oder nicht.
+        /// </summary>
+        public bool IsVisible { get; set; }
+
+        /// <summary>
         /// Methode für den Upload von Files.
         /// </summary>
         /// <param name="file"></param>
@@ -41,10 +51,13 @@ namespace AdminApp.Pages
         {
             if (file != null)
             {
+                IsVisible = true;
                 var buffer = new byte[file.Size];
                 _ = await file.OpenReadStream(maxFileSize).ReadAsync(buffer);
                 var model = new ModelImportData() { CsvData=buffer, KnowledgeTestId=KnowledgeTestId};
                 var response = await Service.ImportRegistrations(model);
+                IsVisible = false;
+                DataLoaded = true;
 
                 if (response.RequestEnum is EnumHttpRequest.Success)
                 {
@@ -55,6 +68,23 @@ namespace AdminApp.Pages
                     MudSnackbar.Add("Import fehlgeschlagen! Bitte versuchen Sie es noch einmal.", Severity.Error);
                 }
             }
+        }
+
+        /// <summary>
+        ///     Löschen des Wissentest bei Abbruch
+        /// </summary>
+        /// <returns>Leeren Task.</returns>
+        private async Task AbortCreating()
+        {
+            var response = await Service.DeleteKnowledgeTest(KnowledgeTestId);
+            if(response.RequestEnum is EnumHttpRequest.Success)
+            {
+                NavigationManager.NavigateTo("/dashboard");
+            }
+            else
+            {
+                MudSnackbar.Add(response.ErrorMessage, Severity.Error);
+            }           
         }
     }
 }

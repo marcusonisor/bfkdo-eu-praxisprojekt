@@ -9,18 +9,16 @@
 <MudSnackbarProvider />
 
 <MudLayout>
-    <MudAppBar Color="Color.Dark">
-        @*HIER BILD EINFÜGEN -- ORDNER IN wwwroot ANLEGEN UND DORT BILD ABLEGEN
-        dann im Verzeichnis rechts Rechtsklick auf Bild -> Eigenschaften -> In Ausgabeverzeichnis kopieren: immer kopieren
-        *@
-        <MudText Typo="Typo.h4" aria-label="Seitentitel" class="m-0">BFKDO Wissenstest - Admin App</MudText>
+    <MudAppBar Color="Color.Tertiary" Elevation="0">
+        <MudImage Fluid="true" Src="/logos/bfkdoeu-logo.png" Width="300" Style="margin-top: 5px; margin-right:20px;" Alt="Bezirksfeuerwehrkommando Eisenstadt-Umgebung Logo" />
+        <MudImage Fluid="true" Src="/logos/fhb-logo-q.png" Width="300" Alt="FH Burgenland Logo"/>
         <MudSpacer />
         @if (AuthenticationStateService.IsLoggedIn())
         {
-            <MudIconButton Icon="@Icons.Material.Filled.House" Href="/dashboard" Color="Color.Inherit" />
-            <MudIconButton Icon="@Icons.Material.Filled.Logout" Color="Color.Inherit" OnClick="Logout" />
+            <MudIconButton Icon="@Icons.Material.Filled.House" Href="/dashboard" Color="Color.Dark" />
+            <MudIconButton Icon="@Icons.Material.Filled.Logout" Color="Color.Dark" OnClick="Logout" />
         }
-        <MudIconButton Icon="@Icon" Color="Color.Inherit" OnClick="() => _isDarkMode = !_isDarkMode" />
+        <MudIconButton Icon="@Icon" Color="Color.Dark" OnClick="() => _isDarkMode = !_isDarkMode" />
     </MudAppBar>
     <MudMainContent >
         <div class="px-4 py-2">
@@ -41,11 +39,15 @@
                 Palette = new PaletteLight()
                 {
                     Primary = "#6750a4",
-                    Secondary = "#625b71"
+                    Secondary = "#625b71",
+                    Dark = "#000000",
+                    Tertiary = "#ffffff"
                 },
                 PaletteDark = new PaletteDark()
                 {
-                    Primary = "#004715"
+                    Primary = "#6750a4",
+                    Secondary = "#7c7591",
+                    Tertiary = "#ffffff"
                 }
             };
         base.OnInitialized();

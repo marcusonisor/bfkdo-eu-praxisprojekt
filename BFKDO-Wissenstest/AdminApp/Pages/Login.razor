@@ -6,11 +6,10 @@
         <h3>Willkommen beim Wissenstest!</h3>
         <br />
         <h3><i>Zugang für Administratoren</i></h3>
-
-        <MudTextField @bind-Value="@Email" Style="width: 400px;" Label="Benutzer" Required="true" Variant="Variant.Filled" />
-        <MudTextField @bind-Value="@Password" Style="width: 400px;" Label="Passwort" Required="true" Variant="Variant.Filled" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ShowPassword" AdornmentAriaLabel="Show Password" />
-        <br />
-        <MudButton Disabled="@Processing" Variant="Variant.Filled" Color="Color.Primary" @onclick="LoginUser">
+        <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
+        <MudTextField @bind-Value="@Email" Style="width: 400px;" Label="E-Mail-Adresse" Required="true" Variant="Variant.Filled" Clearable="true" />
+        <MudTextField @bind-Value="@Password" Style="width: 400px;" Label="Passwort" Required="true" Variant="Variant.Filled" Clearable="true" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ShowPassword" AdornmentAriaLabel="Passwort anzeigen" />
+        <MudButton Disabled="@Processing" Variant="Variant.Filled" Color="Color.Primary" Style="border-radius: 20px; padding-left:20px; padding-right:20px;" @onclick="LoginUser">
             @if (Processing)
             {
                 <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
@@ -18,8 +17,9 @@
             }
             else
             {
-                <MudText>Login</MudText>
+                <MudText>Anmelden</MudText>
             }
         </MudButton>
+        </MudStack>
     </div>
 </div>

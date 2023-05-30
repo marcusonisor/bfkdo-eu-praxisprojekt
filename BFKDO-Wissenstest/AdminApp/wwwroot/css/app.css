@@ -1,7 +1,10 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
+
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --mud-appbar-height:95px;
+    padding-top: 10px;
 }
 
 h1:focus {
@@ -118,5 +121,9 @@ a, .btn-link {
 }
 
 .import {
+
+}
+
+.dashboard {
 
 }

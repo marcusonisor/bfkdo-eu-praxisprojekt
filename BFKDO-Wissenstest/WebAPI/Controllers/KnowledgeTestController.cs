@@ -240,5 +240,44 @@ namespace WebAPI.Controllers
                 return BadRequest("{");
             }
         }
+
+
+        /// <summary>
+        ///     Löschen des Wissenstest.
+        /// </summary>
+        /// <param name="id">Id der Wissenstestung.</param>
+        /// <returns>Ob der Wissenstest gelöscht wurde.</returns>
+        /// <response code="200">Returniert, ob der Wissenstest gelöscht wurde..</response>
+        /// <response code="400">Wenn der Wissenstest mit der gegebenen Id nicht gefunden werden konnte.</response>
+        /// <response code="401">Wenn der Benutzer nicht die richtigen Rechte für den Call hat.</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+
+        [HttpDelete]
+        [Route("api/knowledgetest/DeleteKnowledgeTest/{id}")]
+        public async Task<ActionResult> DeleteKnowledgeTest(int id)
+        {
+            if (id < 1)
+            {
+                _logger.LogError($"Requested Knowledgetest with Id {id}, which is not an valid Id!");
+                return BadRequest($"Wissenstest mit der Id {id} ist nicht gültig und konnte nicht gefunden werden!");
+            }
+
+            var knowledgetest = _dbContext.TableKnowledgeTests
+                .Include(t => t.Registrations).ThenInclude(t => t.KnowledgeLevel)
+                .Include(t => t.Registrations).ThenInclude(t => t.Evaluations)
+                .FirstOrDefault(t => t.Id == id);
+            if (knowledgetest == null)
+            {
+                _logger.LogError($"Requested Knowledgetest with Id {id} was not found in the Database!", DateTime.Now.ToLongTimeString());
+                return BadRequest($"Wissenstest mit der Id {id} konnte nicht gefunden werden!");
+            }
+
+            _dbContext.TableKnowledgeTests.Remove(knowledgetest);
+            await _dbContext.SaveChangesAsync();
+
+            return Ok(true);
+        }
     }
 }

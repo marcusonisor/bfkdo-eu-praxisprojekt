@@ -75,5 +75,16 @@ namespace AdminApp.Services
             var result = await PostToApi<ModelImportData, bool>("api/knowledgetest/ImportRegistrations", data);
             return result;
         } 
+
+        /// <summary>
+        ///     Löschen des Wissenstest.
+        /// </summary>
+        /// <param name="id">Id des Wissenstest.</param>
+        /// <returns>Ob der Test gelöscht wurde.</returns>
+        public async Task<HttpRequestResult<bool>> DeleteKnowledgeTest(int id)
+        {
+            var result = await DeleteFromApi<bool>($"api/knowledgetest/DeleteKnowledgeTest/{id}");
+            return result;
+        }
     }
 }
