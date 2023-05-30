@@ -2,8 +2,15 @@
 @inject ISnackbar MudSnackbar
 
 @inherits AuthenticationRazorPage
+
+@if (!DataLoaded)
+{
+    <MudOverlay Visible="IsVisible" DarkBackground="true" Absolute="true">
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+    </MudOverlay>
+}
 <div class="container">
-    <div class="import">
+<MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
 <MudFileUpload T="IBrowserFile" Accept=".csv" FilesChanged="UploadFile" MaximumFileCount="1">
         <ButtonTemplate>
             <MudButton HtmlTag="label"
@@ -16,9 +23,9 @@
             </MudButton>
         </ButtonTemplate>
     </MudFileUpload>
-    <br /><br />
-<MudButton Variant="Variant.Filled" Color="Color.Secondary" Href="/dashboard">Abbrechen und zurück</MudButton>
-</div>
+    <br />
+<MudButton Variant="Variant.Filled" Color="Color.Secondary" Style="border-radius: 20px; padding-left:20px; padding-right:20px;" Href="/dashboard">Abbrechen und zurück</MudButton>
+</MudStack>
 </div>
 
 

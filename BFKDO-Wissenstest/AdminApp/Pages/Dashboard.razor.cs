@@ -38,12 +38,12 @@ namespace AdminApp.Pages
         public bool Striped { get; set; } = true;
 
         /// <summary>
-        ///     Property zum Darstellen dass noch etwas geladen wird.
+        ///     Daten geladen oder nicht.
         /// </summary>
         public bool DataLoaded { get; set; }
 
         /// <summary>
-        ///     
+        ///     Ist Overlay sichtbar oder nicht.
         /// </summary>
         public bool IsVisible { get; set; }
 

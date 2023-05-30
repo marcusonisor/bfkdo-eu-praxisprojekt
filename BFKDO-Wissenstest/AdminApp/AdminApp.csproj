@@ -25,4 +25,20 @@
 		<ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="wwwroot\logos\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Update="wwwroot\logos\bfkdoeu-logo.png">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="wwwroot\logos\fhb-logo-s.png">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="wwwroot\logos\fhb-logo.png">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
+
 </Project>
