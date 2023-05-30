@@ -27,8 +27,8 @@
                 <CellTemplate>
                     <MudStack Row>
                         <MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Primary" Style="border-radius: 20px; padding-left:20px; padding-right:20px;" OnClick="()=>NavigateToDetails(context.Item.Id)">Details</MudButton>
-                        <MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Primary" Style="border-radius: 20px; padding-left:20px; padding-right:20px;" OnClick="() => ExportEvaluatorCredentials(context.Item.Id)">Bewerter Export</MudButton>
-                        <MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Primary" Style="border-radius: 20px; padding-left:20px; padding-right:20px;" OnClick="() => ExportParticipantsCredentials(context.Item.Id)">Teilnehmer Export</MudButton>
+                        <MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Primary" Style="border-radius: 20px; padding-left:20px; padding-right:20px;" OnClick="() => ExportEvaluatorCredentials(context.Item.Id, context.Item.Designation)">Bewerter Export</MudButton>
+                        <MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Primary" Style="border-radius: 20px; padding-left:20px; padding-right:20px;" OnClick="() => ExportParticipantsCredentials(context.Item.Id, context.Item.Designation)">Teilnehmer Export</MudButton>
                     </MudStack>
                 </CellTemplate>
             </TemplateColumn>
