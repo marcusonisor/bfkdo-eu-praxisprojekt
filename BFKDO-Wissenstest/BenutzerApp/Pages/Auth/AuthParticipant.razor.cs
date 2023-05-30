@@ -25,11 +25,16 @@ namespace BenutzerApp.Pages.Auth
             base.OnInitialized();
         }
 
-
+        /// <summary>
+        /// Service für die Verwaltung und Überwachung des Authorisierungsstatus.
+        /// </summary>
         [Inject]
         public AuthenticationStateService AuthenticationStateService { get; set; } = null!;
 
 
+        /// <summary>
+        /// Service für die Authorisierung.
+        /// </summary>
         [Inject]
         public AuthService AuthService { get; set; } = null!;
 
@@ -43,10 +48,14 @@ namespace BenutzerApp.Pages.Auth
         /// </summary>
         public string Password { get; set; } = string.Empty;
 
-
+        /// <summary>
+        /// Boolean der Auskunft darüber gibt, ob die Applikation gerade eine Verarbeitung durchführt.
+        /// </summary>
         public bool Processing { get; set; } = false;
 
-
+        /// <summary>
+        /// Loginmethode.
+        /// </summary>
         public async void Login()
         {
             if (!string.IsNullOrEmpty(SybosID) && !string.IsNullOrEmpty(Password))
@@ -74,6 +83,10 @@ namespace BenutzerApp.Pages.Auth
             }
         }
 
+        /// <summary>
+        /// Methode für die Weiterverarbeitung eines gescannten QR Codes.
+        /// </summary>
+        /// <param name="args"></param>
         private async void QRScanned(string args)
         {
             var credentials = args.Split();
@@ -92,7 +105,7 @@ namespace BenutzerApp.Pages.Auth
                     MudSnackbar.Add("Ungültiger QR-Code! Bitte versuchen Sie es erneut!", Severity.Error);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 MudSnackbar.Add("Ungültiger QR-Code! Bitte versuchen Sie es erneut!", Severity.Error);
             }

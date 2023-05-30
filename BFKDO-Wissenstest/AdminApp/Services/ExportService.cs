@@ -13,6 +13,10 @@ namespace AdminApp.Services
     {
         private readonly IJSRuntime _jsRuntime;
 
+        private readonly string _evaluatorExportFilePrefix = "bewerter_";
+        private readonly string _participantExportFilePrefix = "teilnehmer_";
+        private readonly string _exportFileSuffix = ".docx";
+
         /// <summary>
         /// Konstruktor des Services.
         /// </summary>
@@ -29,24 +33,26 @@ namespace AdminApp.Services
         /// Lädt die Zugangsdaten des Testbewerters per JSInterop runter.
         /// </summary>
         /// <param name="knowledgetestId"></param>
+        /// <param name="fileName"></param>
         /// <returns>Die Zugangsdaten des Testbewerters</returns>
-        public async Task DownloadEvaluatorCredentials(int knowledgetestId)
+        public async Task DownloadEvaluatorCredentials(int knowledgetestId, string fileName)
         {
             var response = await GetEvaluatorCredentials(knowledgetestId);
 
-            await _jsRuntime.InvokeVoidAsync("downloadFile", "file.docx", response.Result);
+            await _jsRuntime.InvokeVoidAsync("downloadFile", _evaluatorExportFilePrefix + fileName + _exportFileSuffix, response.Result);
         }
 
         /// <summary>
         /// Lädt die Zugangsdaten der Testteilnehmer eines spezifischen Tests per JSInterop runter.
         /// </summary>
         /// <param name="knowledgetestId"></param>
+        /// <param name="fileName"></param>
         /// <returns>Die Zugangsdaten der Testteilnehmer eines spezifischen Tests</returns>
-        public async Task DownloadParticipantsCredentials(int knowledgetestId)
+        public async Task DownloadParticipantsCredentials(int knowledgetestId, string fileName)
         {
             var response = await GetParticipantsCredentials(knowledgetestId);
 
-            await _jsRuntime.InvokeVoidAsync("downloadFile", "file.docx", response.Result);
+            await _jsRuntime.InvokeVoidAsync("downloadFile", _participantExportFilePrefix + fileName + _exportFileSuffix, response.Result);
         }
 
         /// <summary>

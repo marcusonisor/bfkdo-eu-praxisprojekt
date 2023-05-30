@@ -8,14 +8,22 @@
         /// <summary>
         /// Konstruktor des Exportmodels.
         /// </summary>
+        /// <param name="name"></param>
         /// <param name="sybosId"></param>
         /// <param name="password"></param>
-        public ParticipantCredentialsExportModel(string sybosId, string password, string qr)
+        /// <param name="qr"></param>
+        public ParticipantCredentialsExportModel(string name, string sybosId, string password, string qr)
         {
+            Name = name;
             SybosID = sybosId;
             Password = password;
             QR = qr;
         }
+
+        /// <summary>
+        /// Voller Name des Testteilnehmers.
+        /// </summary>
+        public string Name { get; }
 
         /// <summary>
         /// SybosID des Testteilnehmers.
@@ -27,6 +35,9 @@
         /// </summary>
         public string Password { get; }
 
+        /// <summary>
+        /// QR-Code
+        /// </summary>
         public string QR { get; }
     }
 }

@@ -10,6 +10,7 @@
         /// </summary>
         /// <param name="designation"></param>
         /// <param name="password"></param>
+        /// <param name="qr"></param>
         public EvaluatorCredentialsExportModel(string designation, string password, string qr)
         {
             Designation = designation;
@@ -27,6 +28,9 @@
         /// </summary>
         public string Password { get; }
 
+        /// <summary>
+        /// QR-Code STRING.
+        /// </summary>
         public string QR { get; }
     }
 }

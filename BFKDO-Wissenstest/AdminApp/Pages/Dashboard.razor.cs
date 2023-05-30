@@ -72,14 +72,14 @@ namespace AdminApp.Pages
             Nav?.NavigateTo($"/knowledgetestdetails/{id}");
         }
 
-        private async Task ExportEvaluatorCredentials(int knowledgetestId)
+        private async Task ExportEvaluatorCredentials(int knowledgetestId, string fileName)
         {
-            await ExportService.DownloadEvaluatorCredentials(knowledgetestId);
+            await ExportService.DownloadEvaluatorCredentials(knowledgetestId, fileName);
         }
 
-        private async Task ExportParticipantsCredentials(int knowledgetestId)
+        private async Task ExportParticipantsCredentials(int knowledgetestId, string fileName)
         {
-            await ExportService.DownloadParticipantsCredentials(knowledgetestId);
+            await ExportService.DownloadParticipantsCredentials(knowledgetestId, fileName);
         }
 
     }

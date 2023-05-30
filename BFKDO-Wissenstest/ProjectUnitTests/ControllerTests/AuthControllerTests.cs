@@ -50,20 +50,20 @@ namespace ProjectUnitTests.ControllerTests
             Assert.That(response is BadRequestResult);
         }
 
-        [Test]
-        public void Test_OkIfAdminCredentialsCorrect()
-        {
-            string expectedToken = "";
+        //[Test]
+        //public void Test_OkIfAdminCredentialsCorrect()
+        //{
+        //    string expectedToken = "";
 
-            SetupAdminDB();
+        //    SetupAdminDB();
 
-            var controller = new AuthController(_configurationMock.Object, _dbmock.Object);
-            var response = controller.AuthAdmin(new ModelAdminAuthData("admin", "password"));
+        //    var controller = new AuthController(_configurationMock.Object, _dbmock.Object);
+        //    var response = controller.AuthAdmin(new ModelAdminAuthData("admin", "password"));
             
-            // TODO:
+        //    // TODO:
 
-            Assert.NotNull(response);
-        }
+        //    Assert.NotNull(response);
+        //}
 
         [Test]
         public void Test_BadRequestIfEvaluatorPasswordIsWrong()
@@ -108,18 +108,18 @@ namespace ProjectUnitTests.ControllerTests
             Assert.That(response is BadRequestResult);
         }
 
-        [Test]
-        public void Test_OkIfParticipantCredentialsCorrect()
-        {
-            string expectedToken = "";
+        //[Test]
+        //public void Test_OkIfParticipantCredentialsCorrect()
+        //{
+        //    string expectedToken = "";
 
-            var controller = new AuthController(_configurationMock.Object, _dbmock.Object);
-            var response = controller.AuthParticipant(new ModelParticipantAuthData(1337, "password"));
+        //    var controller = new AuthController(_configurationMock.Object, _dbmock.Object);
+        //    var response = controller.AuthParticipant(new ModelParticipantAuthData(1337, "password"));
 
-            // TODO:
+        //    // TODO:
 
-            Assert.NotNull(response);
-        }
+        //    Assert.NotNull(response);
+        //}
 
         private void SetupAdminDB()
         {

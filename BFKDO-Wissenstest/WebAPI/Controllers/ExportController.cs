@@ -57,7 +57,7 @@ namespace WebAPI.Controllers
                 return Ok(exportStream.ToArray());
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null; // TODO: Return error!
             }
@@ -87,7 +87,9 @@ namespace WebAPI.Controllers
 
                 foreach (var participant in participants)
                 {
-                    credentials.Add(new ParticipantCredentialsExportModel(participant.SybosId.ToString(), participant.Password, BuildParticipantQR(participant)));
+                    credentials.Add(new ParticipantCredentialsExportModel(participant.FirstName + " " + participant.LastName, 
+                                                                          participant.SybosId.ToString(), 
+                                                                          participant.Password, BuildParticipantQR(participant)));
                 }
 
                 ParticipantsCredentialsExportModel model = new(credentials);
@@ -97,7 +99,7 @@ namespace WebAPI.Controllers
                 return Ok(exportStream.ToArray());
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null; // TODO: Return error!
             }

@@ -21,7 +21,7 @@ namespace WebAPI
         /// <param name="args"></param>
         public static void Main(string[] args)
         {
-            var CORS = "corspolicy";
+            //var CORS = "corspolicy";
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddCors(options =>
@@ -48,7 +48,7 @@ namespace WebAPI
                 {
                     ValidIssuer = builder.Configuration["JWTSettings:Issuer"],
                     ValidAudience = builder.Configuration["JWTSettings:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWTSettings:Key"])),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWTSettings:Key"]!)),
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,

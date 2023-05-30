@@ -8,6 +8,6 @@
         /// <summary>
         /// Der Token.
         /// </summary>
-        public string Token { get; set; }
+        public string Token { get; set; } = null!;
     }
 }

@@ -69,7 +69,7 @@
                     return Ok(new { Token = GenerateToken(Identities.AdminClaimName) });
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return BadRequest();
             }
@@ -146,7 +146,7 @@
                          new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.Ticks.ToString())
                          };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWTSettings:Key"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWTSettings:Key"]!));
 
             var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
