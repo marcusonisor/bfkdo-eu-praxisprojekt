@@ -64,8 +64,8 @@ namespace ProjectUnitTests.ServiceTests
 
     public class MockLocalStorage : ISyncLocalStorageService
     {
-        public event EventHandler<ChangingEventArgs> Changing;
-        public event EventHandler<ChangedEventArgs> Changed;
+        public event EventHandler<ChangingEventArgs> Changing = null!;
+        public event EventHandler<ChangedEventArgs> Changed = null!;
 
         public Dictionary<string, object> StorageMock { get; } = new Dictionary<string, object>();
 

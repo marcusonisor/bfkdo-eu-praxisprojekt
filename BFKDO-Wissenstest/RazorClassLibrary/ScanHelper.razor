@@ -8,7 +8,9 @@
     }
     else
     {
-        <MudButton OnClick="() => StartDecoding()">Scannen</MudButton>
+        <MudStack Row>
+            <MudButton OnClick="() => StartDecoding()">Scannen</MudButton>
+        </MudStack>
     }
 
     <BarcodeReader Title="@string.Empty" ShowVideoDeviceList="false" ShowStart="false" ShowResult="false" ShowReset="false" ShowToggleTorch="false" @ref="_reader" OnBarcodeReceived="LocalReceivedBarcodeText" />

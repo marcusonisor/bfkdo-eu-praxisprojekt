@@ -69,5 +69,22 @@ namespace AdminApp.Pages
                 }
             }
         }
+
+        /// <summary>
+        ///     Löschen des Wissentest bei Abbruch
+        /// </summary>
+        /// <returns>Leeren Task.</returns>
+        private async Task AbortCreating()
+        {
+            var response = await Service.DeleteKnowledgeTest(KnowledgeTestId);
+            if(response.RequestEnum is EnumHttpRequest.Success)
+            {
+                NavigationManager.NavigateTo("/dashboard");
+            }
+            else
+            {
+                MudSnackbar.Add(response.ErrorMessage, Severity.Error);
+            }           
+        }
     }
 }
