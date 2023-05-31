@@ -64,8 +64,10 @@ namespace ProjectUnitTests.ServiceTests
 
     public class MockLocalStorage : ISyncLocalStorageService
     {
+#pragma warning disable 0414
         public event EventHandler<ChangingEventArgs> Changing = null!;
         public event EventHandler<ChangedEventArgs> Changed = null!;
+#pragma warning restore 0414
 
         public Dictionary<string, object> StorageMock { get; } = new Dictionary<string, object>();
 
