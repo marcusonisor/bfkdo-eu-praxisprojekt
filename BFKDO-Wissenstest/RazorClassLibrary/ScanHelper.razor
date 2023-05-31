@@ -1,0 +1,78 @@
+﻿<MudStack>
+    @if (_running)
+    {
+        <MudStack Row>
+            <MudButton OnClick="() => ChangeVideoSource()">Kamera</MudButton>
+            <MudButton OnClick="() => StopDecoding()">Stoppen</MudButton>
+        </MudStack>
+    }
+    else
+    {
+        <MudStack Row>
+            <MudButton OnClick="() => StartDecoding()">Scannen</MudButton>
+        </MudStack>
+    }
+
+    <BarcodeReader Title="@string.Empty" ShowVideoDeviceList="false" ShowStart="false" ShowResult="false" ShowReset="false" ShowToggleTorch="false" @ref="_reader" OnBarcodeReceived="LocalReceivedBarcodeText" />
+</MudStack>
+
+@code {
+    private bool _running = false;
+    private int _currentVideoSourceId;
+
+    private BarcodeReader? _reader;
+
+    [Parameter]
+    public EventCallback<string> QRCodeScanned { get; set; }
+
+    private void StopDecoding()
+    {
+        if (_reader != null!)
+        {
+            _running = false;
+            _reader.StopDecoding();
+            StateHasChanged();
+        }
+    }
+
+    private void StartDecoding()
+    {
+        if (_reader != null!)
+        {
+            _running = true;
+            _reader.StartDecoding();
+            StateHasChanged();
+        }
+    }
+
+    private void LocalReceivedBarcodeText(BarcodeReceivedEventArgs args)
+    {
+        if (QRCodeScanned.HasDelegate)
+        {
+            QRCodeScanned.InvokeAsync(args.BarcodeText);
+        }
+
+        StopDecoding();
+    }
+
+    private async Task ChangeVideoSource()
+    {
+        if (_reader != null!)
+        {
+            var inputs = _reader.VideoInputDevices.ToList();
+
+            if (inputs.Count == 0)
+            {
+                return;
+            }
+
+            _currentVideoSourceId++;
+            if (_currentVideoSourceId >= inputs.Count)
+            {
+                _currentVideoSourceId = 0;
+            }
+
+            await _reader.SelectVideoInput(inputs[_currentVideoSourceId]);
+        }
+    }
+}

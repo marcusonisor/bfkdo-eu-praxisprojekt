@@ -1,14 +1,24 @@
-﻿@inherits LayoutComponentBase
+﻿@using Common.Services;
+@inherits LayoutComponentBase
 
-<MudThemeProvider @bind-IsDarkMode="_isDarkMode" />
+@inject AuthenticationStateService AuthenticationStateService;
+@inject NavigationManager Navigation;
+
+<MudThemeProvider Theme="_myTheme" @bind-IsDarkMode="_isDarkMode" />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
 <MudLayout>
-    <MudAppBar Color="Color.Dark">
-        <MudText Typo="Typo.h4" aria-label="Seitentitel" class="m-0">BFKDO Wissenstest - Admin App</MudText>
+    <MudAppBar Color="Color.Tertiary" Elevation="0">
+        <MudImage Fluid="true" Src="/logos/bfkdoeu-logo.png" Width="300" Style="margin-top: 5px; margin-right:20px;" Alt="Bezirksfeuerwehrkommando Eisenstadt-Umgebung Logo" />
+        <MudImage Fluid="true" Src="/logos/fhb-logo-q.png" Width="300" Alt="FH Burgenland Logo"/>
         <MudSpacer />
-        <MudIconButton Icon="@Icon" Color="Color.Inherit" OnClick="() => _isDarkMode = !_isDarkMode" />
+        @if (AuthenticationStateService.IsLoggedIn())
+        {
+            <MudIconButton Icon="@Icons.Material.Filled.House" Href="/dashboard" Color="Color.Dark" />
+            <MudIconButton Icon="@Icons.Material.Filled.Logout" Color="Color.Dark" OnClick="Logout" />
+        }
+        <MudIconButton Icon="@Icon" Color="Color.Dark" OnClick="() => _isDarkMode = !_isDarkMode" />
     </MudAppBar>
     <MudMainContent >
         <div class="px-4 py-2">
@@ -18,6 +28,34 @@
 </MudLayout>
 
 @code{
+    private MudTheme _myTheme = new();
     private bool _isDarkMode;
     private string Icon => _isDarkMode ? Icons.Material.Filled.WbSunny : Icons.Material.Filled.ModeNight;
+
+    protected override void OnInitialized()
+    {
+        _myTheme = new MudTheme()
+            {
+                Palette = new PaletteLight()
+                {
+                    Primary = "#6750a4",
+                    Secondary = "#625b71",
+                    Dark = "#000000",
+                    Tertiary = "#ffffff"
+                },
+                PaletteDark = new PaletteDark()
+                {
+                    Primary = "#6750a4",
+                    Secondary = "#7c7591",
+                    Tertiary = "#ffffff"
+                }
+            };
+        base.OnInitialized();
+    }
+
+    private void Logout()
+    {
+        AuthenticationStateService.DeleteJwtToken();
+        Navigation.NavigateTo("/");
+    }
 }

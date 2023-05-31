@@ -1,4 +1,7 @@
 using BenutzerApp.Services;
+using Blazored.LocalStorage;
+using Common.Helper;
+using Common.Services;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
@@ -21,8 +24,16 @@ namespace BenutzerApp
             builder.RootComponents.Add<App>("#app");
             builder.RootComponents.Add<HeadOutlet>("head::after");
             builder.Services.AddMudServices();
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7250") });
+            builder.Services.AddBlazoredLocalStorage();
+            builder.Services.AddScoped<AuthenticationStateService>();
+#if DEBUG
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(WebConstants.LocalApiAddress) });
+#else
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(WebConstants.AzureApiAddress) });
+#endif
             builder.Services.AddScoped<StationService>();
+            builder.Services.AddScoped<AuthService>();
+
 
             await builder.Build().RunAsync();
         }

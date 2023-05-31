@@ -1,10 +1,13 @@
-﻿namespace WebAPI.Controllers
-{
-    using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using WebAPI.Identity;
 
+namespace WebAPI.Controllers
+{
     /// <summary>
     /// Controller zuständig für alle Aktionen eines authentifizierten Testteilnehmers.
     /// </summary>
+    [Authorize(Policy = Identities.ParticipantPolicyName)]
     public class ParticipantController : ControllerBase
     {
         /// <summary>

@@ -1,9 +1,24 @@
 ﻿@page "/"
+@using BenutzerApp.Services;
+@using Common.Model;
+@inject AuthService AuthService
 
-<PageTitle>Index</PageTitle>
+@*<PageTitle>Index</PageTitle>*@
 
-<h1>Hello, world!</h1>
+@*<MudButton 
+    Variant="Variant.Filled" 
+    Href="/authparticipant">
+    Testteilnehmer
+</MudButton>*@
 
-Welcome to your new app.
+<MudButton 
+    Variant="Variant.Filled" 
+    Href="/authevaluator">
+    Testbewerter
+</MudButton>
 
-<MudButton Variant="Variant.Filled" Href="/stationchange">Station auswählen</MudButton>
+
+@*<ScanHelper QRCodeScanned="QrCodeReceived"/>*@
+
+@code{
+}

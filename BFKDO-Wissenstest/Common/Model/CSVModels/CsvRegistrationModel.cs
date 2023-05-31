@@ -42,6 +42,6 @@ namespace Common.Model.CSVModels
         ///     Sybos Id.
         /// </summary>
         [Name("ADadrnr")]
-        public long SybosId { get; set; }
+        public int SybosId { get; set; }
     }
 }

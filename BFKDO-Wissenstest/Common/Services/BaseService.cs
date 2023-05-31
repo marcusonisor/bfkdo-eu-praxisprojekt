@@ -1,4 +1,8 @@
-﻿using System.Net.Http.Json;
+﻿using Blazored.LocalStorage;
+using Common.Enums;
+using Common.Model;
+using Microsoft.AspNetCore.Components;
+using System.Net.Http.Json;
 
 namespace Common.Services
 {
@@ -9,13 +13,24 @@ namespace Common.Services
     {
         private readonly HttpClient _httpClient;
 
+        private readonly NavigationManager _navigationManager;
+
+        /// <summary>
+        ///     Authentication State Service.
+        /// </summary>
+        protected readonly AuthenticationStateService _authStateService;
+
         /// <summary>
         ///     Konstruktor des Base Services.
         /// </summary>
         /// <param name="client">HTTP Client.</param>
-        public BaseService(HttpClient client)
+        /// <param name="authStateService">Authentication State Service.</param>
+        /// <param name="navigationManager">Navigation.</param>
+        public BaseService(HttpClient client, AuthenticationStateService authStateService, NavigationManager navigationManager)
         {
             _httpClient = client;
+            _authStateService = authStateService;
+            _navigationManager = navigationManager;
         }
 
         /// <summary>
@@ -24,8 +39,12 @@ namespace Common.Services
         /// <returns></returns>
         private void AddAuthentication()
         {
-            //localstorage.getItem(jwt)
-            //http.addrequestheader("authentication",jwt);
+            var token = _authStateService.GetJwtToken();
+
+            if (!string.IsNullOrEmpty(token))
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            }
         }
 
         /// <summary>
@@ -38,11 +57,20 @@ namespace Common.Services
         {
             AddAuthentication();
 
-            var response = await _httpClient.GetAsync(url);
+            try
+            {
+                var response = await _httpClient.GetAsync(url);
 
-            var result = await HandleHttpResponse<T>(response);
+                var result = await HandleHttpResponse<T>(response);
 
-            return result;
+                CheckAuthenticationError(result);
+
+                return result;
+            }
+            catch (Exception)
+            {
+                return GetFailedAPICallResult<T>();
+            }
         }
 
         /// <summary>
@@ -53,15 +81,25 @@ namespace Common.Services
         /// <param name="url">Url für Aufruf.</param>
         /// <param name="content">Übergabeparemeter.</param>
         /// <returns>Request Result.</returns>
-        protected async Task<HttpRequestResult<U>> PostToApi<T,U>(string url, T content)
+        protected async Task<HttpRequestResult<U>> PostToApi<T, U>(string url, T content)
         {
             AddAuthentication();
 
-            var response = await _httpClient.PostAsJsonAsync(url,content);
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync(url, content);
 
-            var result = await HandleHttpResponse<U>(response);
+                var result = await HandleHttpResponse<U>(response);
+                
+                CheckAuthenticationError(result);
 
-            return result;
+                return result;
+            }
+            catch (Exception)
+            {
+                return GetFailedAPICallResult<U>();
+            }
+
         }
 
         /// <summary>
@@ -76,11 +114,20 @@ namespace Common.Services
         {
             AddAuthentication();
 
-            var response = await _httpClient.PutAsJsonAsync(url, content);
+            try
+            {
+                var response = await _httpClient.PutAsJsonAsync(url, content);
 
-            var result = await HandleHttpResponse<U>(response);
+                var result = await HandleHttpResponse<U>(response);
 
-            return result;
+                CheckAuthenticationError(result);
+
+                return result;
+            }
+            catch (Exception)
+            {
+                return GetFailedAPICallResult<U>();
+            }
         }
 
         /// <summary>
@@ -93,11 +140,35 @@ namespace Common.Services
         {
             AddAuthentication();
 
-            var response = await _httpClient.DeleteAsync(url);
+            try
+            {
+                var response = await _httpClient.DeleteAsync(url);
 
-            var result = await HandleHttpResponse<T>(response);
+                var result = await HandleHttpResponse<T>(response);
 
-            return result;
+                CheckAuthenticationError(result);
+
+                return result;
+            }
+            catch (Exception)
+            {
+                return GetFailedAPICallResult<T>();
+            }
+        }
+
+        /// <summary>
+        ///     Überprüfen eines Authentication Errors.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="result"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        private void CheckAuthenticationError<T>(HttpRequestResult<T> result)
+        {
+            if (result.RequestEnum is EnumHttpRequest.Forbidden or EnumHttpRequest.Unauthorized)
+            {
+                _authStateService.DeleteJwtToken();
+                _navigationManager.NavigateTo("/");
+            }
         }
 
         /// <summary>
@@ -106,21 +177,49 @@ namespace Common.Services
         /// <typeparam name="T">Typparameter der Rückgabe.</typeparam>
         /// <param name="response">Response von Server.</param>
         /// <returns>Verarbeiteter Request.</returns>
-        private async Task<HttpRequestResult<T>> HandleHttpResponse<T>(HttpResponseMessage response)
+        private async static Task<HttpRequestResult<T>> HandleHttpResponse<T>(HttpResponseMessage response)
         {
             if (response == null)
             {
                 return new HttpRequestResult<T>
                 {
-                    WasSuccess = false
+                    RequestEnum = EnumHttpRequest.UnknownError
                 };
             }
 
             if (!response.IsSuccessStatusCode)
             {
+                if(response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    var badrequestresult = await response.Content.ReadAsStringAsync();
+                    return new HttpRequestResult<T>
+                    {
+                        RequestEnum = EnumHttpRequest.BadRequest,
+                        ErrorMessage = badrequestresult
+                    };
+                }
+
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    return new HttpRequestResult<T>
+                    {
+                        RequestEnum = EnumHttpRequest.Unauthorized,
+                        ErrorMessage = "Nicht authoriziert für diesen Call!"
+                    };
+                }
+
+                if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+                {
+                    return new HttpRequestResult<T>
+                    {
+                        RequestEnum = EnumHttpRequest.Forbidden,
+                        ErrorMessage = "Authentifiziert, aber mit falscher Rolle"!
+                    };
+                }
+
                 return new HttpRequestResult<T>
                 {
-                    WasSuccess = false,
+                    RequestEnum = EnumHttpRequest.UnknownError,
                     ErrorMessage = $"Server hat mit {response.StatusCode} geantwortet!"
                 };
             }
@@ -130,38 +229,25 @@ namespace Common.Services
             {
                 return new HttpRequestResult<T>
                 {
-                    WasSuccess = false,
-                    ErrorMessage = ""
+                    RequestEnum = EnumHttpRequest.UnknownError,
+                    ErrorMessage = "Fehler beim Lesen/Parsen des Ergebnisses."
                 };
             }
 
             return new HttpRequestResult<T>
             {
-                WasSuccess = true,
+                RequestEnum = EnumHttpRequest.Success,
                 Result = result
             };
         }
-    }
 
-    /// <summary>
-    ///     HTTP Request Result.
-    /// </summary>
-    /// <typeparam name="T">Typ des Rückgabetypens</typeparam>
-    public class HttpRequestResult<T>
-    {
-        /// <summary>
-        ///     Boolean, ob der Request erfolgreich war.
-        /// </summary>
-        public bool WasSuccess { get; set; }
-
-        /// <summary>
-        ///     Fehlernachricht bei aufgetretenen Fehler.
-        /// </summary>
-        public string ErrorMessage { get; set; } = string.Empty;
-
-        /// <summary>
-        ///     Ergebnis des Requests.
-        /// </summary>
-        public T Result { get; set; } = default(T)!;
+        private static HttpRequestResult<T> GetFailedAPICallResult<T>()
+        {
+            return new HttpRequestResult<T>
+            {
+                RequestEnum = EnumHttpRequest.UnknownError,
+                ErrorMessage = "Daten konnte nicht abgerufen werden!"
+            };
+        }
     }
 }

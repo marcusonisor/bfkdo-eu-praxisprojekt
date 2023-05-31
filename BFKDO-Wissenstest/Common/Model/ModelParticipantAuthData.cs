@@ -10,7 +10,7 @@
         /// </summary>
         /// <param name="sybosId"></param>
         /// <param name="password"></param>
-        public ModelParticipantAuthData(string sybosId, string password)
+        public ModelParticipantAuthData(int sybosId, string password)
         {
             SybosId = sybosId;
             Password = password;
@@ -19,7 +19,7 @@
         /// <summary>
         /// Die Sybos ID.
         /// </summary>
-        public string SybosId { get; }
+        public int SybosId { get; }
 
         /// <summary>
         /// Das Passwort.

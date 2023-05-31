@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Database.Tables
@@ -6,6 +7,7 @@ namespace Database.Tables
     /// <summary>
     ///     Datenbank-Modell für die Wissenstests.
     /// </summary>
+    [Index(nameof(Designation), IsUnique = true)]
     [Table("Tbl_KnowledgeTest")]
     public class TableKnowledgeTest
     {

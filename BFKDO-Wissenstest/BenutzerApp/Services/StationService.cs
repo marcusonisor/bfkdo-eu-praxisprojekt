@@ -1,5 +1,8 @@
-﻿using Common.Model;
+﻿using Blazored.LocalStorage;
+using Common.Enums;
+using Common.Model;
 using Common.Services;
+using Microsoft.AspNetCore.Components;
 
 namespace BenutzerApp.Services
 {
@@ -11,8 +14,10 @@ namespace BenutzerApp.Services
         /// <summary>
         /// Konstruktor des StationsService.
         /// </summary>
-        /// <param name="client"></param>
-        public StationService(HttpClient client) : base(client)
+        /// <param name="client">HTTP Client.</param>
+        /// <param name="authStateService">Authentication Status Service.</param>
+        /// <param name="navigationManager">Navigation Manager.</param>
+        public StationService(HttpClient client, AuthenticationStateService authStateService, NavigationManager navigationManager) : base(client, authStateService, navigationManager)
         {
         }
 
@@ -24,7 +29,7 @@ namespace BenutzerApp.Services
         {
             var result = await GetFromApi<List<TestStationModel>>("/api/evaluator/getstations");
 
-            if (result.WasSuccess)
+            if (result.RequestEnum == EnumHttpRequest.Success)
             {
                 Console.WriteLine(result.Result);
             }

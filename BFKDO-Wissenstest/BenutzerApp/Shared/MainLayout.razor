@@ -1,4 +1,7 @@
-﻿@inherits LayoutComponentBase
+﻿@using Common.Services;
+@inherits LayoutComponentBase
+@inject AuthenticationStateService AuthenticationStateService;
+@inject NavigationManager Navigation;
 
 <MudThemeProvider @bind-IsDarkMode="_isDarkMode" />
 <MudDialogProvider />
@@ -6,18 +9,27 @@
 
 <MudLayout>
     <MudAppBar Color="Color.Dark">
-        <MudText Typo="Typo.h4" aria-label="Seitentitel" class="m-0">BFKDO Wissenstest - Admin App</MudText>
+        <MudText Typo="Typo.h4" aria-label="Seitentitel" class="m-0"></MudText>
         <MudSpacer />
         <MudIconButton Icon="@Icon" Color="Color.Inherit" OnClick="() => _isDarkMode = !_isDarkMode" />
+        @if (AuthenticationStateService.IsLoggedIn())
+        {
+@*            <MudIconButton Icon="@Icons.Material.Filled.House" Href="/dashboard" Color="Color.Inherit" />*@
+            <MudIconButton Icon="@Icons.Material.Filled.Logout" Color="Color.Inherit" OnClick="Logout" />
+        }
     </MudAppBar>
     <MudMainContent>
-        <div class="px-4 py-2">
-            @Body
-        </div>
+        @Body
     </MudMainContent>
 </MudLayout>
 
 @code {
     private bool _isDarkMode;
     private string Icon => _isDarkMode ? Icons.Material.Filled.WbSunny : Icons.Material.Filled.ModeNight;
+
+    private void Logout()
+    {
+        AuthenticationStateService.DeleteJwtToken();
+        Navigation.NavigateTo("/");
+    }
 }

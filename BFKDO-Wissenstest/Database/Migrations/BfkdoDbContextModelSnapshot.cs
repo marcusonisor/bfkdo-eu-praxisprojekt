@@ -149,13 +149,16 @@ namespace Database.Migrations
 
                     b.Property<string>("Designation")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("EvaluatorPassword")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Designation")
+                        .IsUnique();
 
                     b.ToTable("Tbl_KnowledgeTest");
                 });
@@ -214,6 +217,9 @@ namespace Database.Migrations
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SybosId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

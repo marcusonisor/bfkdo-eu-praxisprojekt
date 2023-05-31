@@ -1,8 +1,12 @@
 
 using Database;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Configuration;
 using System.Reflection;
+using System.Text;
+using WebAPI.Identity;
 
 namespace WebAPI
 {
@@ -17,9 +21,47 @@ namespace WebAPI
         /// <param name="args"></param>
         public static void Main(string[] args)
         {
+            //var CORS = "corspolicy";
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    policy =>
+                    {
+                        policy.WithOrigins("https://localhost:7022", "https://localhost:7227").AllowAnyHeader().AllowAnyMethod();
+                    });
+            });
+
             builder.Logging.ClearProviders();
             builder.Logging.AddConsole();
+
+            builder.Services.AddAuthentication(authentication =>
+            {
+                authentication.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                authentication.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                authentication.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(bearer =>
+            {
+                bearer.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidIssuer = builder.Configuration["JWTSettings:Issuer"],
+                    ValidAudience = builder.Configuration["JWTSettings:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWTSettings:Key"]!)),
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true
+                };
+            });
+
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy(Identities.AdminPolicyName, p => p.RequireClaim(Identities.AdminClaimName, "true"));
+                options.AddPolicy(Identities.EvaluatorPolicyName, p => p.RequireClaim(Identities.EvaluatorClaimName, "true"));
+                options.AddPolicy(Identities.ParticipantPolicyName, p => p.RequireClaim(Identities.ParticipantClaimName, "true"));
+            });
 
             // Add Database to Container.
             builder.Services.AddDbContext<BfkdoDbContext>(config =>
@@ -36,14 +78,6 @@ namespace WebAPI
                 options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
             });
 
-            builder.Services.AddCors(options =>
-            {
-                options.AddDefaultPolicy(policy =>
-                {
-                    policy.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod();
-                });
-            });
-
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -53,11 +87,15 @@ namespace WebAPI
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
-
-            app.UseAuthorization();
+            app.UseStaticFiles();
 
             app.UseCors();
+
+            app.UseHttpsRedirection();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
 
             app.MapControllers();
 

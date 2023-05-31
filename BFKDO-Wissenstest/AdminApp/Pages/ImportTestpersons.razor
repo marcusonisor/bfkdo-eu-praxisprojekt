@@ -1,0 +1,31 @@
+﻿@page "/importtestpersons/{KnowledgeTestId:int}"
+@inject ISnackbar MudSnackbar
+
+@inherits AuthenticationRazorPage
+
+@if (!DataLoaded)
+{
+    <MudOverlay Visible="IsVisible" DarkBackground="true" Absolute="true">
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+    </MudOverlay>
+}
+<div class="container">
+<MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
+<MudFileUpload T="IBrowserFile" Accept=".csv" FilesChanged="UploadFile" MaximumFileCount="1">
+        <ButtonTemplate>
+            <MudButton HtmlTag="label"
+                       Variant="Variant.Filled"
+                       Color="Color.Primary"
+                       StartIcon="@Icons.Material.Filled.CloudUpload"
+                       Style="width:400px;height:50px;border-radius:50px; margin-top:30%"
+                       for="@context">
+                Teilnehmer importieren
+            </MudButton>
+        </ButtonTemplate>
+    </MudFileUpload>
+    <br />
+        <MudButton Variant="Variant.Filled" Color="Color.Secondary" Style="border-radius: 20px; padding-left:20px; padding-right:20px;" OnClick="AbortCreating">Abbrechen und zurück</MudButton>
+</MudStack>
+</div>
+
+

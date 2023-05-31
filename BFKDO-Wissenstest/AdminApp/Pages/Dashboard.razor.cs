@@ -1,57 +1,86 @@
 using AdminApp.Services;
+using Common.Model;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Forms;
-using System.Text;
 
 namespace AdminApp.Pages
 {
     /// <summary>
-    /// Dashboard
+    ///     Dashboard
     /// </summary>
     public partial class Dashboard
     {
-        private long maxFileSize = 1024 * 1024 * 15;
-
         /// <summary>
-        /// Navigation Manager.
+        ///     Navigation Manager.
         /// </summary>
         [Inject]
         public NavigationManager Nav { get; set; } = null!;
 
         /// <summary>
-        /// Der Service.
+        ///     Kommunikationsservice.
+        /// </summary>
+        [Inject]
+        public ExportService ExportService { get; set; } = null!;
+
+        /// <summary>
+        ///     Kommunikationsservice.
         /// </summary>
         [Inject]
         public CommunicationService Service { get; set; } = null!;
 
         /// <summary>
-        /// Test-String fürs Bytes auslesen.
+        ///     Liste der Wissenstest.
         /// </summary>
-        public string Message { get; set; } = string.Empty;
+        private List<ModelKnowledgeTest> _knowledgetests = new();
 
-        private void NavigateToDetails()
+        /// <summary>
+        ///     Boolean für gestreifte Liste
+        /// </summary>
+        public bool Striped { get; set; } = true;
+
+        /// <summary>
+        ///     Daten geladen oder nicht.
+        /// </summary>
+        public bool DataLoaded { get; set; }
+
+        /// <summary>
+        ///     Ist Overlay sichtbar oder nicht.
+        /// </summary>
+        public bool IsVisible { get; set; }
+
+        /// <summary>
+        ///     Initialisierungsmethode.
+        /// </summary>
+        /// <returns></returns>
+        protected override async Task OnInitializedAsync()
         {
-            if (Nav != null)
-            {
-                Nav.NavigateTo("/knowledgetestdetails/4");
-            }
+            IsVisible = true;
+            base.OnInitialized();
+            var response = await Service.GetKnowledgeTests();
+            _knowledgetests = response.Result;
+            IsVisible = false;
+            DataLoaded = true;
+
+            StateHasChanged();
         }
 
         /// <summary>
-        /// Methode für den Upload von Files.
+        ///     Methode zur Weiterleitung auf die Detailsseite des Wissenstest.
         /// </summary>
-        /// <param name="file"></param>
-        /// <returns></returns>
-        private async Task UploadFile(IBrowserFile file)
+        /// <param name="id"></param>
+        private void NavigateToDetails(int id)
         {
-            var bytestream = file.OpenReadStream();
-            if (file != null)
-            {
-                var buffer = new byte[file.Size];
-                var length = await file.OpenReadStream(maxFileSize).ReadAsync(buffer);
-                var result = await Service.PostRegistrationsFromFile(buffer);
-                Message = $"{result.WasSuccess} Bytes aus dem File gelesen!";
-            }
+            Nav?.NavigateTo($"/knowledgetestdetails/{id}");
         }
+
+        private async Task ExportEvaluatorCredentials(int knowledgetestId, string fileName)
+        {
+            await ExportService.DownloadEvaluatorCredentials(knowledgetestId, fileName);
+        }
+
+        private async Task ExportParticipantsCredentials(int knowledgetestId, string fileName)
+        {
+            await ExportService.DownloadParticipantsCredentials(knowledgetestId, fileName);
+        }
+
     }
 }
