@@ -18,8 +18,6 @@
 
 @code {
     private bool _running = false;
-    private int _width = 0;
-    private int _height = 0;
     private int _currentVideoSourceId;
 
     private BarcodeReader? _reader;
@@ -33,8 +31,6 @@
         {
             _running = false;
             _reader.StopDecoding();
-            _width = 0;
-            _height = 0;
             StateHasChanged();
         }
     }
@@ -45,8 +41,6 @@
         {
             _running = true;
             _reader.StartDecoding();
-            _width = 300;
-            _height = 300;
             StateHasChanged();
         }
     }
