@@ -24,7 +24,7 @@ namespace ProjectUnitTests.ControllerTests
         { 
             var controller = new KnowledgeTestController(null!,_logger);
             var response = controller.GetKnowledgeTestDetails(0);
-            Assert.That(response is BadRequestResult);
+            Assert.That(response is BadRequestObjectResult);
         }
 
         [Test]
@@ -34,7 +34,7 @@ namespace ProjectUnitTests.ControllerTests
             dbmock.Setup(x => x.TableKnowledgeTests).ReturnsDbSet(new List<TableKnowledgeTest>());
             var controller = new KnowledgeTestController(dbmock.Object, _logger);
             var response = controller.GetKnowledgeTestDetails(1);
-            Assert.That(response is BadRequestResult);
+            Assert.That(response is BadRequestObjectResult);
         }
 
         [Test]
