@@ -29,7 +29,11 @@ namespace WebAPI
                 options.AddDefaultPolicy(
                     policy =>
                     {
+#if DEBUG
                         policy.WithOrigins("https://localhost:7022", "https://localhost:7227").AllowAnyHeader().AllowAnyMethod();
+#else
+                        policy.WithOrigins("https://bfkdo-adminapp.azurewebsites.net/", "https://bfkdo-benutzerapp.azurewebsites.net/").AllowAnyHeader().AllowAnyMethod();
+#endif
                     });
             });
 
