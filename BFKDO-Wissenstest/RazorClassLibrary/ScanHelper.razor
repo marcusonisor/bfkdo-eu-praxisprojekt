@@ -1,15 +1,15 @@
-﻿<MudStack>
+﻿<MudStack Justify="Justify.Center">
     @if (_running)
     {
-        <MudStack Row>
-            <MudButton OnClick="() => ChangeVideoSource()">Kamera</MudButton>
-            <MudButton OnClick="() => StopDecoding()">Stoppen</MudButton>
+        <MudStack Row Justify="Justify.Center" AlignItems="AlignItems.Center">
+        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Cameraswitch" Color="Color.Primary" Style="border-radius: 20px; padding-left:20px; padding-right:20px;" OnClick="() => ChangeVideoSource()"><MudText>Kamera wechseln</MudText></MudButton>
+        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Stop" Color="Color.Primary" Style="border-radius: 20px; padding-left:20px; padding-right:20px;" OnClick="() => StopDecoding()"><MudText>Scan stoppen</MudText></MudButton>
         </MudStack>
     }
     else
     {
-        <MudStack Row>
-            <MudButton OnClick="() => StartDecoding()">Scannen</MudButton>
+        <MudStack Row Justify="Justify.Center" AlignItems="AlignItems.Center">
+        <MudButton StartIcon="@Icons.Material.Filled.QrCodeScanner" Variant="Variant.Filled" Color="Color.Primary" Style="border-radius: 20px; padding-left:20px; padding-right:20px;" OnClick="() => StartDecoding()"><MudText>QR-Code scannen</MudText></MudButton>
         </MudStack>
     }
 

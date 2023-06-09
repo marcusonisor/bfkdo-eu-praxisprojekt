@@ -5,20 +5,31 @@
 
 @*<PageTitle>Index</PageTitle>*@
 
-@*<MudButton 
-    Variant="Variant.Filled" 
+@*<MudButton
+    Variant="Variant.Filled"
     Href="/authparticipant">
     Testteilnehmer
 </MudButton>*@
 
-<MudButton 
-    Variant="Variant.Filled" 
-    Href="/authevaluator">
-    Testbewerter
-</MudButton>
+<div class="container mt-2">
+    <h3 class="text-center">Willkommen beim Wissenstest!</h3>
+    <br />
+    <h3 class="text-center"><i>Wählen Sie ihren Zugang aus</i></h3>
+    <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
+        <MudButton aria-label="Als Testbewerter einloggen" Variant="Variant.Filled" Color="Color.Primary" Style="width:300px; border-radius: 80px"
+                   Href="/authevaluator">
+            Testbewerter
+        </MudButton>
+        <MudButton aria-label="Als Testperson einloggen" Variant="Variant.Filled" Color="Color.Primary" Style="width:300px; border-radius: 80px">
+            Testperson
+        </MudButton>
+    </MudStack>
+</div>
+
+
 
 
 @*<ScanHelper QRCodeScanned="QrCodeReceived"/>*@
 
-@code{
+@code {
 }
