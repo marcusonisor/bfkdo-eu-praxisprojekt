@@ -19,7 +19,7 @@ namespace EndToEndTests
 
         [Test]
         public async Task Test_HasRightTitle()
-        { 
+        {
             await Page.GotoAsync(_url);
 
             await Expect(Page).ToHaveTitleAsync("AdminApp");
@@ -62,8 +62,7 @@ namespace EndToEndTests
             Expect(btn);
         }
 
-        [Test]
-        public async Task Test_Login()
+        private async Task Internal_Login()
         {
             await Page.GotoAsync(_url);
 
@@ -79,13 +78,13 @@ namespace EndToEndTests
             Expect(btn);
             await btn.ClickAsync();
 
-            await Expect(Page).ToHaveURLAsync(new Regex("dashboard"),new PageAssertionsToHaveURLOptions() { Timeout=10000});
+            await Expect(Page).ToHaveURLAsync(new Regex("dashboard"), new PageAssertionsToHaveURLOptions() { Timeout=10000 });
         }
 
         [Test]
         public async Task Test_CheckLoggedInHeader()
         {
-            await Test_Login();
+            await Internal_Login();
 
             var themeswitch = Page.GetByLabel("Theme ändern");
             Expect(themeswitch);
@@ -100,7 +99,7 @@ namespace EndToEndTests
         [Test]
         public async Task Test_LoginAndLogout()
         {
-            await Test_Login();
+            await Internal_Login();
 
             var logout = Page.GetByLabel("Logout");
             Expect(logout);
@@ -111,7 +110,7 @@ namespace EndToEndTests
         [Test]
         public async Task Test_ShowDashboard()
         {
-            await Test_Login();
+            await Internal_Login();
 
             var createButton = Page.GetByLabel("Test anlegen");
             Expect(createButton);
