@@ -1,0 +1,17 @@
+﻿@page "/evaluator/dashboard"
+@inject NavigationManager NavigationManager
+
+@*<h3>Aktuelle Station: @_currentStation.CriteriaName</h3>*@
+<hr />
+<h4>Station:</h4>
+<MudDataGrid Items="@_stations">
+    <Columns>
+        <PropertyColumn Property="x => x.CriteriaName" Title="Stationsname"></PropertyColumn>
+        <TemplateColumn>
+            <CellTemplate>
+                <MudButton Variant="Variant.Outlined" OnClick="()=>SelectStation(context.Item.Id)">Wählen</MudButton>
+            </CellTemplate>
+        </TemplateColumn>
+    </Columns>
+
+</MudDataGrid>

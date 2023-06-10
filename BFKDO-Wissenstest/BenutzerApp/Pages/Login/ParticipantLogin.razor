@@ -1,16 +1,20 @@
-﻿@page "/authevaluator"
+﻿@page "/participantlogin"
 
 @inject NavigationManager NavigationManager
 @inject ISnackbar MudSnackbar
 
 <div class="container">
     <div class="login">
+
         <h3>Willkommen beim Wissenstest!</h3>
         <br />
-        <h3><i>Zugang für Bewerter</i></h3>
+        <h3><i>Zugang für Teilnehmer</i></h3>
 
+        <MudTextField @bind-Value="@SybosID" Style="width: 400px;" Label="Benutzer" Required="true" Variant="Variant.Filled" />
         <MudTextField @bind-Value="@Password" Style="width: 400px;" Label="Passwort" Required="true" Variant="Variant.Filled" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ShowPassword" AdornmentAriaLabel="Show Password" />
+        
         <br />
+
         <MudButton Disabled="@Processing" Variant="Variant.Filled" Color="Color.Primary" @onclick="Login">
             @if (Processing)
             {
@@ -24,5 +28,6 @@
         </MudButton>
 
         <ScanHelper QRCodeScanned="QRScanned"/>
+
     </div>
 </div>

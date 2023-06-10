@@ -16,7 +16,6 @@ namespace WebAPI.Controllers
     public class KnowledgeTestController : BfkdoControllerBase
     {
         private readonly BfkdoDbContext _dbContext;
-
         private readonly ILogger _logger;
 
         /// <summary>

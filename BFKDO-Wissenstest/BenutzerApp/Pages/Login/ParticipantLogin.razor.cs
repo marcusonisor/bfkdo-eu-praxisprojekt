@@ -5,12 +5,12 @@ using Common.Services;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
-namespace BenutzerApp.Pages.Auth
+namespace BenutzerApp.Pages.Login
 {
     /// <summary>
     ///     Login Komponente.
     /// </summary>
-    public partial class AuthParticipant
+    public partial class ParticipantLogin
     {
         /// <summary>
         ///     Initialisierungmethode.
@@ -68,8 +68,8 @@ namespace BenutzerApp.Pages.Auth
 
                 if (response.RequestEnum is EnumHttpRequest.Success)
                 {
-                    MudSnackbar.Add("SUCK", Severity.Success);
-                    //NavigationManager.NavigateTo("/");
+                    MudSnackbar.Add("Login erfolgreich!", Severity.Success);
+                    NavigationManager.NavigateTo("/participant/dashboard");
                 }
                 else
                 {
@@ -98,7 +98,7 @@ namespace BenutzerApp.Pages.Auth
 
                 if (response.RequestEnum is EnumHttpRequest.Success)
                 {
-                    MudSnackbar.Add("SUCK", Severity.Success);
+                    MudSnackbar.Add("Login erfolgreich!", Severity.Success);
                 }
                 else
                 {
@@ -110,7 +110,6 @@ namespace BenutzerApp.Pages.Auth
                 MudSnackbar.Add("Ungültiger QR-Code! Bitte versuchen Sie es erneut!", Severity.Error);
             }
         }
-
 
         /// <summary>
         ///     Properties für die Passwortanzeige-Funktion.

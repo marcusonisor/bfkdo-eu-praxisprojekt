@@ -1,0 +1,38 @@
+﻿@page "/participant/dashboard"
+@using Common.Enums;
+
+<MudExpansionPanels>
+
+    @foreach (var level in _data)
+    {
+        <MudExpansionPanel Text="@level.Name" Disabled="@level.Disabled">
+
+            @foreach (var result in level.Results)
+            {
+                <p>@result.Name</p>
+
+                @switch (result.Evaluation)
+                {
+                    case EnumEvaluation.Ungraded:
+                        <MudChip Text="blue" Variant="Variant.Text" Color="Color.Info">Unbenotet</MudChip>
+                        break;
+                    case EnumEvaluation.Passed:
+                        <MudChip Text="green" Variant="Variant.Text" Color="Color.Success">Bestanden</MudChip>
+                        break;
+                    case EnumEvaluation.Failed:
+                        <MudChip Text="red" Variant="Variant.Text" Color="Color.Error">Nicht bestanden</MudChip>
+                        break;
+                    default:
+                        <MudChip Text="red" Variant="Variant.Text" Color="Color.Error">Benotung nicht gefunden</MudChip>
+                        break;
+                }
+            }
+
+        </MudExpansionPanel>
+    }
+
+</MudExpansionPanels>
+
+@code {
+
+}

@@ -31,8 +31,9 @@ namespace BenutzerApp
 #else
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(WebConstants.AzureApiAddress) });
 #endif
-            builder.Services.AddScoped<StationService>();
+            builder.Services.AddScoped<EvaluatorService>();
             builder.Services.AddScoped<AuthService>();
+            builder.Services.AddScoped<ParticipantService>();
 
 
             await builder.Build().RunAsync();

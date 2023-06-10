@@ -1,0 +1,20 @@
+﻿@page "/evaluator/station/{Id:int}"
+@using Common.Enums;
+
+@foreach (var data in _data)
+{
+    <h5>@data.ParticipantName</h5>
+    <h6>@data.GradeId</h6>
+    <h6>@data.Grade</h6>
+
+    <MudButton Color="Color.Success" 
+               Variant="Variant.Filled"
+               Disabled="@_passButtonDisabled"
+               OnClick="async () => await Grade(data.GradeId, EnumEvaluation.Passed)">Bestanden</MudButton>
+
+    <MudButton Color="Color.Error" 
+               Variant="Variant.Filled"
+               OnClick="async () => await Grade(data.GradeId, EnumEvaluation.Failed)">Nicht bestanden</MudButton>
+
+    <hr />
+}

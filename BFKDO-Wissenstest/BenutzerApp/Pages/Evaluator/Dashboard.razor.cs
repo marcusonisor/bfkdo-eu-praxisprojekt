@@ -2,16 +2,16 @@ using BenutzerApp.Services;
 using Common.Model;
 using Microsoft.AspNetCore.Components;
 
-namespace BenutzerApp.Pages
+namespace BenutzerApp.Pages.Evaluator
 {
     /// <summary>
     ///     Stationsänderung.
     /// </summary>
-    public partial class StationChange
+    public partial class Dashboard
     {
         private List<TestStationModel> _stations = new();
 
-        private TestStationModel _currentStation = new();
+        //private TestStationModel _currentStation = new();
 
         /// <summary>
         ///     Initialisierungsmethode.
@@ -20,24 +20,23 @@ namespace BenutzerApp.Pages
         protected override async Task OnInitializedAsync()
         {
             var response = await StationService.GetAllTestStations();
-            _stations = response.Result;
+            _stations = response.Result.OrderBy(e => e.CriteriaName).ToList();
 
-            _currentStation ??= _stations.FirstOrDefault()!;
+            //_currentStation ??= _stations.FirstOrDefault()!;
         }
 
         /// <summary>
         ///     Stationen Service.
         /// </summary>
         [Inject]
-        public StationService StationService { get; set; } = null!;
+        public EvaluatorService StationService { get; set; } = null!;
 
         /// <summary>
         /// Methode zum Ändern der Station
         /// </summary>
-        public void SelectStation(TestStationModel selectedStation)
+        public void SelectStation(int id)
         {
-            _currentStation = selectedStation;
-            // StateHasChanged();
+            NavigationManager.NavigateTo($"/evaluator/station/{id}");
         }
     }
 

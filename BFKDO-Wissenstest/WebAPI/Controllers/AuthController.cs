@@ -127,8 +127,35 @@
                 }
                 else
                 {
-                    return Ok(new { Token = GenerateToken(Identities.AdminClaimName) });
+                    return Ok(new { Token = GenerateToken(Identities.ParticipantClaimName) });
                 }
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        /// <summary>
+        /// Abfrage der KontextId eines Bewerters.
+        /// </summary>
+        /// <param name="password">Das Zugangspasswort des Testbewerters.</param>
+        /// <returns>Ob die Abfrage erfolgreich war oder nicht.</returns>
+        /// <response code="200">Kontext gefunden.</response>
+        /// <response code="400">Zugangspasswort ist falsch.</response>
+        [HttpPost]
+        [Route("api/auth/evaluator/getcontextid")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult GetEvaluatorContextId([FromBody] string password)
+        {
+            try
+            {
+                TableKnowledgeTest test = _databaseContext.TableKnowledgeTests
+                    .Where(entity => entity.EvaluatorPassword == password)
+                    .Single();
+
+                return Ok(test.Id);
             }
             catch
             {

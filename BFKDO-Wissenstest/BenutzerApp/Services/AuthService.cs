@@ -52,5 +52,17 @@ namespace BenutzerApp.Services
 
             return result;
         }
+
+        public async Task<HttpRequestResult<int>> SetEvaluatorContextId(string password)
+        {
+            var result = await PostToApi<string, int>("/api/auth/evaluator/getcontextid", password);
+
+            if (result.RequestEnum == EnumHttpRequest.Success)
+            {
+                _authStateService.AddContextId(result.Result);
+            }
+
+            return result;
+        }
     }
 }
