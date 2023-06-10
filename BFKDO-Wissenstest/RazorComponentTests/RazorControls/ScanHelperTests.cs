@@ -19,7 +19,7 @@ namespace RazorComponentTests.RazorControls
             Assert.That(element != null!);
             if (element != null!)
             {
-                Assert.That(element.TextContent.Equals("Scannen", StringComparison.CurrentCultureIgnoreCase));
+                Assert.That(element.TextContent.Equals("QR-Code scannen", StringComparison.CurrentCultureIgnoreCase));
             }
             else
             {
@@ -34,8 +34,8 @@ namespace RazorComponentTests.RazorControls
             cut.Find("button").Click();
             var buttonsafterstart = cut.FindAll("button");
             Assert.That(buttonsafterstart.Count == 2);
-            Assert.That(buttonsafterstart.Any(t => t.TextContent.Equals("Kamera", StringComparison.CurrentCultureIgnoreCase)));
-            Assert.That(buttonsafterstart.Any(t => t.TextContent.Equals("Stoppen", StringComparison.CurrentCultureIgnoreCase)));
+            Assert.That(buttonsafterstart.Any(t => t.TextContent.Equals("Kamera wechseln", StringComparison.CurrentCultureIgnoreCase)));
+            Assert.That(buttonsafterstart.Any(t => t.TextContent.Equals("Scan stoppen", StringComparison.CurrentCultureIgnoreCase)));
         }
 
         [Test]
@@ -44,7 +44,7 @@ namespace RazorComponentTests.RazorControls
             var cut = RenderComponent<ScanHelper>();
             cut.Find("button").Click();
             var buttonsafterstart = cut.FindAll("button");
-            var stop = buttonsafterstart.FirstOrDefault(t => t.TextContent.Equals("Stoppen", StringComparison.CurrentCultureIgnoreCase));
+            var stop = buttonsafterstart.FirstOrDefault(t => t.TextContent.Equals("Scan stoppen", StringComparison.CurrentCultureIgnoreCase));
             if (stop == null)
             {
                 Assert.Fail();
@@ -55,7 +55,7 @@ namespace RazorComponentTests.RazorControls
             Assert.That(element != null!);
             if (element != null!)
             {
-                Assert.That(element.TextContent.Equals("Scannen", StringComparison.CurrentCultureIgnoreCase));
+                Assert.That(element.TextContent.Equals("QR-Code scannen", StringComparison.CurrentCultureIgnoreCase));
             }
             else
             {

@@ -15,10 +15,10 @@
         <MudSpacer />
         @if (AuthenticationStateService.IsLoggedIn())
         {
-            <MudIconButton Icon="@Icons.Material.Filled.House" Href="/dashboard" Color="Color.Dark" />
-            <MudIconButton Icon="@Icons.Material.Filled.Logout" Color="Color.Dark" OnClick="Logout" />
+            <MudIconButton Icon="@Icons.Material.Filled.House" aria-label="Dashboard anzeigen" Href="/dashboard" Color="Color.Dark" />
+            <MudIconButton Icon="@Icons.Material.Filled.Logout" aria-label="Logout" Color="Color.Dark" OnClick="Logout" />
         }
-        <MudIconButton Icon="@Icon" Color="Color.Dark" OnClick="() => _isDarkMode = !_isDarkMode" />
+        <MudIconButton aria-label="Theme ändern" Icon="@Icon" Color="Color.Dark" OnClick="() => _isDarkMode = !_isDarkMode" />
     </MudAppBar>
     <MudMainContent >
         <div class="px-4 py-2">

@@ -11,11 +11,11 @@
     </MudOverlay>
 }
 <div class="container">
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" Style="width:300px; border-radius: 80px" Href="/createknowledgetest">Test anlegen</MudButton>
+    <MudButton aria-label="Test anlegen" Variant="Variant.Filled" Color="Color.Primary" Style="width:300px; border-radius: 80px" Href="/createknowledgetest">Test anlegen</MudButton>
 </div>
 <br />
 <div class="container">
-    <MudDataGrid Items="@_knowledgetests" Striped="@Striped" Style="width:80%">
+    <MudDataGrid aria-label="Angelegte Wissenstests" Items="@_knowledgetests" Striped="@Striped" Style="width:80%">
         <Columns>
             <TemplateColumn Filterable="false" CellStyle="width:50px">
                 <CellTemplate>
