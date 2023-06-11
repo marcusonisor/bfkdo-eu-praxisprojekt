@@ -18,6 +18,11 @@ namespace BenutzerApp.Pages.Evaluator
         public EvaluatorService EvaluatorService { get; set; } = null!;
 
         /// <summary>
+        ///     Model für die View.
+        /// </summary>
+        public TestStationModel Stationen { get; set; } = new();
+
+        /// <summary>
         ///     Authentifizierungstatusservice.
         /// </summary>
         [Inject]

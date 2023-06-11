@@ -5,12 +5,12 @@
 
 <div class="container">
     <div class="login">
+        <br />
         <h3 class="text-center">Willkommen beim Wissenstest!</h3>
         <br />
         <h3 class="text-center"><i>Zugang für Bewerter</i></h3>
         <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
             <MudTextField aria-label="Passwort für Login" @bind-Value="@Password" Style="width: 400px;" Label="Passwort" Required="true" Variant="Variant.Filled" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ShowPassword" AdornmentAriaLabel="Show Password" />
-            <br />
             <MudButton Disabled="@Processing" aria-label="Anmelde-Button" Variant="Variant.Filled" Color="Color.Primary" Style="border-radius: 20px; padding-left:20px; padding-right:20px;" @onclick="Login">
                 @if (Processing)
                 {
@@ -22,7 +22,7 @@
                     <MudText>Anmelden</MudText>
                 }
             </MudButton>
-
+            <br />
             <ScanHelper QRCodeScanned="QRScanned" />
         </MudStack>
     </div>

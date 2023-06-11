@@ -1,20 +1,28 @@
 ﻿@page "/evaluator/station/{Id:int}"
 @using Common.Enums;
 
-@foreach (var data in _data)
+<MudStack Spacing="4">
+    <MudStack Row Justify="Justify.Center" AlignItems="AlignItems.Center" Class="my-4" Spacing="4">
+        <h1 class="m-0" aria-label="Testbezeichnung">Deine Station: <br> @Stationen.CriteriaName</h1>
+        <MudTooltip Text="Diese Funktion ist noch nicht verfügbar"><MudButton aria-label="Bearbeiten" Color="Color.Primary" Variant="Variant.Filled" Disabled="true" Style="border-radius: 20px; padding-left:20px; padding-right:20px;">Station wechseln</MudButton></MudTooltip>
+    </MudStack>
+</MudStack>
+<hr />
+
+    @foreach (var data in _data)
 {
     <h5>@data.ParticipantName</h5>
     <h6>@data.GradeId</h6>
     <h6>@data.Grade</h6>
 
-    <MudButton Color="Color.Success" 
-               Variant="Variant.Filled"
-               Disabled="@_passButtonDisabled"
-               OnClick="async () => await Grade(data.GradeId, EnumEvaluation.Passed)">Bestanden</MudButton>
+    <MudButton Color="Color.Success"
+           Variant="Variant.Filled"
+           Disabled="@_passButtonDisabled"
+           OnClick="async () => await Grade(data.GradeId, EnumEvaluation.Passed)">Bestanden</MudButton>
 
-    <MudButton Color="Color.Error" 
-               Variant="Variant.Filled"
-               OnClick="async () => await Grade(data.GradeId, EnumEvaluation.Failed)">Nicht bestanden</MudButton>
+    <MudButton Color="Color.Error"
+           Variant="Variant.Filled"
+           OnClick="async () => await Grade(data.GradeId, EnumEvaluation.Failed)">Nicht bestanden</MudButton>
 
     <hr />
 }
