@@ -20,9 +20,15 @@ namespace BenutzerApp.Pages.Participant
 
             base.OnInitialized();
 
+            UpdateData();
+            //}
+        }
+
+        private async void UpdateData()
+        {
             var response = await ParticipantService.GetDashboardData(7);
             _data = response.Result;
-            //}
+            StateHasChanged();
         }
     }
 }
