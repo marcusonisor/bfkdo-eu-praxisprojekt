@@ -1,16 +1,32 @@
 ﻿@page "/evaluator/station/{Id:int}"
 @using Common.Enums;
 @using Common.Model;
+@inject NavigationManager NavigationManager
 
 <MudStack Spacing="4">
     <MudStack Row Justify="Justify.Center" AlignItems="AlignItems.Center" Class="my-4" Spacing="4">
-        <h1 class="m-0" aria-label="Testbezeichnung">Deine Station: <br> @Stationen.CriteriaName</h1>
-        <MudTooltip Text="Diese Funktion ist noch nicht verfügbar"><MudButton aria-label="Bearbeiten" Color="Color.Primary" Variant="Variant.Filled" Disabled="true" Style="border-radius: 20px; padding-left:20px; padding-right:20px;">Station wechseln</MudButton></MudTooltip>
+        <h1 class="m-0" aria-label="Testbezeichnung">Deine Station: <br> @_stationName</h1>
+        <MudButton aria-label="Bearbeiten" 
+            Color="Color.Primary" 
+            Variant="Variant.Filled" 
+            Style="border-radius: 20px; padding-left:20px; padding-right:20px;"
+                   OnClick="() => NavigationManager.NavigateTo(_home)">
+            Station wechseln
+        </MudButton>
     </MudStack>
+    <MudStack>
+        <MudButton Color="Color.Primary"
+                   Variant="Variant.Filled"
+                   Style="border-radius: 20px; padding-left:20px; padding-right:20px;"
+                   OnClick="() => CloseStation()">
+            Station abschließen
+        </MudButton>
+
     </MudStack>
+</MudStack>
     <hr />
 
-    <MudDataGrid Items="@_data" T="ModelEvaluatorGrade">
+    <MudDataGrid Items="@_data" T="ModelEvaluationSet">
     <Columns>
         <TemplateColumn Filterable="false" CellStyle="width:20px" HeaderStyle="width:20px">
             <CellTemplate>
@@ -20,8 +36,9 @@
                     }
                     <MudIcon Style="border:3px solid black; border-radius:50%" Icon="@Icons.Material.Filled.Person" Title="Personen Icon" />
                     <h5>@data.ParticipantName</h5>
+                    <h6>@data.SybosId</h6>
+                    <h6>@data.Branch</h6>
                     <h6>@data.GradeId</h6>
-                    <h6>@data.Grade</h6>
 
                     <MudButton Color="Color.Success"
                                Variant="Variant.Filled"
@@ -37,3 +54,7 @@
         </TemplateColumn>
     </Columns>
 </MudDataGrid>
+
+@code {
+    private static readonly string _home = "/evaluator/dashboard";
+}

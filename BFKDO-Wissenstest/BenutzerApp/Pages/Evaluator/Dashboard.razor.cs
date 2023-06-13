@@ -21,8 +21,6 @@ namespace BenutzerApp.Pages.Evaluator
         {
             var response = await StationService.GetAllTestStations();
             _stations = response.Result.OrderBy(e => e.CriteriaName).ToList();
-
-            //_currentStation ??= _stations.FirstOrDefault()!;
         }
 
         /// <summary>

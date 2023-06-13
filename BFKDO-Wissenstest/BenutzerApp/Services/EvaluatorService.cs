@@ -38,9 +38,21 @@ namespace BenutzerApp.Services
             return result;
         }
 
-        public async Task<HttpRequestResult<List<ModelEvaluatorGrade>>> GetStationData(int knowledgeTestId, int stationId)
+        public async Task<HttpRequestResult<List<ModelEvaluationSet>>> GetStationData(int knowledgeTestId, int stationId)
         {
-            var result = await GetFromApi<List<ModelEvaluatorGrade>>($"/api/evaluator/knowledgetest/{knowledgeTestId}/getstationdata/{stationId}");
+            var result = await GetFromApi<List<ModelEvaluationSet>>($"/api/evaluator/knowledgetest/{knowledgeTestId}/getstationdata/{stationId}");
+
+            if (result.RequestEnum == EnumHttpRequest.Success)
+            {
+                Console.WriteLine(result.Result);
+            }
+
+            return result;
+        }
+
+        public async Task<HttpRequestResult<ModelStationName>> GetStationName(int stationId)
+        {
+            var result = await GetFromApi<ModelStationName>($"/api/evaluator/getstationname/{stationId}");
 
             if (result.RequestEnum == EnumHttpRequest.Success)
             {
@@ -53,6 +65,18 @@ namespace BenutzerApp.Services
         public async Task<HttpRequestResult<bool>> SubmitEvaluation(ModelEvaluation evaluation)
         {
             var result = await PostToApi<ModelEvaluation, bool>($"/api/evaluator/submitevaluation", evaluation);
+
+            if (result.RequestEnum == EnumHttpRequest.Success)
+            {
+                Console.WriteLine(result.Result);
+            }
+
+            return result;
+        }
+
+        public async Task<HttpRequestResult<bool>> CloseEvaluation(List<int> ids)
+        {
+            var result = await PostToApi<List<int>, bool>($"/api/evaluator/closeevaluation", ids);
 
             if (result.RequestEnum == EnumHttpRequest.Success)
             {
