@@ -18,16 +18,25 @@ namespace BenutzerApp.Pages.Evaluator
         public EvaluatorService EvaluatorService { get; set; } = null!;
 
         /// <summary>
+        ///     Model für die View.
+        /// </summary>
+        public TestStationModel Stationen { get; set; } = new();
+
+        /// <summary>
         ///     Authentifizierungstatusservice.
         /// </summary>
         [Inject]
         public AuthenticationStateService AuthenticationStateService { get; set; } = null!;
 
-        //public TestStationModel Stationen { get; set; } = new();
+        /// <summary>
+        ///     Boolean für gestreifte Liste
+        /// </summary>
+        public bool Striped { get; set; } = true;
 
-        public List<ModelEvaluationSet> _data = new();
+        public List<ModelEvaluatorGrade> _data = new();
 
-        public string _stationName = string.Empty;
+        public bool _passButtonDisabled = false;
+        public bool _failButtonDisbaled = false;
 
         protected override async Task OnInitializedAsync()
         {
@@ -35,11 +44,8 @@ namespace BenutzerApp.Pages.Evaluator
 
             if (Id.HasValue)
             {
-                var stationName = await EvaluatorService.GetStationName(Id.Value);
-                _stationName = stationName.Result.StationName;
-
-                var data = await EvaluatorService.GetStationData(knowledgeTestId, Id.Value);
-                _data = data.Result;
+                var response = await EvaluatorService.GetStationData(knowledgeTestId, Id.Value);
+                _data = response.Result;
             }
         }
 
@@ -47,18 +53,6 @@ namespace BenutzerApp.Pages.Evaluator
         {
             var response = await EvaluatorService.SubmitEvaluation(new ModelEvaluation(gradeId, evaluation));
             await OnInitializedAsync();
-        }
-
-        public async Task CloseStation()
-        {
-            var ids = new List<int>();
-
-            foreach (var data in _data)
-            {
-                ids.Add(data.GradeId);
-            }
-
-            await EvaluatorService.CloseEvaluation(ids);
         }
     }
 }

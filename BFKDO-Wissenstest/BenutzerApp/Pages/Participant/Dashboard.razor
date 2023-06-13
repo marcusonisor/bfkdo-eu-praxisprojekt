@@ -2,7 +2,7 @@
 @using Common.Enums;
 @using Common.Models;
 
-<MudExpansionPanels>
+<MudExpansionPanels MultiExpansion="true">
 
     @foreach (var level in _data)
     {
@@ -17,19 +17,20 @@
                                 @{
                                     var result = context.Item;
                                 }
-                                @switch (result.Evaluation)
+                                @switch (result.Evaluation)                            
+
                                 {
                                     case EnumEvaluation.Ungraded:
-                                        <MudChip Text="blue" Variant="Variant.Text" Color="Color.Info">Unbenotet</MudChip>
+                                        <MudFab DisableElevation="true" Size="Size.Large" Disabled="true" aria-label="Unbenotet"></MudFab>
                                         break;
                                     case EnumEvaluation.Passed:
-                                        <MudChip Text="green" Variant="Variant.Text" Color="Color.Success">Bestanden</MudChip>
+                                        <MudFab DisableElevation="true" Size="Size.Large"Color="Color.Success" StartIcon="@Icons.Material.Filled.Check" aria-label="Bestanden"></MudFab>
                                         break;
                                     case EnumEvaluation.Failed:
-                                        <MudChip Text="red" Variant="Variant.Text" Color="Color.Error">Nicht bestanden</MudChip>
+                                        <MudFab DisableElevation="true" Size="Size.Large" Color="Color.Error" StartIcon="@Icons.Material.Filled.Close" aria-label="Nicht bestanden"></MudFab>
                                         break;
                                     default:
-                                        <MudChip Text="red" Variant="Variant.Text" Color="Color.Error">Benotung nicht gefunden</MudChip>
+                                        <MudFab DisableElevation="true" Size="Size.Large" Color="Color.Info" StartIcon="@Icons.Material.Filled.Bolt" aria-label="Benotung nicht gefunden"></MudFab>
                                         break;
                                 }
                             </MudStack>
@@ -41,7 +42,9 @@
     }
 
 </MudExpansionPanels>
+<MudContainer>
+    <div style="position: fixed; bottom: 0; left: 0; width: 100%; background-color: #a5a5a5; padding: 20px; text-align: center;">
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Cached" Style="border-radius: 20px; padding-left:20px; padding-right:20px;" OnClick="UpdateData">Aktualisieren</MudButton>
+    </div>
+</MudContainer>
 
-@code {
-
-}
