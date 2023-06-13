@@ -37,7 +37,7 @@ namespace BenutzerApp.Pages.Participant
         /// Die Initialisierungmethode.
         /// </summary>
         /// <returns></returns>
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
             base.OnInitialized();
             UpdateData();

@@ -56,7 +56,7 @@ namespace BenutzerApp.Pages.Login
         /// <summary>
         /// Loginmethode.
         /// </summary>
-        public async void Login()
+        public async Task Login()
         {
             if (!string.IsNullOrEmpty(SybosID) && !string.IsNullOrEmpty(Password))
             {
@@ -68,7 +68,7 @@ namespace BenutzerApp.Pages.Login
 
                 if (response.RequestEnum is EnumHttpRequest.Success)
                 {
-                    AuthService.SetParticipantContextId(int.Parse(SybosID));
+                    await AuthService.SetParticipantContextId(int.Parse(SybosID));
                     MudSnackbar.Add("Login erfolgreich!", Severity.Success);
                     NavigationManager.NavigateTo("/participant/dashboard");
                 }
@@ -88,7 +88,7 @@ namespace BenutzerApp.Pages.Login
         /// Methode für die Weiterverarbeitung eines gescannten QR Codes.
         /// </summary>
         /// <param name="args"></param>
-        private async void QRScanned(string args)
+        private async Task QRScanned(string args)
         {
             var credentials = args.Split();
             try
@@ -99,7 +99,7 @@ namespace BenutzerApp.Pages.Login
 
                 if (response.RequestEnum is EnumHttpRequest.Success)
                 {
-                    AuthService.SetParticipantContextId(int.Parse(SybosID));
+                    await AuthService.SetParticipantContextId(int.Parse(SybosID));
                     MudSnackbar.Add("Login erfolgreich!", Severity.Success);
                     NavigationManager.NavigateTo("/participant/dashboard");
                 }

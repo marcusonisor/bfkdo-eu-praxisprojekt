@@ -65,9 +65,16 @@ namespace BenutzerApp.Services
             return result;
         }
 
-        public void SetParticipantContextId(int sybosId)
+        public async Task<HttpRequestResult<int>> SetParticipantContextId(int sybosId)
         {
-            _authStateService.AddContextId(sybosId);
+            var result = await PostToApi<int, int>("/api/auth/participant/getcontextid", sybosId);
+
+            if (result.RequestEnum == EnumHttpRequest.Success)
+            {
+                _authStateService.AddContextId(result.Result);
+            }
+
+            return result;
         }
     }
 }

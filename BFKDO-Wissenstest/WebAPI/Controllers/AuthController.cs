@@ -163,6 +163,33 @@
             }
         }
 
+        /// <summary>
+        /// Abfrage der KontextId eines Teilnehmers.
+        /// </summary>
+        /// <param name="password">Die SybosId des Teilnehmers.</param>
+        /// <returns>Ob die Abfrage erfolgreich war oder nicht.</returns>
+        /// <response code="200">Kontext gefunden.</response>
+        /// <response code="400">SybosId ist falsch.</response>
+        [HttpPost]
+        [Route("api/auth/participant/getcontextid")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult GetParticipantContextId([FromBody] int sybosId)
+        {
+            try
+            {
+                TableTestperson test = _databaseContext.TableTestpersons
+                    .Where(entity => entity.SybosId == sybosId)
+                    .Single();
+
+                return Ok(test.Id);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
         private string GenerateToken(string claimNaime)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
