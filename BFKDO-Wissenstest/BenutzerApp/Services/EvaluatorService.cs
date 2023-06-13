@@ -38,6 +38,12 @@ namespace BenutzerApp.Services
             return result;
         }
 
+        /// <summary>
+        /// Ruft die Dashboarddaten ab.
+        /// </summary>
+        /// <param name="knowledgeTestId"></param>
+        /// <param name="stationId"></param>
+        /// <returns>Die Dashboarddaten.</returns>
         public async Task<HttpRequestResult<List<ModelEvaluationSet>>> GetStationData(int knowledgeTestId, int stationId)
         {
             var result = await GetFromApi<List<ModelEvaluationSet>>($"/api/evaluator/knowledgetest/{knowledgeTestId}/getstationdata/{stationId}");
@@ -50,6 +56,11 @@ namespace BenutzerApp.Services
             return result;
         }
 
+        /// <summary>
+        /// Rufen den Namen der angegebenen Station ab.
+        /// </summary>
+        /// <param name="stationId"></param>
+        /// <returns>Der Name der angegebenen Stationen.</returns>
         public async Task<HttpRequestResult<ModelStationName>> GetStationName(int stationId)
         {
             var result = await GetFromApi<ModelStationName>($"/api/evaluator/getstationname/{stationId}");
@@ -62,6 +73,11 @@ namespace BenutzerApp.Services
             return result;
         }
 
+        /// <summary>
+        /// Benotet die ausgewählte Evaluierung.
+        /// </summary>
+        /// <param name="evaluation"></param>
+        /// <returns></returns>
         public async Task<HttpRequestResult<bool>> SubmitEvaluation(ModelEvaluation evaluation)
         {
             var result = await PostToApi<ModelEvaluation, bool>($"/api/evaluator/submitevaluation", evaluation);
@@ -74,6 +90,11 @@ namespace BenutzerApp.Services
             return result;
         }
 
+        /// <summary>
+        /// Schließt die ausgewählten Evaluierungen ab.
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
         public async Task<HttpRequestResult<bool>> CloseEvaluation(List<int> ids)
         {
             var result = await PostToApi<List<int>, bool>($"/api/evaluator/closeevaluation", ids);

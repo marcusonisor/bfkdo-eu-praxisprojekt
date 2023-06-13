@@ -166,7 +166,7 @@
         /// <summary>
         /// Abfrage der KontextId eines Teilnehmers.
         /// </summary>
-        /// <param name="password">Die SybosId des Teilnehmers.</param>
+        /// <param name="sybosId">Die SybosId des Teilnehmers.</param>
         /// <returns>Ob die Abfrage erfolgreich war oder nicht.</returns>
         /// <response code="200">Kontext gefunden.</response>
         /// <response code="400">SybosId ist falsch.</response>

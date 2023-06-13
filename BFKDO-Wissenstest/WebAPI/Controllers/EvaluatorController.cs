@@ -48,6 +48,11 @@ namespace WebAPI.Controllers
             }));
         }
 
+        /// <summary>
+        /// Ruft den Namen der angegeben StationsId ab.
+        /// </summary>
+        /// <param name="stationId"></param>
+        /// <returns>Der Name der Station.</returns>
         [HttpGet]
         [Route("api/evaluator/getstationname/{stationId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -64,6 +69,12 @@ namespace WebAPI.Controllers
             return Ok(new ModelStationName());
         }
 
+        /// <summary>
+        /// Ruf die Daten der angegebenen Station ab.
+        /// </summary>
+        /// <param name="knowledgeTestId"></param>
+        /// <param name="stationId"></param>
+        /// <returns>Die Daten der angegebenen Station.</returns>
         [HttpGet]
         [Route("api/evaluator/knowledgetest/{knowledgeTestId}/getstationdata/{stationId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]

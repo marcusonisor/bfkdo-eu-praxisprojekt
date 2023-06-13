@@ -50,8 +50,8 @@
                     @if (context.Item!.State == EnumEvaluationState.Open)
                     {
                         <MudButtonGroup OverrideStyles="false">
-                            <MudButton Color="Color.Primary" Variant="Variant.Filled" Disabled="@(data.Grade == EnumEvaluation.Passed)" Style="border-top-left-radius: 20px; border-bottom-left-radius: 20px; padding-left:20px; padding-right:20px;" OnClick="async () => await Grade(data.GradeId, EnumEvaluation.Passed)">Bestanden</MudButton>
-                            <MudButton Color="Color.Primary" Variant="Variant.Filled" Disabled="@(data.Grade == EnumEvaluation.Failed)" Style="border-top-right-radius: 20px; border-bottom-right-radius: 20px; padding-left:20px; padding-right:20px;" OnClick="async () => await Grade(data.GradeId, EnumEvaluation.Failed)">Nicht bestanden</MudButton>
+                            <MudButton Color="Color.Primary" Variant="Variant.Filled" Disabled="@(data!.Grade == EnumEvaluation.Passed)" Style="border-top-left-radius: 20px; border-bottom-left-radius: 20px; padding-left:20px; padding-right:20px;" OnClick="async () => await Grade(data.GradeId, EnumEvaluation.Passed)">Bestanden</MudButton>
+                            <MudButton Color="Color.Primary" Variant="Variant.Filled" Disabled="@(data!.Grade == EnumEvaluation.Failed)" Style="border-top-right-radius: 20px; border-bottom-right-radius: 20px; padding-left:20px; padding-right:20px;" OnClick="async () => await Grade(data.GradeId, EnumEvaluation.Failed)">Nicht bestanden</MudButton>
                         </MudButtonGroup>
                     }
                     else

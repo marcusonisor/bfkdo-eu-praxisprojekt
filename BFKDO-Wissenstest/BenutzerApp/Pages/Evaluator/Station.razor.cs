@@ -35,6 +35,9 @@ namespace BenutzerApp.Pages.Evaluator
         [Inject]
         public AuthenticationStateService AuthenticationStateService { get; set; } = null!;
 
+        /// <summary>
+        /// Dialogservice.
+        /// </summary>
         [Inject]
         public IDialogService DialogService { get; set; } = null!;
 

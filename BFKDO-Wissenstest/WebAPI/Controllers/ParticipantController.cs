@@ -15,12 +15,22 @@ namespace WebAPI.Controllers
         private readonly BfkdoDbContext _dbContext;
         private readonly ILogger<KnowledgeTestController> _logger;
 
+        /// <summary>
+        /// Konstruktor.
+        /// </summary>
+        /// <param name="dbContext"></param>
+        /// <param name="logger"></param>
         public ParticipantController(BfkdoDbContext dbContext, ILogger<KnowledgeTestController> logger)
         {
             _dbContext = dbContext;
             _logger = logger;
         }
 
+        /// <summary>
+        /// Ruft die Dashboarddaten ab.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Die Dashboarddaten.</returns>
         [HttpGet]
         [Route("api/participant/{id}/getdashboarddata")]
         [ProducesResponseType(StatusCodes.Status200OK)]
