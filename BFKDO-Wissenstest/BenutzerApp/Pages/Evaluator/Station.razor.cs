@@ -3,6 +3,7 @@ using Common.Enums;
 using Common.Model;
 using Common.Services;
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 
 namespace BenutzerApp.Pages.Evaluator
 {
@@ -33,10 +34,9 @@ namespace BenutzerApp.Pages.Evaluator
         /// </summary>
         public bool Striped { get; set; } = true;
 
-        public List<ModelEvaluatorGrade> _data = new();
+        public List<ModelEvaluationSet> _data = new();
 
-        public bool _passButtonDisabled = false;
-        public bool _failButtonDisbaled = false;
+        public string _stationName = string.Empty;
 
         protected override async Task OnInitializedAsync()
         {
@@ -44,8 +44,11 @@ namespace BenutzerApp.Pages.Evaluator
 
             if (Id.HasValue)
             {
-                var response = await EvaluatorService.GetStationData(knowledgeTestId, Id.Value);
-                _data = response.Result;
+                var stationName = await EvaluatorService.GetStationName(Id.Value);
+                _stationName = stationName.Result.StationName;
+
+                var data = await EvaluatorService.GetStationData(knowledgeTestId, Id.Value);
+                _data = data.Result;
             }
         }
 
@@ -53,6 +56,18 @@ namespace BenutzerApp.Pages.Evaluator
         {
             var response = await EvaluatorService.SubmitEvaluation(new ModelEvaluation(gradeId, evaluation));
             await OnInitializedAsync();
+        }
+
+        public async Task CloseStation()
+        {
+            var ids = new List<int>();
+
+            foreach (var data in _data)
+            {
+                ids.Add(data.GradeId);
+            }
+
+            await EvaluatorService.CloseEvaluation(ids);
         }
     }
 }
