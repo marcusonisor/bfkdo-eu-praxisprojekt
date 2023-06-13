@@ -10,14 +10,14 @@
 
             <MudDataGrid T="ModelExaminationResult" Items="@level.Results">
                 <Columns>
-                    <PropertyColumn Property="x => x.Name"></PropertyColumn>
+                    <PropertyColumn Property="x => x!.Name"></PropertyColumn>
                     <TemplateColumn>
                         <CellTemplate>
                             <MudStack>
                                 @{
                                     var result = context.Item;
                                 }
-                                @switch (result.Evaluation)                            
+                                @switch (result!.Evaluation)                            
 
                                 {
                                     case EnumEvaluation.Ungraded:

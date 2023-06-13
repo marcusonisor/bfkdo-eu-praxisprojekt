@@ -68,6 +68,7 @@ namespace BenutzerApp.Pages.Login
 
                 if (response.RequestEnum is EnumHttpRequest.Success)
                 {
+                    AuthService.SetParticipantContextId(int.Parse(SybosID));
                     MudSnackbar.Add("Login erfolgreich!", Severity.Success);
                     NavigationManager.NavigateTo("/participant/dashboard");
                 }
@@ -98,7 +99,9 @@ namespace BenutzerApp.Pages.Login
 
                 if (response.RequestEnum is EnumHttpRequest.Success)
                 {
+                    AuthService.SetParticipantContextId(int.Parse(SybosID));
                     MudSnackbar.Add("Login erfolgreich!", Severity.Success);
+                    NavigationManager.NavigateTo("/participant/dashboard");
                 }
                 else
                 {

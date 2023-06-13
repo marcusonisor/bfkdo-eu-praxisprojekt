@@ -64,5 +64,10 @@ namespace BenutzerApp.Services
 
             return result;
         }
+
+        public void SetParticipantContextId(int sybosId)
+        {
+            _authStateService.AddContextId(sybosId);
+        }
     }
 }
