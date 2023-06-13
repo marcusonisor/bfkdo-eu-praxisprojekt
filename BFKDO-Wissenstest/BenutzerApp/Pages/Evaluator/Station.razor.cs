@@ -28,6 +28,11 @@ namespace BenutzerApp.Pages.Evaluator
         [Inject]
         public AuthenticationStateService AuthenticationStateService { get; set; } = null!;
 
+        /// <summary>
+        ///     Boolean für gestreifte Liste
+        /// </summary>
+        public bool Striped { get; set; } = true;
+
         public List<ModelEvaluatorGrade> _data = new();
 
         public bool _passButtonDisabled = false;

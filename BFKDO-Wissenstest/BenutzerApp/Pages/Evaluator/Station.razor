@@ -10,28 +10,25 @@
     </MudStack>
     <hr />
 
-    <MudDataGrid Items="@_data" T="ModelEvaluatorGrade">
+    <MudDataGrid Items="@_data" T="ModelEvaluatorGrade" Striped="@Striped" arial-label="Teilnehmer">
     <Columns>
-        <TemplateColumn Filterable="false" CellStyle="width:20px" HeaderStyle="width:20px">
+        <TemplateColumn Filterable="false" CellStyle="width:50px">
+            <CellTemplate>
+                <MudIcon Icon="@Icons.Material.Filled.Person" Style="border:3px solid black; border-radius:50%" Title="Personen Icon" />
+                </CellTemplate>
+                </TemplateColumn>
+        <PropertyColumn Filterable="false" CellClass="mx-3" HeaderClass="mx-3" Title="Teilnehmer" Property="x => x!.ParticipantName" />
+        <TemplateColumn Filterable="false" CellClass="d-flex justify-end">
             <CellTemplate>
                 <MudStack Row>
                     @{
                         var data = context.Item;
                     }
-                    <MudIcon Style="border:3px solid black; border-radius:50%" Icon="@Icons.Material.Filled.Person" Title="Personen Icon" />
-                    <h5>@data.ParticipantName</h5>
-                    <h6>@data.GradeId</h6>
                     <h6>@data.Grade</h6>
-
-                    <MudButton Color="Color.Success"
-                               Variant="Variant.Filled"
-                               Disabled="@(data.Grade == EnumEvaluation.Passed)"
-                               OnClick="async () => await Grade(data.GradeId, EnumEvaluation.Passed)">Bestanden</MudButton>
-
-                    <MudButton Color="Color.Error"
-                               Variant="Variant.Filled"
-                               Disabled="@(data.Grade == EnumEvaluation.Failed)"
-                               OnClick="async () => await Grade(data.GradeId, EnumEvaluation.Failed)">Nicht bestanden</MudButton>
+                    <MudButtonGroup OverrideStyles="false">
+                        <MudButton Color="Color.Primary" Variant="Variant.Filled" Disabled="@(data.Grade == EnumEvaluation.Passed)" Style="border-top-left-radius: 20px; border-bottom-left-radius: 20px; padding-left:20px; padding-right:20px;" OnClick="async () => await Grade(data.GradeId, EnumEvaluation.Passed)">Bestanden</MudButton>
+                        <MudButton Color="Color.Primary" Variant="Variant.Filled" Disabled="@(data.Grade == EnumEvaluation.Failed)" Style="border-top-right-radius: 20px; border-bottom-right-radius: 20px; padding-left:20px; padding-right:20px;" OnClick="async () => await Grade(data.GradeId, EnumEvaluation.Failed)">Nicht bestanden</MudButton>
+                    </MudButtonGroup>
                 </MudStack>
             </CellTemplate>
         </TemplateColumn>
