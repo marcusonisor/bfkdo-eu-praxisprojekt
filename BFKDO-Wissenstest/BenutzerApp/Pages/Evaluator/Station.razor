@@ -4,33 +4,27 @@
 @using Common.Model;
 
 <MudStack Spacing="4">
-    <MudStack Row Justify="Justify.Center" AlignItems="AlignItems.Center" Class="my-4" Spacing="4">
-        <h1 class="m-0" aria-label="Testbezeichnung">Deine Station: @_stationName</h1>
-    </MudStack>
-    <MudStack Row Justify="Justify.Center" AlignItems="AlignItems.Center" Class="my-4" Spacing="4">
-        <MudButton aria-label="Bearbeiten"
-                   Color="Color.Primary"
-                   Variant="Variant.Filled"
-                   Style="border-radius: 20px; padding-left:20px; padding-right:20px;"
-                   OnClick="() => NavigationManager.NavigateTo(_home)">
-            Station wechseln
-        </MudButton>
-    </MudStack>
-    @if (_data.Any(e => e.State == EnumEvaluationState.Open))
-    {
-        <MudStack Row Justify="Justify.Center" AlignItems="AlignItems.Center" Class="my-4" Spacing="4">
-        <MudButton Color="Color.Primary"
-                   Variant="Variant.Filled"
-                   Style="border-radius: 20px; padding-left:20px; padding-right:20px;"
-                   OnClick="() => CloseStation()">
-            Station abschließen
-        </MudButton>
+    <MudStack Row Justify="Justify.Center" AlignItems="AlignItems.Start" Class="my-4" Spacing="4">
+        <h2 class="m-0" aria-label="Testbezeichnung">Deine Station:<br /> @_stationName</h2>
+        <MudStack Row AlignItems="AlignItems.End" Class="my-4" Spacing="4">
+            <MudButton aria-label="Bearbeiten"
+                       Color="Color.Primary"
+                       Variant="Variant.Filled"
+                       Style="border-radius: 20px; padding-left:20px; padding-right:20px;"
+                       Href="/evaluator/dashboard">
+                Station wechseln
+            </MudButton>
         </MudStack>
-    }
+    </MudStack>
+    
 </MudStack>
 <hr />
-
-<MudDataGrid Items="@_data" T="ModelEvaluationSet" Striped="@Striped" arial-label="Teilnehmer">
+<div class="container">
+<MudDataGrid Items="@_data" T="ModelEvaluationSet" Striped="@Striped" QuickFilter="@QuickSearch" arial-label="Teilnehmer">
+        <ToolBarContent><MudSpacer />
+            <MudTextField @bind-Value="_searchString" Placeholder="Suche" Adornment="Adornment.Start" Immediate="true"
+                      AdornmentIcon="@Icons.Material.Filled.Search" aria-label="Suche" IconSize="Size.Medium" Class="mt-0" Style="width:500px;"></MudTextField>
+        </ToolBarContent>
     <Columns>
         <TemplateColumn Filterable="false" CellStyle="width:50px">
             <CellTemplate>
@@ -39,7 +33,7 @@
         </TemplateColumn>
         <PropertyColumn Filterable="false" CellClass="mx-3" HeaderClass="mx-3" Title="Teilnehmer" Property="x => x!.ParticipantName" />
         <PropertyColumn Filterable="false" CellClass="mx-3" HeaderClass="mx-3" Title="SybosID" Property="x => x!.SybosId" />
-        <PropertyColumn Filterable="false" CellClass="mx-3" HeaderClass="mx-3" Title="Diensstelle" Property="x => x!.Branch" />
+        <PropertyColumn Filterable="false" CellClass="mx-3" HeaderClass="mx-3" Title="Feuerwehr" Property="x => x!.Branch" />
         <TemplateColumn Filterable="false" CellClass="d-flex justify-end">
             <CellTemplate>
                 <MudStack Row>
@@ -58,7 +52,8 @@
                     {
                         <MudButton Color="Color.Primary"
                                Variant="Variant.Filled"
-                               Disabled="true">
+                               Disabled="true"
+                               Style="border-radius: 20px; padding-left:20px; padding-right:20px;">
                             Station abgeschlossen
                         </MudButton>
                     }
@@ -68,6 +63,15 @@
     </Columns>
 </MudDataGrid>
 
-@code {
-    private static readonly string _home = "/evaluator/dashboard";
+@if (_data.Any(e => e.State == EnumEvaluationState.Open))
+{
+    <MudStack Row Justify="Justify.Center" AlignItems="AlignItems.Center" Class="my-4" Spacing="4">
+    <MudButton Color="Color.Primary"
+               Variant="Variant.Filled"
+               Style="border-radius: 20px; padding-left:20px; padding-right:20px;"
+               OnClick="() => CloseStation()">
+        Station abschließen
+    </MudButton>
+    </MudStack>
 }
+</div>

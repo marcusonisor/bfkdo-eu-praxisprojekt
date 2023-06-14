@@ -24,6 +24,12 @@ namespace BenutzerApp.Pages.Evaluator
         [Inject]
         public EvaluatorService EvaluatorService { get; set; } = null!;
 
+            
+        /// <summary>
+        ///     Suchstring für Filter.
+        /// </summary>
+        private string _searchString = string.Empty;
+
         /// <summary>
         ///     Model für die View.
         /// </summary>
@@ -109,5 +115,22 @@ namespace BenutzerApp.Pages.Evaluator
 
             await OnInitializedAsync();
         }
+
+        private Func<ModelEvaluationSet, bool> QuickSearch => x =>
+        {
+            if (string.IsNullOrWhiteSpace(_searchString))
+                return true;
+
+            if (x.ParticipantName.Contains(_searchString))
+                return true;
+
+            if (x.SybosId.ToString().Contains(_searchString))
+                return true;
+
+            if (x.Branch.Contains(_searchString))
+                return true;
+
+            return false;
+        };
     }
 }
