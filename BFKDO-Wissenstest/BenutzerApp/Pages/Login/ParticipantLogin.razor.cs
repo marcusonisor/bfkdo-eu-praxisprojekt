@@ -5,12 +5,12 @@ using Common.Services;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
-namespace BenutzerApp.Pages.Auth
+namespace BenutzerApp.Pages.Login
 {
     /// <summary>
     ///     Login Komponente.
     /// </summary>
-    public partial class AuthParticipant
+    public partial class ParticipantLogin
     {
         /// <summary>
         ///     Initialisierungmethode.
@@ -56,7 +56,7 @@ namespace BenutzerApp.Pages.Auth
         /// <summary>
         /// Loginmethode.
         /// </summary>
-        public async void Login()
+        public async Task Login()
         {
             if (!string.IsNullOrEmpty(SybosID) && !string.IsNullOrEmpty(Password))
             {
@@ -68,8 +68,9 @@ namespace BenutzerApp.Pages.Auth
 
                 if (response.RequestEnum is EnumHttpRequest.Success)
                 {
-                    MudSnackbar.Add("SUCK", Severity.Success);
-                    //NavigationManager.NavigateTo("/");
+                    await AuthService.SetParticipantContextId(int.Parse(SybosID));
+                    MudSnackbar.Add("Login erfolgreich!", Severity.Success);
+                    NavigationManager.NavigateTo("/participant/dashboard");
                 }
                 else
                 {
@@ -87,7 +88,7 @@ namespace BenutzerApp.Pages.Auth
         /// Methode für die Weiterverarbeitung eines gescannten QR Codes.
         /// </summary>
         /// <param name="args"></param>
-        private async void QRScanned(string args)
+        private async Task QRScanned(string args)
         {
             var credentials = args.Split();
             try
@@ -98,7 +99,9 @@ namespace BenutzerApp.Pages.Auth
 
                 if (response.RequestEnum is EnumHttpRequest.Success)
                 {
-                    MudSnackbar.Add("SUCK", Severity.Success);
+                    await AuthService.SetParticipantContextId(int.Parse(SybosID));
+                    MudSnackbar.Add("Login erfolgreich!", Severity.Success);
+                    NavigationManager.NavigateTo("/participant/dashboard");
                 }
                 else
                 {
@@ -110,7 +113,6 @@ namespace BenutzerApp.Pages.Auth
                 MudSnackbar.Add("Ungültiger QR-Code! Bitte versuchen Sie es erneut!", Severity.Error);
             }
         }
-
 
         /// <summary>
         ///     Properties für die Passwortanzeige-Funktion.

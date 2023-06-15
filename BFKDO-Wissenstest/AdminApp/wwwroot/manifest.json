@@ -1,6 +1,6 @@
 {
-  "name": "AdminApp",
-  "short_name": "AdminApp",
+  "name": "BFKDO Wissenstest - Adminapp",
+  "short_name": "Adminapp",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#ffffff",

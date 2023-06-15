@@ -62,7 +62,7 @@ namespace AdminApp.Services
         /// <returns>Die Zugangsdaten als byte[]</returns>
         private async Task<HttpRequestResult<byte[]>> GetEvaluatorCredentials(int knowledgetestId)
         {
-            return await GetFromApi<byte[]>($"/api/admin/export/getevaluatorcredentials/{knowledgetestId}");
+            return await GetFromApi<byte[]>($"/api/export/evaluatorcredentials/{knowledgetestId}");
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace AdminApp.Services
         /// <returns>Die Zugangsdaten als byte[]</returns>
         private async Task<HttpRequestResult<byte[]>> GetParticipantsCredentials(int knowledgetestId)
         {
-            return await GetFromApi<byte[]>($"/api/admin/export/getparticipantscredentials/{knowledgetestId}");
+            return await GetFromApi<byte[]>($"/api/export/participantscredentials/{knowledgetestId}");
         }
     }
 }

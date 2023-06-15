@@ -1,0 +1,50 @@
+﻿@page "/participant/dashboard"
+@using Common.Enums;
+@using Common.Models;
+
+<MudExpansionPanels MultiExpansion="true">
+
+    @foreach (var level in _data)
+    {
+        <MudExpansionPanel Text="@level.Name" Disabled="@level.Disabled">
+
+            <MudDataGrid T="ModelExaminationResult" Items="@level.Results">
+                <Columns>
+                    <PropertyColumn Property="x => x!.Name"></PropertyColumn>
+                    <TemplateColumn>
+                        <CellTemplate>
+                            <MudStack>
+                                @{
+                                    var result = context.Item;
+                                }
+                                @switch (result!.Evaluation)                            
+
+                                {
+                                    case EnumEvaluation.Ungraded:
+                                        <MudFab DisableElevation="true" Size="Size.Large" Disabled="true" aria-label="Unbenotet"></MudFab>
+                                        break;
+                                    case EnumEvaluation.Passed:
+                                        <MudFab DisableElevation="true" Size="Size.Large"Color="Color.Success" StartIcon="@Icons.Material.Filled.Check" aria-label="Bestanden"></MudFab>
+                                        break;
+                                    case EnumEvaluation.Failed:
+                                        <MudFab DisableElevation="true" Size="Size.Large" Color="Color.Error" StartIcon="@Icons.Material.Filled.Close" aria-label="Nicht bestanden"></MudFab>
+                                        break;
+                                    default:
+                                        <MudFab DisableElevation="true" Size="Size.Large" Color="Color.Info" StartIcon="@Icons.Material.Filled.Bolt" aria-label="Benotung nicht gefunden"></MudFab>
+                                        break;
+                                }
+                            </MudStack>
+                        </CellTemplate>
+                    </TemplateColumn>
+                </Columns>
+            </MudDataGrid>
+        </MudExpansionPanel>
+    }
+
+</MudExpansionPanels>
+<MudContainer>
+    <div style="position: fixed; bottom: 0; left: 0; width: 100%; background-color: #a5a5a5; padding: 20px; text-align: center;">
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Cached" Style="border-radius: 20px; padding-left:20px; padding-right:20px;" OnClick="UpdateData">Aktualisieren</MudButton>
+    </div>
+</MudContainer>
+

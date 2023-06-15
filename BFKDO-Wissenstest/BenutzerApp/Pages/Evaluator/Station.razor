@@ -1,0 +1,78 @@
+﻿@page "/evaluator/station/{Id:int}"
+@inject NavigationManager NavigationManager
+@using Common.Enums;
+@using Common.Model;
+
+<MudStack Spacing="4">
+    <MudStack Row Justify="Justify.Center" AlignItems="AlignItems.Start" Class="my-4" Spacing="4">
+        <h2 class="m-0" aria-label="Testbezeichnung">Deine Station:<br /> @_stationName</h2>
+        <MudStack Row AlignItems="AlignItems.End" Class="my-4" Spacing="4">
+            <MudButton aria-label="Bearbeiten"
+                       Color="Color.Primary"
+                       Variant="Variant.Filled"
+                       Style="border-radius: 20px; padding-left:20px; padding-right:20px;"
+                       Href="/evaluator/dashboard">
+                Station wechseln
+            </MudButton>
+        </MudStack>
+    </MudStack>
+    
+</MudStack>
+<hr />
+<div class="container">
+<MudDataGrid Items="@_data" T="ModelEvaluationSet" Striped="@Striped" QuickFilter="@QuickSearch" arial-label="Teilnehmer">
+        <ToolBarContent><MudSpacer />
+            <MudTextField @bind-Value="_searchString" Placeholder="Suche" Adornment="Adornment.Start" Immediate="true"
+                      AdornmentIcon="@Icons.Material.Filled.Search" aria-label="Suche" IconSize="Size.Medium" Class="mt-0" Style="width:500px;"></MudTextField>
+        </ToolBarContent>
+    <Columns>
+        <TemplateColumn Filterable="false" CellStyle="width:50px">
+            <CellTemplate>
+                <MudIcon Icon="@Icons.Material.Filled.Person" Style="border:3px solid black; border-radius:50%" Title="Personen Icon" />
+            </CellTemplate>
+        </TemplateColumn>
+        <PropertyColumn Filterable="false" CellClass="mx-3" HeaderClass="mx-3" Title="Teilnehmer" Property="x => x!.ParticipantName" />
+        <PropertyColumn Filterable="false" CellClass="mx-3" HeaderClass="mx-3" Title="SybosID" Property="x => x!.SybosId" />
+        <PropertyColumn Filterable="false" CellClass="mx-3" HeaderClass="mx-3" Title="Feuerwehr" Property="x => x!.Branch" />
+        <TemplateColumn Filterable="false" CellClass="d-flex justify-end">
+            <CellTemplate>
+                <MudStack Row>
+                    @{
+                        var data = context.Item;
+                    }
+
+                    @if (context.Item!.State == EnumEvaluationState.Open)
+                    {
+                        <MudButtonGroup OverrideStyles="false">
+                            <MudButton Color="Color.Primary" Variant="Variant.Filled" Disabled="@(data!.Grade == EnumEvaluation.Passed)" Style="border-top-left-radius: 20px; border-bottom-left-radius: 20px; padding-left:20px; padding-right:20px;" OnClick="async () => await Grade(data.GradeId, EnumEvaluation.Passed)">Bestanden</MudButton>
+                            <MudButton Color="Color.Primary" Variant="Variant.Filled" Disabled="@(data!.Grade == EnumEvaluation.Failed)" Style="border-top-right-radius: 20px; border-bottom-right-radius: 20px; padding-left:20px; padding-right:20px;" OnClick="async () => await Grade(data.GradeId, EnumEvaluation.Failed)">Nicht bestanden</MudButton>
+                        </MudButtonGroup>
+                    }
+                    else
+                    {
+                        <MudButton Color="Color.Primary"
+                               Variant="Variant.Filled"
+                               Disabled="true"
+                               Style="border-radius: 20px; padding-left:20px; padding-right:20px;">
+                            Station abgeschlossen
+                        </MudButton>
+                    }
+                </MudStack>
+            </CellTemplate>
+        </TemplateColumn>
+    </Columns>
+</MudDataGrid>
+
+@if (_data.Any(e => e.State == EnumEvaluationState.Open))
+{
+    <MudStack Row Justify="Justify.Center" AlignItems="AlignItems.Center" Class="my-4" Spacing="4">
+    <MudButton Color="Color.Primary"
+               Variant="Variant.Filled"
+               Style="border-radius: 20px; padding-left:20px; padding-right:20px;"
+               OnClick="() => CloseStation()"
+               Disabled="@_closeButtonDisabled">
+        Station abschließen
+    </MudButton>
+    </MudStack>
+}
+</div>

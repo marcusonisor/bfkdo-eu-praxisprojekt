@@ -127,7 +127,7 @@
                 }
                 else
                 {
-                    return Ok(new { Token = GenerateToken(Identities.AdminClaimName) });
+                    return Ok(new { Token = GenerateToken(Identities.ParticipantClaimName) });
                 }
             }
             catch
@@ -136,6 +136,65 @@
             }
         }
 
+        /// <summary>
+        /// Abfrage der KontextId eines Bewerters.
+        /// </summary>
+        /// <param name="password">Das Zugangspasswort des Testbewerters.</param>
+        /// <returns>Ob die Abfrage erfolgreich war oder nicht.</returns>
+        /// <response code="200">Kontext gefunden.</response>
+        /// <response code="400">Zugangspasswort ist falsch.</response>
+        [HttpPost]
+        [Route("api/auth/evaluator/getcontextid")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult GetEvaluatorContextId([FromBody] string password)
+        {
+            try
+            {
+                TableKnowledgeTest test = _databaseContext.TableKnowledgeTests
+                    .Where(entity => entity.EvaluatorPassword == password)
+                    .Single();
+
+                return Ok(test.Id);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        /// <summary>
+        /// Abfrage der KontextId eines Teilnehmers.
+        /// </summary>
+        /// <param name="sybosId">Die SybosId des Teilnehmers.</param>
+        /// <returns>Ob die Abfrage erfolgreich war oder nicht.</returns>
+        /// <response code="200">Kontext gefunden.</response>
+        /// <response code="400">SybosId ist falsch.</response>
+        [HttpPost]
+        [Route("api/auth/participant/getcontextid")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult GetParticipantContextId([FromBody] int sybosId)
+        {
+            try
+            {
+                TableTestperson test = _databaseContext.TableTestpersons
+                    .Where(entity => entity.SybosId == sybosId)
+                    .Single();
+
+                return Ok(test.Id);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        /// <summary>
+        /// Generiert einen JWT-Token.
+        /// </summary>
+        /// <param name="claimNaime"></param>
+        /// <returns>JWT-Token.</returns>
         private string GenerateToken(string claimNaime)
         {
             var tokenHandler = new JwtSecurityTokenHandler();

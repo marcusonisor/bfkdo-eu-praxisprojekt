@@ -52,5 +52,39 @@ namespace BenutzerApp.Services
 
             return result;
         }
+
+        /// <summary>
+        /// Setzt die KontextId des Bewerters.
+        /// </summary>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public async Task<HttpRequestResult<int>> SetEvaluatorContextId(string password)
+        {
+            var result = await PostToApi<string, int>("/api/auth/evaluator/getcontextid", password);
+
+            if (result.RequestEnum == EnumHttpRequest.Success)
+            {
+                _authStateService.AddContextId(result.Result);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Setzt die KontextId des Teilnehmers.
+        /// </summary>
+        /// <param name="sybosId"></param>
+        /// <returns></returns>
+        public async Task<HttpRequestResult<int>> SetParticipantContextId(int sybosId)
+        {
+            var result = await PostToApi<int, int>("/api/auth/participant/getcontextid", sybosId);
+
+            if (result.RequestEnum == EnumHttpRequest.Success)
+            {
+                _authStateService.AddContextId(result.Result);
+            }
+
+            return result;
+        }
     }
 }

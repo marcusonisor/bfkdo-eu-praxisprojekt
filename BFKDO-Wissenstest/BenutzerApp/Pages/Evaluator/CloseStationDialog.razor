@@ -1,0 +1,31 @@
+﻿@inject ISnackbar Snackbar
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.QuestionMark" Class="mr-3 mb-n1" />
+            Wollen Sie die Station wirklich abschließen?
+        </MudText>
+    </TitleContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Abbrechen</MudButton>
+        <MudButton Color="Color.Error" OnClick="CloseStation">Station schließen</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = null!;
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
+    private void CloseStation()
+    {
+        Snackbar.Add("Station wurde geschlossen!", Severity.Success);
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+
+}

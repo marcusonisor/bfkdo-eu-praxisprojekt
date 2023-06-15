@@ -1,18 +1,11 @@
-﻿using Database.Tables;
+﻿using Common.Model;
 using Database;
+using Database.Tables;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WebAPI.Controllers;
-using Moq.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Common.Model;
-using Microsoft.AspNetCore.Http.HttpResults;
+using Moq;
+using Moq.EntityFrameworkCore;
+using WebAPI.Controllers;
 
 namespace ProjectUnitTests.ControllerTests
 {
@@ -50,21 +43,6 @@ namespace ProjectUnitTests.ControllerTests
             Assert.That(response is BadRequestResult);
         }
 
-        //[Test]
-        //public void Test_OkIfAdminCredentialsCorrect()
-        //{
-        //    string expectedToken = "";
-
-        //    SetupAdminDB();
-
-        //    var controller = new AuthController(_configurationMock.Object, _dbmock.Object);
-        //    var response = controller.AuthAdmin(new ModelAdminAuthData("admin", "password"));
-            
-        //    // TODO:
-
-        //    Assert.NotNull(response);
-        //}
-
         [Test]
         public void Test_BadRequestIfEvaluatorPasswordIsWrong()
         {
@@ -75,21 +53,6 @@ namespace ProjectUnitTests.ControllerTests
 
             Assert.That(response is BadRequestResult);
         }
-
-        //[Test]
-        //public void Test_OkIfEvaluatorCredentialsCorrect()
-        //{
-        //    string expectedToken = "";
-
-        //    SetupEvaluatorDB();
-
-        //    var controller = new AuthController(_configurationMock.Object, _dbmock.Object);
-        //    var response = controller.AuthEvaluator(new ModelEvaluatorAuthData("password"));
-
-        //    // TODO:
-
-        //    Assert.NotNull(response);
-        //}
 
         [Test]
         public void Test_BadRequestIfParticipantNotFound()
@@ -107,19 +70,6 @@ namespace ProjectUnitTests.ControllerTests
 
             Assert.That(response is BadRequestResult);
         }
-
-        //[Test]
-        //public void Test_OkIfParticipantCredentialsCorrect()
-        //{
-        //    string expectedToken = "";
-
-        //    var controller = new AuthController(_configurationMock.Object, _dbmock.Object);
-        //    var response = controller.AuthParticipant(new ModelParticipantAuthData(1337, "password"));
-
-        //    // TODO:
-
-        //    Assert.NotNull(response);
-        //}
 
         private void SetupAdminDB()
         {

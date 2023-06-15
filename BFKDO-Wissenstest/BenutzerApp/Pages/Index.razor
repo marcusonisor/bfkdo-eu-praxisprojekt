@@ -10,17 +10,20 @@
     Href="/authparticipant">
     Testteilnehmer
 </MudButton>*@
-
+<br />
 <div class="container mt-2">
     <h3 class="text-center">Willkommen beim Wissenstest!</h3>
     <br />
-    <h3 class="text-center"><i>Wählen Sie ihren Zugang aus</i></h3>
+    <h3 class="text-center"><i>Wählen Sie Ihren Zugang aus:</i></h3>
+    <br><br>
     <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
-        <MudButton aria-label="Als Testbewerter einloggen" Variant="Variant.Filled" Color="Color.Primary" Style="width:300px; border-radius: 80px"
-                   Href="/authevaluator">
-            Testbewerter
+        <MudButton aria-label="Als Testbewerter einloggen" Size="Size.Large" Variant="Variant.Filled" Color="Color.Primary" Style="width:300px; border-radius: 80px"
+                   Href="/evaluatorlogin">
+            Bewerter
         </MudButton>
-        <MudButton aria-label="Als Testperson einloggen" Variant="Variant.Filled" Color="Color.Primary" Style="width:300px; border-radius: 80px">
+        <br />
+        <MudButton aria-label="Als Testperson einloggen" Size="Size.Large" Variant="Variant.Filled" Color="Color.Primary" Style="width:300px; border-radius: 80px"
+                   Href="/participantlogin">
             Testperson
         </MudButton>
     </MudStack>

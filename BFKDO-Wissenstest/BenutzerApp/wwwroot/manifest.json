@@ -1,6 +1,6 @@
 {
-  "name": "BenutzerApp",
-  "short_name": "BenutzerApp",
+  "name": "BFKDO Wissenstest - Benutzerapp",
+  "short_name": "Benutzerapp",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#ffffff",

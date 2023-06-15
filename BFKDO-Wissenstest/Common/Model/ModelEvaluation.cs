@@ -10,25 +10,18 @@ namespace Common.Model
         /// <summary>
         /// Konstruktor des DTOs.
         /// </summary>
-        /// <param name="registrationId"></param>
-        /// <param name="evaluationCriteriaId"></param>
+        /// <param name="evaluationId"></param>
         /// <param name="evaluation"></param>
-        public ModelEvaluation(int registrationId, int evaluationCriteriaId, EnumEvaluation evaluation)
+        public ModelEvaluation(int evaluationId, EnumEvaluation evaluation)
         {
-            RegistrationId = registrationId;
-            EvaluationCriteriaId = evaluationCriteriaId;
+            EvaluationId = evaluationId;
             Evaluation = evaluation;
         }
 
         /// <summary>
-        /// ID der Registrierung.
-        /// </summary>
-        public int RegistrationId { get; }
-
-        /// <summary>
         /// ID des Bewertungskriterium.
         /// </summary>
-        public int EvaluationCriteriaId { get; }
+        public int EvaluationId { get; }
 
         /// <summary>
         /// Die Bewertung.

@@ -167,6 +167,7 @@ namespace Common.Services
             if (result.RequestEnum is EnumHttpRequest.Forbidden or EnumHttpRequest.Unauthorized)
             {
                 _authStateService.DeleteJwtToken();
+                _authStateService.DeleteContextId();
                 _navigationManager.NavigateTo("/");
             }
         }

@@ -5,12 +5,12 @@ using Common.Services;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
-namespace BenutzerApp.Pages.Auth
+namespace BenutzerApp.Pages.Login
 {
     /// <summary>
     ///     Login Komponente.
     /// </summary>
-    public partial class AuthEvaluator
+    public partial class EvaluatorLogin
     {
         /// <summary>
         ///     Initialisierungmethode.
@@ -62,7 +62,9 @@ namespace BenutzerApp.Pages.Auth
 
                 if (response.RequestEnum is EnumHttpRequest.Success)
                 {
-                    NavigationManager.NavigateTo("/stationchange");
+                    MudSnackbar.Add("Login erfolgreich!", Severity.Success);
+                    await AuthService.SetEvaluatorContextId(Password);
+                    NavigationManager.NavigateTo("/evaluator/dashboard");
                 }
                 else
                 {
@@ -90,7 +92,9 @@ namespace BenutzerApp.Pages.Auth
 
                 if (response.RequestEnum is EnumHttpRequest.Success)
                 {
-                    NavigationManager.NavigateTo("/stationchange");
+                    MudSnackbar.Add("Login erfolgreich!", Severity.Success);
+                    await AuthService.SetEvaluatorContextId(Password);
+                    NavigationManager.NavigateTo("/evaluator/dashboard");
                 }
                 else
                 {

@@ -5,8 +5,8 @@
 <MudStack Spacing="4">
     <MudStack Row Justify="Justify.Center" AlignItems="AlignItems.Center" Class="my-4" Spacing="4">
         <h1 class="m-0" aria-label="Testbezeichnung">Testbezeichnung: @Model.KnowledgeTestYear</h1>
-        <MudButton aria-label="Bearbeiten" Color="Color.Primary" Variant="Variant.Filled" Style="border-radius: 20px; padding-left:20px; padding-right:20px;">Bearbeiten</MudButton>
-        <MudButton aria-label="PDF exportieren" Color="Color.Error" StartIcon="@Icons.Material.Filled.PictureAsPdf" Variant="Variant.Filled" Style="border-radius: 20px; padding-left:20px; padding-right:20px;">PDF exportieren</MudButton>
+        <MudTooltip Text="Diese Funktion ist noch nicht verfügbar"><MudButton aria-label="Bearbeiten" Color="Color.Primary" Variant="Variant.Filled" Disabled="true" Style="border-radius: 20px; padding-left:20px; padding-right:20px;">Bearbeiten</MudButton></MudTooltip>
+        <MudTooltip Text="Diese Funktion ist noch nicht verfügbar"><MudButton aria-label="Excel exportieren" Color="Color.Success" StartIcon="@Icons.Material.Filled.PivotTableChart" Variant="Variant.Filled" Disabled="true" Style="border-radius: 20px; padding-left:20px; padding-right:20px;">Excel exportieren</MudButton></MudTooltip>
     </MudStack>
 
 
@@ -50,7 +50,7 @@
                                         </div>
                                     }
                                 </MudStack>
-                                <MudButton Style="border-radius: 20px; padding-left:20px; padding-right:20px;" aria-label="@($" Bearbeite {item.Name}")" Size="Size.Medium" Variant="Variant.Filled" Color="Color.Primary">Bearbeiten</MudButton>
+                                <MudTooltip Text="Diese Funktion ist noch nicht verfügbar"><MudButton Style="border-radius: 20px; padding-left:20px; padding-right:20px;" aria-label="@($" Bearbeite {item.Name}")" Size="Size.Medium" Variant="Variant.Filled" Disabled="true" Color="Color.Primary">Bearbeiten</MudButton></MudTooltip>
                             }
                         </MudStack>
                     </CellTemplate>

@@ -1,0 +1,21 @@
+﻿@page "/evaluator/dashboard"
+@inject NavigationManager NavigationManager
+
+<div class="container">
+    <MudDataGrid aria-label="Verfügbare Stationen" Items="@_stations" Style="width:95%">
+        <Columns>
+            <PropertyColumn Property="x => x.CriteriaName" Title="Station"></PropertyColumn>
+            <TemplateColumn>
+                <CellTemplate>
+                    <MudButton Variant="@Variant.Filled"
+                               Color="@Color.Primary"
+                               Style="border-radius: 20px; padding-left:20px; padding-right:20px;"
+                               OnClick="()=>SelectStation(context.Item.Id)">
+                        Wählen
+                    </MudButton>
+                </CellTemplate>
+            </TemplateColumn>
+        </Columns>
+
+    </MudDataGrid>
+</div>

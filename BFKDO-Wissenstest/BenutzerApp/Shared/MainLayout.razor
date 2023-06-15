@@ -52,6 +52,7 @@
     private void Logout()
     {
         AuthenticationStateService.DeleteJwtToken();
+        AuthenticationStateService.DeleteContextId();
         Navigation.NavigateTo("/");
     }
 }

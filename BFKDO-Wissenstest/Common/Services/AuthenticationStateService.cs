@@ -60,6 +60,31 @@ namespace Common.Services
         }
 
         /// <summary>
+        ///     Hinzufügen der ContextId.
+        /// </summary>
+        /// <param name="contextId">Context ID.</param>
+        public void AddContextId(int contextId)
+        {
+            _syncLocalStorageService.SetItem("contextId", contextId);
+        }
+
+        /// <summary>
+        ///     Abrufen der ContextId.
+        /// </summary>
+        public int GetContextId()
+        {
+            return _syncLocalStorageService.GetItem<int>("contextId");
+        }
+
+        /// <summary>
+        ///     Entfernen der ContextId.
+        /// </summary>
+        public void DeleteContextId()
+        {
+            _syncLocalStorageService.RemoveItem("contextId");
+        }
+
+        /// <summary>
         ///     Checkt, ob der Benutzer eingeloggt ist.
         /// </summary>
         /// <returns>Ob ein gültiger JWT Token hinterlegt ist.</returns>

@@ -1,0 +1,30 @@
+﻿@page "/participantlogin"
+
+@inject NavigationManager NavigationManager
+@inject ISnackbar MudSnackbar
+
+<div class="container">
+    <div class="login">
+        <br />
+        <h3>Willkommen beim Wissenstest!</h3>
+        <br />
+        <h3><i>Zugang für Teilnehmer</i></h3>
+        <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
+            <MudTextField @bind-Value="@SybosID" Style="width: 400px;" Label="Sybos ID" Required="true" Variant="Variant.Filled" Clearable="true" />
+            <MudTextField @bind-Value="@Password" Style="width: 400px;" Label="Passwort" Required="true" Variant="Variant.Filled" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ShowPassword" AdornmentAriaLabel="Passwort anzeigen" Clearable="true" />
+            <MudButton Disabled="@Processing" Variant="Variant.Filled" Color="Color.Primary" Style="border-radius: 20px; padding-left:20px; padding-right:20px;" @onclick="Login">
+                @if (Processing)
+                {
+                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                    <MudText Class="ms-2">Einloggen...</MudText>
+                }
+                else
+                {
+                    <MudText>Anmelden</MudText>
+                }
+            </MudButton>
+            <br />
+            <ScanHelper QRCodeScanned="QRScanned" />
+        </MudStack>
+    </div>
+</div>

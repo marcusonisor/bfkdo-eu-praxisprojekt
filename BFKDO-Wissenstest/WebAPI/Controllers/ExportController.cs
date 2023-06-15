@@ -38,7 +38,7 @@ namespace WebAPI.Controllers
         /// <response code="400">Erstellter Test ist ungültig.</response>
         /// <response code="401">Ungültiger JWT-Token.</response>
         [HttpGet]
-        [Route("api/admin/export/getevaluatorcredentials/{id}")]
+        [Route("api/export/evaluatorcredentials/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -71,7 +71,7 @@ namespace WebAPI.Controllers
         /// <response code="400">Erstellter Test ist ungültig.</response>
         /// <response code="401">Ungültiger JWT-Token.</response>
         [HttpGet]
-        [Route("api/admin/export/getparticipantscredentials/{id}")]
+        [Route("api/export/participantscredentials/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
