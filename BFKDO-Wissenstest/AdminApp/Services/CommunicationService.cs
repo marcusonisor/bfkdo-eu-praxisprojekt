@@ -29,7 +29,7 @@ namespace AdminApp.Services
         /// <returns></returns>
         public async Task<HttpRequestResult<bool>> PostRegistrationsFromFile(byte[] data)
         {
-            var result = await PostToApi<byte[], bool>("/api/Registration/ReadRegistrationsFromCsv", data);
+            var result = await PostToApi<byte[], bool>("/api/registration/readregistrationsfromcsv", data);
             return result;
         }
 
@@ -39,7 +39,7 @@ namespace AdminApp.Services
         /// <returns>Liste an Wissenstests.</returns>
         public async Task<HttpRequestResult<List<ModelKnowledgeTest>>> GetKnowledgeTests()
         {
-            var result = await GetFromApi<List<ModelKnowledgeTest>>("api/knowledgetest/GetKnowledgeTests");
+            var result = await GetFromApi<List<ModelKnowledgeTest>>("api/knowledgetest/getknowledgetests");
             return result;
         }
 
@@ -61,7 +61,7 @@ namespace AdminApp.Services
         /// <returns>Id des angelegten Wissenstest.</returns>
         public async Task<HttpRequestResult<int>> CreateKnowledgeTest(string designation)
         {
-            var result = await PostToApi<string, int>("api/knowledgetest/CreateKnowledgeTest", designation);
+            var result = await PostToApi<string, int>("api/knowledgetest/createknowledgetest", designation);
             return result;
         }
 
@@ -72,7 +72,7 @@ namespace AdminApp.Services
         /// <returns>Ob Testpersonen importiert wurden.</returns>
         public async Task<HttpRequestResult<bool>> ImportRegistrations(ModelImportData data)
         {
-            var result = await PostToApi<ModelImportData, bool>("api/knowledgetest/ImportRegistrations", data);
+            var result = await PostToApi<ModelImportData, bool>("api/knowledgetest/importregistrations", data);
             return result;
         } 
 
@@ -83,7 +83,7 @@ namespace AdminApp.Services
         /// <returns>Ob der Test gelöscht wurde.</returns>
         public async Task<HttpRequestResult<bool>> DeleteKnowledgeTest(int id)
         {
-            var result = await DeleteFromApi<bool>($"api/knowledgetest/DeleteKnowledgeTest/{id}");
+            var result = await DeleteFromApi<bool>($"api/knowledgetest/deleteknowledgetest/{id}");
             return result;
         }
     }

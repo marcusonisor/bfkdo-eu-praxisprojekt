@@ -190,6 +190,11 @@
             }
         }
 
+        /// <summary>
+        /// Generiert einen JWT-Token.
+        /// </summary>
+        /// <param name="claimNaime"></param>
+        /// <returns>JWT-Token.</returns>
         private string GenerateToken(string claimNaime)
         {
             var tokenHandler = new JwtSecurityTokenHandler();

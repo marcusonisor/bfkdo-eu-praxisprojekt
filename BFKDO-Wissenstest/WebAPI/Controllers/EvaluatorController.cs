@@ -76,7 +76,7 @@ namespace WebAPI.Controllers
         /// <param name="stationId"></param>
         /// <returns>Die Daten der angegebenen Station.</returns>
         [HttpGet]
-        [Route("api/evaluator/knowledgetest/{knowledgeTestId}/getstationdata/{stationId}")]
+        [Route("api/evaluator/getstationdata/{stationId}/{knowledgeTestId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public ActionResult GetStationData([FromRoute] int knowledgeTestId, [FromRoute] int stationId)

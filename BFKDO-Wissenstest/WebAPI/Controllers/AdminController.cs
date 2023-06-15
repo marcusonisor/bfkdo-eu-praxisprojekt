@@ -72,7 +72,6 @@ namespace WebAPI.Controllers
         /// <returns>Passwort zu SybosId</returns>
         private async Task<string> GetPasswordAsync(int SybosId)
         {
-
             try
             {
                 TableTestperson participant = await _databaseContext.TableTestpersons.Where(entity => entity.SybosId == SybosId).SingleAsync();
@@ -82,7 +81,6 @@ namespace WebAPI.Controllers
             {
                 return "";
             }
-
         }
 
     }

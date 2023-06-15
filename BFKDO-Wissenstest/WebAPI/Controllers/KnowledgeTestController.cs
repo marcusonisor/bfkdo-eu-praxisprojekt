@@ -42,7 +42,7 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
 
         [HttpGet]
-        [Route("api/knowledgetest/GetKnowledgeTestDetails/{id}")]
+        [Route("api/knowledgetest/getknowledgetestdetails/{id}")]
         public ActionResult GetKnowledgeTestDetails(int id)
         {
             if (id < 1)
@@ -99,7 +99,7 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
 
         [HttpGet]
-        [Route("api/knowledgetest/GetKnowledgeTests")]
+        [Route("api/knowledgetest/getknowledgetests")]
         public ActionResult GetKnowledgeTests()
         {
             var knowledgetests = _dbContext.TableKnowledgeTests.ToList();
@@ -122,7 +122,7 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
 
-        [Route("api/knowledgetest/ImportRegistrations")]
+        [Route("api/knowledgetest/importregistrations")]
         [HttpPost]
         public ActionResult ImportRegistrations([FromBody] ModelImportData data)
         {
@@ -214,7 +214,7 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
 
         [HttpPost]
-        [Route("api/knowledgetest/CreateKnowledgeTest")]
+        [Route("api/knowledgetest/createknowledgetest")]
         public ActionResult CreateKnowledgeTest([FromBody] string designation)
         {
             var knowledgetest = new TableKnowledgeTest()
@@ -254,7 +254,7 @@ namespace WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
 
         [HttpDelete]
-        [Route("api/knowledgetest/DeleteKnowledgeTest/{id}")]
+        [Route("api/knowledgetest/deleteknowledgetest/{id}")]
         public async Task<ActionResult> DeleteKnowledgeTest(int id)
         {
             if (id < 1)

@@ -46,7 +46,7 @@ namespace BenutzerApp.Services
         /// <returns>Die Dashboarddaten.</returns>
         public async Task<HttpRequestResult<List<ModelEvaluationSet>>> GetStationData(int knowledgeTestId, int stationId)
         {
-            var result = await GetFromApi<List<ModelEvaluationSet>>($"/api/evaluator/knowledgetest/{knowledgeTestId}/getstationdata/{stationId}");
+            var result = await GetFromApi<List<ModelEvaluationSet>>($"/api/evaluator/getstationdata/{stationId}/{knowledgeTestId}");
 
             if (result.RequestEnum == EnumHttpRequest.Success)
             {
