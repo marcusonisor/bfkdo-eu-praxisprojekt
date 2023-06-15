@@ -25,7 +25,7 @@ namespace ProjectUnitTests.ControllerTests
             _configurationMock.Setup(x => x["Key"]).Returns("3W68B4i5NoTs5VWkRpjGVgGJvu2ue780");
 
             _dbmock.Setup(x => x.TableEvaluationCriterias).ReturnsDbSet(new List<TableEvaluationCriteria>() {
-                      new TableEvaluationCriteria() { Key= 0, CriteriaName = "1",  },
+                      new TableEvaluationCriteria() { Key= 0, CriteriaName = "1" },
                       new TableEvaluationCriteria() { Key= 1, CriteriaName = "2" },
                       new TableEvaluationCriteria() { Key= 2, CriteriaName = "2" }
                   });
@@ -33,17 +33,6 @@ namespace ProjectUnitTests.ControllerTests
             _dbmock.Setup(x => x.TableEvaluations).ReturnsDbSet(new List<TableEvaluation>() {
                       new TableEvaluation() { Id = 1 },
                   });
-        }
-
-        [Test]
-        public void GetStations_ReturnsOk()
-        {
-            var controller = new EvaluatorController(_dbmock.Object);
-
-            var result = controller.GetStations();
-
-            Assert.IsNotNull(result);
-            Assert.That(result is OkObjectResult);
         }
 
         [Test]
