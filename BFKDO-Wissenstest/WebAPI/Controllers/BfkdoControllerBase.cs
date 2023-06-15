@@ -38,21 +38,32 @@ namespace WebAPI.Controllers
             {
                 var passed = 0;
                 var max = 0;
+
+                var eval = EnumEvaluation.Passed;
+
                 foreach(var evaluation in registration.Evaluations)
                 {
                     max++;
+
                     if(evaluation.Evaluation == EnumEvaluation.Passed && evaluation.EvaluationState == EnumEvaluationState.Closed)
                     {
                         passed++;
                     }
+
+                    if (evaluation.Evaluation == EnumEvaluation.Failed && evaluation.EvaluationState == EnumEvaluationState.Closed)
+                    {
+                        eval = EnumEvaluation.Failed;
+                    }
                 }
+
                 list.Add(new ModelKnowledgeLevelResult
                 {
                     LevelName = registration.KnowledgeLevel.Description,
-                    LevelResult = $"{passed} / {max}"
+                    LevelResult = $"{passed} / {max}",
+                    Eval = eval
                 });
             }
-
+            
             return list;
         }
     }

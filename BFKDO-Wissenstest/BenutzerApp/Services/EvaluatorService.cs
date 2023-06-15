@@ -26,9 +26,9 @@ namespace BenutzerApp.Services
         /// Retourniert eine Liste mit allen Stationen.
         /// </summary>
         /// <returns>Liste mit allen Stationen.</returns>
-        public async Task<HttpRequestResult<List<TestStationModel>>> GetAllTestStations()
+        public async Task<HttpRequestResult<List<TestStationModel>>> GetAllTestStations(int knowledgeTestId)
         {
-            var result = await GetFromApi<List<TestStationModel>>("/api/evaluator/getstations");
+            var result = await GetFromApi<List<TestStationModel>>($"/api/evaluator/getstations/{knowledgeTestId}");
 
             if (result.RequestEnum == EnumHttpRequest.Success)
             {

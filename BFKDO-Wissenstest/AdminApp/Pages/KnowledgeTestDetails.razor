@@ -46,7 +46,7 @@
                                     @foreach (var result in item.Results)
                                     {
                                         <div aria-label="@($"Ergebnis der absolvierten Stufe von {item.Name}")">
-                                            <EvaluationDetails State="EnumEvaluation.Ungraded" Result="@result.LevelResult"></EvaluationDetails>
+                                            <EvaluationDetails State="@result.Eval" Result="@result.LevelResult"></EvaluationDetails>
                                         </div>
                                     }
                                 </MudStack>
