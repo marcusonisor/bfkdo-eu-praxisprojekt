@@ -63,6 +63,11 @@ namespace BenutzerApp.Pages.Evaluator
         public string _stationName = string.Empty;
 
         /// <summary>
+        /// Bool ob der Schließungsbutton deaktiviert ist.
+        /// </summary>
+        public bool _closeButtonDisabled = true;
+
+        /// <summary>
         /// Initialisierungsmethode.
         /// </summary>
         /// <returns></returns>
@@ -78,6 +83,13 @@ namespace BenutzerApp.Pages.Evaluator
                 var data = await EvaluatorService.GetStationData(knowledgeTestId, Id.Value);
                 _data = data.Result;
             }
+
+            if (_data.TrueForAll(e => e.Grade == EnumEvaluation.Passed || e.Grade == EnumEvaluation.Failed))
+            {
+                _closeButtonDisabled = false;
+                StateHasChanged();
+            }
+
         }
 
         /// <summary>
@@ -89,6 +101,13 @@ namespace BenutzerApp.Pages.Evaluator
         public async Task Grade(int gradeId, EnumEvaluation evaluation)
         {
             var response = await EvaluatorService.SubmitEvaluation(new ModelEvaluation(gradeId, evaluation));
+
+            if (_data.TrueForAll(e => e.Grade == EnumEvaluation.Passed || e.Grade == EnumEvaluation.Failed))
+            {
+                _closeButtonDisabled = false;
+                StateHasChanged();
+            }
+
             await OnInitializedAsync();
         }
 
