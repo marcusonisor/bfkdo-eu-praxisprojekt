@@ -59,7 +59,7 @@ namespace WebAPI.Controllers
             }
             catch (Exception)
             {
-                return BadRequest(); // TODO: Return error!
+                return BadRequest();
             }
         }
 
@@ -101,7 +101,7 @@ namespace WebAPI.Controllers
             }
             catch (Exception)
             {
-                return BadRequest(); // TODO: Return error!
+                return BadRequest();
             }
         }
         

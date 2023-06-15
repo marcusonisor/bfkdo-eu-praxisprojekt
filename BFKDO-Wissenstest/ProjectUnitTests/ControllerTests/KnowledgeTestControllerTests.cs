@@ -21,8 +21,8 @@ namespace ProjectUnitTests.ControllerTests
 
         [Test]
         public void Test_BadRequestIfIdIsInvalid()
-        { 
-            var controller = new KnowledgeTestController(null!,_logger);
+        {
+            var controller = new KnowledgeTestController(null!, _logger);
             var response = controller.GetKnowledgeTestDetails(0);
             Assert.That(response is BadRequestObjectResult);
         }

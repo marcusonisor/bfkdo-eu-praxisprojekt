@@ -25,8 +25,6 @@ namespace ProjectUnitTests.ControllerTests
         [Test]
         public void Test_BadRequestIfAdminNotFound()
         {
-            SetupAdminDB();
-
             var controller = new AuthController(_configurationMock.Object, _dbmock.Object);
             var response = controller.AuthAdmin(new ModelAdminAuthData("max", "password"));
             Assert.That(response is BadRequestResult);
@@ -35,8 +33,6 @@ namespace ProjectUnitTests.ControllerTests
         [Test]
         public void Test_BadRequestIfAdminPasswordIsWrong()
         {
-            SetupAdminDB();
-
             var controller = new AuthController(_configurationMock.Object, _dbmock.Object);
             var response = controller.AuthAdmin(new ModelAdminAuthData("admin", ""));
 
@@ -46,8 +42,6 @@ namespace ProjectUnitTests.ControllerTests
         [Test]
         public void Test_BadRequestIfEvaluatorPasswordIsWrong()
         {
-            SetupEvaluatorDB();
-
             var controller = new AuthController(_configurationMock.Object, _dbmock.Object);
             var response = controller.AuthEvaluator(new ModelEvaluatorAuthData(""));
 
@@ -69,27 +63,6 @@ namespace ProjectUnitTests.ControllerTests
             var response = controller.AuthParticipant(new ModelParticipantAuthData(1337, ""));
 
             Assert.That(response is BadRequestResult);
-        }
-
-        private void SetupAdminDB()
-        {
-            _dbmock.Setup(x => x.TableAdministrators).ReturnsDbSet(new List<TableAdministrator>() {
-                      new TableAdministrator() { Email = "admin", Password = "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8" }
-                  });
-        }
-
-        private void SetupEvaluatorDB()
-        {
-            _dbmock.Setup(x => x.TableKnowledgeTests).ReturnsDbSet(new List<TableKnowledgeTest>() {
-                      new TableKnowledgeTest() { EvaluatorPassword = "password" }
-                  });
-        }
-
-        private void SetupParticipantDB()
-        {
-            _dbmock.Setup(x => x.TableTestpersons).ReturnsDbSet(new List<TableTestperson>() {
-                      new TableTestperson() { SybosId = 1337, Password = "password" }
-                  });
         }
     }
 }

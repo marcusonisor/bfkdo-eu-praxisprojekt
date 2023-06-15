@@ -34,12 +34,17 @@ namespace WebAPI.Controllers
         /// <response code="200"> Abruf erfolgreich.</response>
         /// <response code="401">Ungültiger JWT-Token.</response>
         [HttpGet]
-        [Route("api/evaluator/getstations")]
+        [Route("api/evaluator/getstations/{knowledgeTestId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public ActionResult GetStations()
+        public ActionResult GetStations([FromRoute] int knowledgeTestId)
         {
-            var stations = _databaseContext.TableEvaluationCriterias.ToList();
+            var stations = _databaseContext.TableEvaluationCriterias.Where(crit => 
+            _databaseContext.TableEvaluations.Where(eval =>
+                _databaseContext.TableRegistrations.Where(e => 
+                    e.KnowledgeTestId == knowledgeTestId).Any(t => 
+                        eval.RegistrationId == t.Id)).Any(t => 
+                            t.EvaluationCriteriaId == crit.Key)).ToList();
 
             return Ok(stations.Select(t => new TestStationModel()
             {
