@@ -27,6 +27,12 @@ namespace AdminApp.Pages
         public CommunicationService Service { get; set; } = null!;
 
         /// <summary>
+        ///     Exportierungsservice.
+        /// </summary>
+        [Inject]
+        public ExportService ExportService { get; set; } = null!;
+
+        /// <summary>
         ///     Id der Testung.
         /// </summary>
         [Parameter]
@@ -46,6 +52,15 @@ namespace AdminApp.Pages
                 StateHasChanged();
             }
 
+        }
+
+        /// <summary>
+        ///     CSV exportieren.
+        /// </summary>
+        /// <returns></returns>
+        public async Task ExportCSV()
+        {
+            await ExportService.DownloadResultsAsCsv(KnowledgeTestId, Model.KnowledgeTestYear);
         }
 
         private Func<ModelTestPersonResult, bool> QuickSearch => x =>

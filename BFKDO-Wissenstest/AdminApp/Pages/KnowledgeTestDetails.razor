@@ -6,7 +6,7 @@
     <MudStack Row Justify="Justify.Center" AlignItems="AlignItems.Center" Class="my-4" Spacing="4">
         <h1 class="m-0" aria-label="Testbezeichnung">Testbezeichnung: @Model.KnowledgeTestYear</h1>
         <MudTooltip Text="Diese Funktion ist noch nicht verfügbar"><MudButton aria-label="Bearbeiten" Color="Color.Primary" Variant="Variant.Filled" Disabled="true" Style="border-radius: 20px; padding-left:20px; padding-right:20px;">Bearbeiten</MudButton></MudTooltip>
-        <MudTooltip Text="Diese Funktion ist noch nicht verfügbar"><MudButton aria-label="Excel exportieren" Color="Color.Success" StartIcon="@Icons.Material.Filled.PivotTableChart" Variant="Variant.Filled" Disabled="true" Style="border-radius: 20px; padding-left:20px; padding-right:20px;">Excel exportieren</MudButton></MudTooltip>
+        <MudButton aria-label="Excel exportieren" OnClick="ExportCSV" Color="Color.Success" StartIcon="@Icons.Material.Filled.PivotTableChart" Variant="Variant.Filled" Style="border-radius: 20px; padding-left:20px; padding-right:20px;">CSV exportieren</MudButton>
     </MudStack>
 
 
