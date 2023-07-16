@@ -99,17 +99,20 @@ namespace BenutzerApp.Pages.Login
 
                 if (response.RequestEnum is EnumHttpRequest.Success)
                 {
+                    SybosID = credentials[0];
                     await AuthService.SetParticipantContextId(int.Parse(SybosID));
                     MudSnackbar.Add("Login erfolgreich!", Severity.Success);
                     NavigationManager.NavigateTo("/participant/dashboard");
                 }
                 else
                 {
+                    Console.WriteLine($"Fehlerhafter QR-Code: {args}");
                     MudSnackbar.Add("Ungültiger QR-Code! Bitte versuchen Sie es erneut!", Severity.Error);
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Console.WriteLine($"Fehlerhafter QR-Code: {args}");
                 MudSnackbar.Add("Ungültiger QR-Code! Bitte versuchen Sie es erneut!", Severity.Error);
             }
         }
