@@ -106,3 +106,8 @@ a, .btn-link {
     justify-content: center; /* Center horizontally */
     align-items: center; /* Center vertically */
 }
+
+.mobile-input-field{
+    width:400px;
+    max-width:75% !important;
+}

@@ -10,8 +10,8 @@
         <br />
         <h3><i>Zugang für Teilnehmer</i></h3>
         <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
-            <MudTextField @bind-Value="@SybosID" Style="width: 400px;" Label="Sybos ID" Required="true" Variant="Variant.Filled" Clearable="true" />
-            <MudTextField @bind-Value="@Password" Style="width: 400px;" Label="Passwort" Required="true" Variant="Variant.Filled" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ShowPassword" AdornmentAriaLabel="Passwort anzeigen" Clearable="true" />
+            <MudTextField @bind-Value="@SybosID" Class="mobile-input-field" Label="Sybos ID" Required="true" Variant="Variant.Filled" Clearable="true" />
+            <MudTextField @bind-Value="@Password" Class="mobile-input-field" Label="Passwort" Required="true" Variant="Variant.Filled" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ShowPassword" AdornmentAriaLabel="Passwort anzeigen" Clearable="true" />
             <MudButton Disabled="@Processing" Variant="Variant.Filled" Color="Color.Primary" Style="border-radius: 20px; padding-left:20px; padding-right:20px;" @onclick="Login">
                 @if (Processing)
                 {
