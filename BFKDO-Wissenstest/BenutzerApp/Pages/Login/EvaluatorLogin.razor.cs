@@ -4,6 +4,7 @@ using Common.Model;
 using Common.Services;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using System.Net;
 
 namespace BenutzerApp.Pages.Login
 {
@@ -98,11 +99,13 @@ namespace BenutzerApp.Pages.Login
                 }
                 else
                 {
+                    Console.WriteLine($"Fehlerhafter QR-Code: {args}");
                     MudSnackbar.Add("Ungültiger QR-Code! Bitte versuchen Sie es erneut!", Severity.Error);
                 }
             }
             catch (Exception)
             {
+                Console.WriteLine($"Fehlerhafter QR-Code: {args}");
                 Processing = false;
                 MudSnackbar.Add("Ungültiger QR-Code! Bitte versuchen Sie es erneut!", Severity.Error);
             }

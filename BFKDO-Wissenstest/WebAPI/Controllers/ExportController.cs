@@ -1,4 +1,6 @@
-﻿using Database;
+﻿using Common.Model.CSVModels;
+using CsvHelper;
+using Database;
 using Database.Tables;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -104,6 +106,43 @@ namespace WebAPI.Controllers
                 return BadRequest();
             }
         }
+
+        /// <summary>
+        ///     Resultate einer Wissenstestung exportieren.
+        /// </summary>
+        /// <param name="knowledgetestid">Wissenstest Id.</param>
+        /// <returns>Ergebnis eines Wissenstest als CSV.</returns>
+        /// <response code="200">CSV Ergebnis.</response>
+        /// <response code="400">Test mit der Id wurde nicht gefunden.</response>
+        /// <response code="401">Ungültiger JWT-Token.</response>
+        [HttpGet]
+        [Route("api/export/GetResultCsv/{knowledgetestid}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public ActionResult GetResultCsv(int knowledgetestid)
+        {
+            var knowledgetest = _databaseContext.TableKnowledgeTests
+                .Include(t => t.Registrations).ThenInclude(t => t.Testperson)
+                .Include(t => t.Registrations).ThenInclude(t => t.Evaluations)
+                .FirstOrDefault(t => t.Id == knowledgetestid);
+            if (knowledgetest == null)
+                return BadRequest("Wissenstest konnte nicht gefunden werden!");
+
+            var results = GetResultFromKnowledgeTest(knowledgetest);
+
+            using (var memoryStream = new MemoryStream())
+            {
+                using (var streamWriter = new StreamWriter(memoryStream))
+                using (var csvWriter = new CsvWriter(streamWriter, System.Globalization.CultureInfo.CurrentCulture))
+                {
+                    csvWriter.WriteRecords<CsvResultModel>(results);
+                } 
+
+                return Ok(memoryStream.ToArray());
+            }
+        }
+
         
         private string BuildEvaluatorQR(TableKnowledgeTest knowledgeTest)
         {
@@ -135,6 +174,32 @@ namespace WebAPI.Controllers
             var qrCode = new Base64QRCode(qrData);
 
             return qrCode.GetGraphic(20, SixLabors.ImageSharp.Color.Black, SixLabors.ImageSharp.Color.White, true, imgType);
+        }
+
+        private List<CsvResultModel> GetResultFromKnowledgeTest(TableKnowledgeTest test)
+        {
+            var list = new List<CsvResultModel>();
+
+            foreach(var participant in test.Registrations)
+            {
+                var model = new CsvResultModel
+                {
+                    FirstName = participant.Testperson.FirstName,
+                    LastName = participant.Testperson.LastName,
+                    SybosId = participant.Testperson.SybosId.ToString()
+                };
+
+                var passed = participant.Evaluations.Where(t => t.Evaluation == Common.Enums.EnumEvaluation.Passed).Count();
+                var all = participant.Evaluations.Count();
+
+                model.Passed = passed == all ? "Bestanden" : "Nicht bestanden";
+
+                model.Result = $"'{passed}/{all}'";
+
+                list.Add(model);
+            }
+
+            return list;
         }
 
     }

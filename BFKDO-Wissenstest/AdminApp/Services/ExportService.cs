@@ -13,9 +13,11 @@ namespace AdminApp.Services
     {
         private readonly IJSRuntime _jsRuntime;
 
+        private readonly string _resultExportFilePrefix = "ergebnisse_";
         private readonly string _evaluatorExportFilePrefix = "bewerter_";
         private readonly string _participantExportFilePrefix = "teilnehmer_";
         private readonly string _exportFileSuffix = ".docx";
+        private readonly string _exportCSVFileSuffix = ".csv";
 
         /// <summary>
         /// Konstruktor des Services.
@@ -56,6 +58,19 @@ namespace AdminApp.Services
         }
 
         /// <summary>
+        ///     Exportieren der Ergebnisse mit einer CSV.
+        /// </summary>
+        /// <param name="knowledgetestId">Wissenstest Id.</param>
+        /// <param name="fileName">Dateiname.</param>
+        /// <returns>Ergebnisse als CSV.</returns>
+        public async Task DownloadResultsAsCsv(int knowledgetestId, string fileName)
+        {
+            var response = await GetResultsAsCSV(knowledgetestId);
+
+            await _jsRuntime.InvokeVoidAsync("downloadFile", _resultExportFilePrefix + fileName + _exportCSVFileSuffix, response.Result);
+        }
+
+        /// <summary>
         /// Holt die Zugangsdaten als byte[] vom Server.
         /// </summary>
         /// <param name="knowledgetestId"></param>
@@ -73,6 +88,16 @@ namespace AdminApp.Services
         private async Task<HttpRequestResult<byte[]>> GetParticipantsCredentials(int knowledgetestId)
         {
             return await GetFromApi<byte[]>($"/api/export/participantscredentials/{knowledgetestId}");
+        }
+
+        /// <summary>
+        ///     Ergebnisse als CSV exportieren.
+        /// </summary>
+        /// <param name="knowledgetestId">Wissenstest Id.</param>
+        /// <returns>CSV Bytes.</returns>
+        private async Task<HttpRequestResult<byte[]>> GetResultsAsCSV(int knowledgetestId)
+        {
+            return await GetFromApi<byte[]>($"api/export/GetResultCsv/{knowledgetestId}");
         }
     }
 }

@@ -26,14 +26,14 @@ namespace BenutzerApp.Pages.Login
         }
 
         /// <summary>
-        /// Service für die Verwaltung und Überwachung des Authorisierungsstatus.
+        /// Service fÃ¼r die Verwaltung und Ãœberwachung des Authorisierungsstatus.
         /// </summary>
         [Inject]
         public AuthenticationStateService AuthenticationStateService { get; set; } = null!;
 
 
         /// <summary>
-        /// Service für die Authorisierung.
+        /// Service fÃ¼r die Authorisierung.
         /// </summary>
         [Inject]
         public AuthService AuthService { get; set; } = null!;
@@ -49,7 +49,7 @@ namespace BenutzerApp.Pages.Login
         public string Password { get; set; } = string.Empty;
 
         /// <summary>
-        /// Boolean der Auskunft darüber gibt, ob die Applikation gerade eine Verarbeitung durchführt.
+        /// Boolean der Auskunft darÃ¼ber gibt, ob die Applikation gerade eine Verarbeitung durchfÃ¼hrt.
         /// </summary>
         public bool Processing { get; set; } = false;
 
@@ -74,18 +74,18 @@ namespace BenutzerApp.Pages.Login
                 }
                 else
                 {
-                    MudSnackbar.Add("Ungültige SybosID oder Passwort! Bitte versuchen Sie es erneut!", Severity.Error);
+                    MudSnackbar.Add("UngÃ¼ltige SybosID oder Passwort! Bitte versuchen Sie es erneut!", Severity.Error);
                 }
 
             }
             else
             {
-                MudSnackbar.Add("Ungültige SybosID oder Passwort! Bitte versuchen Sie es erneut!", Severity.Error);
+                MudSnackbar.Add("UngÃ¼ltige SybosID oder Passwort! Bitte versuchen Sie es erneut!", Severity.Error);
             }
         }
 
         /// <summary>
-        /// Methode für die Weiterverarbeitung eines gescannten QR Codes.
+        /// Methode fÃ¼r die Weiterverarbeitung eines gescannten QR Codes.
         /// </summary>
         /// <param name="args"></param>
         private async Task QRScanned(string args)
@@ -99,23 +99,26 @@ namespace BenutzerApp.Pages.Login
 
                 if (response.RequestEnum is EnumHttpRequest.Success)
                 {
+                    SybosID = credentials[0];
                     await AuthService.SetParticipantContextId(int.Parse(SybosID));
                     MudSnackbar.Add("Login erfolgreich!", Severity.Success);
                     NavigationManager.NavigateTo("/participant/dashboard");
                 }
                 else
                 {
-                    MudSnackbar.Add("Ungültiger QR-Code! Bitte versuchen Sie es erneut!", Severity.Error);
+                    Console.WriteLine($"Fehlerhafter QR-Code: {args}");
+                    MudSnackbar.Add("UngÃ¼ltiger QR-Code! Bitte versuchen Sie es erneut!", Severity.Error);
                 }
             }
             catch (Exception)
             {
-                MudSnackbar.Add("Ungültiger QR-Code! Bitte versuchen Sie es erneut!", Severity.Error);
+                Console.WriteLine($"Fehlerhafter QR-Code: {args}");
+                MudSnackbar.Add("UngÃ¼ltiger QR-Code! Bitte versuchen Sie es erneut!", Severity.Error);
             }
         }
 
         /// <summary>
-        ///     Properties für die Passwortanzeige-Funktion.
+        ///     Properties fÃ¼r die Passwortanzeige-Funktion.
         /// </summary>
         public bool IsShow { get; set; }
         /// <summary>
